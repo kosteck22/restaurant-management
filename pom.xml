@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>invoice-service</module>
+        <module>common</module>
     </modules>
 
     <parent>
