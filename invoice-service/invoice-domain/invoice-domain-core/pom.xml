@@ -11,4 +11,11 @@
 
     <artifactId>invoice-domain-core</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>common-domain</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
