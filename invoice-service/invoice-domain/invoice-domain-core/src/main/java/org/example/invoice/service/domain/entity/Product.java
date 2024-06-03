@@ -1,12 +1,11 @@
 package org.example.invoice.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
+import org.example.invoice.service.domain.exception.InvoiceDomainException;
 import org.example.invoice.service.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.ProductId;
 import org.example.invoice.service.domain.valueobject.UnitOfMeasure;
 import org.example.invoice.service.domain.valueobject.VatRate;
-
-import java.util.UUID;
 
 public class Product extends BaseEntity<ProductId> {
     private final String name;
@@ -22,6 +21,22 @@ public class Product extends BaseEntity<ProductId> {
         grossPrice = builder.grossPrice;
         vatRate = builder.vatRate;
         unitOfMeasure = builder.unitOfMeasure;
+    }
+
+    void validateProduct() {
+        if (netPrice == null || grossPrice == null || vatRate == null) {
+            throw new InvoiceDomainException("Net price, gross price and vatRate cannot be null!");
+        }
+        if (!netPrice.isGreaterThanZero() || !grossPrice.isGreaterThanZero()) {
+            throw new InvoiceDomainException("Net price and gross price must be greater than zero!");
+        }
+        if (!netPrice.add(calculateVatAmount()).equals(grossPrice)) {
+            throw new InvoiceDomainException("Net price plus vat must be equal to gross price!");
+        }
+    }
+
+    private Money calculateVatAmount() {
+        return netPrice.multiply(vatRate.getRate() / 100);
     }
 
     public String getName() {

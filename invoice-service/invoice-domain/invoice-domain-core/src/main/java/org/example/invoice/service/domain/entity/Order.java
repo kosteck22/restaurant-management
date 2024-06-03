@@ -1,14 +1,19 @@
 package org.example.invoice.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
+import org.example.invoice.service.domain.exception.InvoiceDomainException;
 import org.example.invoice.service.domain.valueobject.InvoiceId;
 import org.example.invoice.service.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.OrderId;
+import org.example.invoice.service.domain.valueobject.OrderItemId;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Order extends BaseEntity<OrderId> {
-    private final InvoiceId invoiceId;
+    private InvoiceId invoiceId;
     private final Money netPrice;
     private final Money vat;
     private final Money grossPrice;
@@ -21,6 +26,50 @@ public class Order extends BaseEntity<OrderId> {
         vat = builder.vat;
         grossPrice = builder.grossPrice;
         items = builder.items;
+    }
+
+
+    void initializeOrder(InvoiceId invoiceId, OrderId orderId) {
+        this.invoiceId = invoiceId;
+        super.setId(orderId);
+        initializeOrderItems();
+    }
+
+    private void initializeOrderItems() {
+        long itemId = 1;
+        for (OrderItem orderItem: items) {
+            orderItem.initializeOrderItem(super.getId(), new OrderItemId(itemId++));
+        }
+    }
+
+    void validateTotalPrices() {
+        if (netPrice == null || grossPrice == null || vat == null ||
+        !netPrice.isGreaterThanZero() || !grossPrice.isGreaterThanZero() ||
+        !vat.isGreaterThanZero()) {
+            throw new InvoiceDomainException("Total prices must be greater than zero!");
+        }
+        if (!netPrice.add(vat).equals(grossPrice)) {
+            throw new InvoiceDomainException("Net price plus vat must be equal to grossPrice!");
+        }
+    }
+
+    void validateOrderItems() {
+        Money orderItemsGrossTotal = Money.ZERO;
+        Money orderItemsNetTotal = Money.ZERO;
+        Money orderItemsVatTotal = Money.ZERO;
+
+        items.forEach(orderItem -> {
+            orderItem.validate();
+            orderItemsGrossTotal.add(orderItem.getGrossTotal());
+            orderItemsNetTotal.add(orderItem.getNetTotal());
+            orderItemsVatTotal.add(orderItem.getVat());
+        });
+
+        if (!grossPrice.equals(orderItemsGrossTotal) ||
+        !netPrice.equals(orderItemsNetTotal) ||
+        !vat.equals(orderItemsVatTotal)) {
+            throw new InvoiceDomainException("Sum of order item prices must be equal to Order Total price!");
+        }
     }
 
     public InvoiceId getInvoiceId() {
@@ -46,6 +95,7 @@ public class Order extends BaseEntity<OrderId> {
     public static Builder builder() {
         return new Builder();
     }
+
     public static final class Builder {
         private OrderId orderId;
         private InvoiceId invoiceId;

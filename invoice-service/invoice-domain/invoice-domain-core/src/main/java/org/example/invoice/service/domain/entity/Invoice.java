@@ -1,11 +1,14 @@
 package org.example.invoice.service.domain.entity;
 
 import org.example.domain.entity.AggregateRoot;
+import org.example.invoice.service.domain.exception.InvoiceDomainException;
 import org.example.invoice.service.domain.valueobject.InvoiceId;
+import org.example.invoice.service.domain.valueobject.OrderId;
 import org.example.invoice.service.domain.valueobject.TrackingId;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class Invoice extends AggregateRoot<InvoiceId> {
     private final String invoiceNumber;
@@ -25,6 +28,30 @@ public class Invoice extends AggregateRoot<InvoiceId> {
         order = builder.order;
         trackingId = builder.trackingId;
         failureMessages = builder.failureMessages;
+    }
+
+    public void initializeInvoice() {
+        setId(new InvoiceId(UUID.randomUUID()));
+        trackingId = new TrackingId(UUID.randomUUID());
+        order.initializeOrder(super.getId(), new OrderId(UUID.randomUUID()));
+    }
+
+    public void validateInvoice() {
+        validateInitialInvoice();
+        validateOrder();
+    }
+
+    private void validateOrder() {
+        order.validateTotalPrices();
+        order.validateOrderItems();
+    }
+
+
+    private void validateInitialInvoice() {
+        if (getId() != null || order.getId() != null) {
+            throw new InvoiceDomainException(
+                    "Invoice is not in correct state for initialization!");
+        }
     }
 
     public String getInvoiceNumber() {

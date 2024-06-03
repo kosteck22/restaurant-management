@@ -1,14 +1,13 @@
 package org.example.invoice.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
+import org.example.invoice.service.domain.exception.InvoiceDomainException;
 import org.example.invoice.service.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.OrderId;
 import org.example.invoice.service.domain.valueobject.OrderItemId;
 
-import java.util.UUID;
-
 public class OrderItem extends BaseEntity<OrderItemId> {
-    private final OrderId orderId;
+    private OrderId orderId;
     private final Product product;
     private final int quantity;
     private final int discount;
@@ -25,6 +24,38 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         netTotal = builder.netTotal;
         vat = builder.vat;
         grossTotal = builder.grossTotal;
+    }
+
+    void initializeOrderItem(OrderId orderId, OrderItemId orderItemId) {
+        this.orderId = orderId;
+        super.setId(orderItemId);
+    }
+
+    void validate() {
+        validateProduct();
+        validateTotalPrices();
+    }
+
+    private void validateTotalPrices() {
+        if (quantity < 1 || discount > 100 ||
+                netTotal == null || vat == null || grossTotal == null) {
+            throw new InvoiceDomainException("Total prices cannot be null!");
+        }
+        if (!netTotal.isGreaterThanZero() || vat.isGreaterThanZero() || grossTotal.isGreaterThanZero()) {
+            throw new InvoiceDomainException("Total prices must be greater than zero!");
+        }
+        if (!netTotal.add(vat).multiply(quantity).equals(grossTotal)) {
+            throw new InvoiceDomainException(
+                    "Net price plus vat must be equal to grossPrice for product %s!"
+                            .formatted(product.getName()) );
+        }
+    }
+
+    private void validateProduct() {
+        if (product == null) {
+            throw new InvoiceDomainException("Product cannot be null!");
+        }
+        product.validateProduct();
     }
 
     public OrderId getOrderId() {
@@ -58,6 +89,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
     public static Builder builder() {
         return new Builder();
     }
+
     public static final class Builder {
         private OrderItemId orderItemId;
         private OrderId orderId;
