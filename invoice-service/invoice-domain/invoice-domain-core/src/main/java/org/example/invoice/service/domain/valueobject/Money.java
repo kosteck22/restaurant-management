@@ -24,6 +24,13 @@ public class Money {
                 this.amount.compareTo(money.getAmount()) > 0;
     }
 
+    public Money afterDiscount(int discount) {
+        BigDecimal b = discount < 1 ? BigDecimal.ONE : BigDecimal.ONE
+                .subtract(BigDecimal.valueOf(discount)
+                        .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP));
+        return new Money(setScale(getAmount().multiply(b)));
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
