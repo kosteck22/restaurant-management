@@ -2,6 +2,7 @@ package org.example.invoice.service.domain.entity;
 
 import org.example.domain.entity.AggregateRoot;
 import org.example.invoice.service.domain.exception.InvoiceDomainException;
+import org.example.invoice.service.domain.valueobject.Company;
 import org.example.invoice.service.domain.valueobject.InvoiceId;
 import org.example.invoice.service.domain.valueobject.OrderId;
 import org.example.invoice.service.domain.valueobject.TrackingId;

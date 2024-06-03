@@ -1,8 +1,4 @@
-package org.example.invoice.service.domain.entity;
-
-import org.example.domain.entity.BaseEntity;
-import org.example.invoice.service.domain.valueobject.CompanyId;
-import org.example.invoice.service.domain.valueobject.InvoiceId;
+package org.example.invoice.service.domain.valueobject;
 
 import java.util.Objects;
 import java.util.UUID;
