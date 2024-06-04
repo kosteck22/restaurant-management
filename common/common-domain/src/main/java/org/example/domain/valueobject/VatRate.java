@@ -1,4 +1,4 @@
-package org.example.invoice.service.domain.valueobject;
+package org.example.domain.valueobject;
 
 public enum VatRate {
     ZERO(0),

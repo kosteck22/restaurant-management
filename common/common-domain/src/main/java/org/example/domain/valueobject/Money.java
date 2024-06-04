@@ -1,4 +1,4 @@
-package org.example.invoice.service.domain.valueobject;
+package org.example.domain.valueobject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -45,6 +45,10 @@ public class Money {
 
     public Money multiply(int multiplier) {
         return new Money(setScale(this.amount.multiply(new BigDecimal(multiplier))));
+    }
+
+    public Money divide(BigDecimal d) {
+        return new Money(setScale(this.amount.divide(d, RoundingMode.HALF_UP)));
     }
 
     private BigDecimal setScale(BigDecimal input) {

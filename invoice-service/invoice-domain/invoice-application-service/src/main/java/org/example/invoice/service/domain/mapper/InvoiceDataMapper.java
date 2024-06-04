@@ -2,14 +2,15 @@ package org.example.invoice.service.domain.mapper;
 
 import org.example.invoice.service.domain.dto.create.CompanyRequest;
 import org.example.invoice.service.domain.dto.create.CreateInvoiceCommand;
+import org.example.invoice.service.domain.dto.create.CreateInvoiceResponse;
 import org.example.invoice.service.domain.entity.Invoice;
 import org.example.invoice.service.domain.entity.Order;
 import org.example.invoice.service.domain.entity.OrderItem;
 import org.example.invoice.service.domain.entity.Product;
 import org.example.invoice.service.domain.valueobject.Company;
-import org.example.invoice.service.domain.valueobject.Money;
+import org.example.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.UnitOfMeasure;
-import org.example.invoice.service.domain.valueobject.VatRate;
+import org.example.domain.valueobject.VatRate;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -103,6 +104,13 @@ public class InvoiceDataMapper {
                 companyRequest.street2(),
                 companyRequest.city(),
                 companyRequest.postalCode()
+        );
+    }
+
+    public CreateInvoiceResponse invoiceToCreateInvoiceResponse(Invoice invoice, String message) {
+        return new CreateInvoiceResponse(
+                invoice.getId().getValue(),
+                message
         );
     }
 }

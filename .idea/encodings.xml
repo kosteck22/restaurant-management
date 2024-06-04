@@ -21,6 +21,23 @@
     <file url="file://$PROJECT_DIR$/invoice-service/invoice-messaging/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/invoice-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/invoice-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/menu-container/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/menu-dataaccess/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/menu-domain/menu-application-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/menu-domain/menu-domain-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/menu-domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/menu-domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/sale-application/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/sale-container/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/sale-dataaccess/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/sale-domain/sale-application-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/sale-domain/sale-domain-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/sale-domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/sale-domain/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sale-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

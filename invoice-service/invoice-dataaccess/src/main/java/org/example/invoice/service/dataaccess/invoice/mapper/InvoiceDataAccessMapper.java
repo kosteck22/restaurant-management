@@ -1,5 +1,7 @@
 package org.example.invoice.service.dataaccess.invoice.mapper;
 
+import org.example.domain.valueobject.Money;
+import org.example.domain.valueobject.TrackingId;
 import org.example.invoice.service.dataaccess.invoice.entity.*;
 import org.example.invoice.service.domain.entity.Invoice;
 import org.example.invoice.service.domain.entity.Order;

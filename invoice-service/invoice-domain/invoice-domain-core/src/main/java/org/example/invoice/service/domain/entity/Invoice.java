@@ -5,7 +5,7 @@ import org.example.invoice.service.domain.exception.InvoiceDomainException;
 import org.example.invoice.service.domain.valueobject.Company;
 import org.example.invoice.service.domain.valueobject.InvoiceId;
 import org.example.invoice.service.domain.valueobject.OrderId;
-import org.example.invoice.service.domain.valueobject.TrackingId;
+import org.example.domain.valueobject.TrackingId;
 
 import java.time.LocalDate;
 import java.util.List;

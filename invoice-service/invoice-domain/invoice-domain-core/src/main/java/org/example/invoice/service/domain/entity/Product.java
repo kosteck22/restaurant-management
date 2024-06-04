@@ -2,10 +2,10 @@ package org.example.invoice.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
 import org.example.invoice.service.domain.exception.InvoiceDomainException;
-import org.example.invoice.service.domain.valueobject.Money;
+import org.example.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.ProductId;
 import org.example.invoice.service.domain.valueobject.UnitOfMeasure;
-import org.example.invoice.service.domain.valueobject.VatRate;
+import org.example.domain.valueobject.VatRate;
 
 public class Product extends BaseEntity<ProductId> {
     private final String name;

@@ -2,9 +2,7 @@ package org.example.invoice.service.dataaccess.invoice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.invoice.service.domain.valueobject.Money;
-import org.example.invoice.service.domain.valueobject.UnitOfMeasure;
-import org.example.invoice.service.domain.valueobject.VatRate;
+import org.example.domain.valueobject.VatRate;
 
 import java.math.BigDecimal;
 import java.util.Objects;

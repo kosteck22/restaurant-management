@@ -11,6 +11,8 @@
     <modules>
         <module>invoice-service</module>
         <module>common</module>
+        <module>menu-service</module>
+        <module>sale-service</module>
     </modules>
 
     <parent>
