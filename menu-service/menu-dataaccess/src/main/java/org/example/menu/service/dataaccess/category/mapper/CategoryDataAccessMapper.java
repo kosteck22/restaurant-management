@@ -1,6 +1,6 @@
 package org.example.menu.service.dataaccess.category.mapper;
 
-import org.example.menu.service.dataaccess.category.entity.CategoryEntity;
+import org.example.dataaccess.menu.category.entity.CategoryEntity;
 import org.example.menu.service.domain.entity.Category;
 import org.example.menu.service.domain.valueobject.CategoryId;
 

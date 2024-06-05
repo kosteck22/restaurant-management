@@ -2,8 +2,8 @@ package org.example.menu.service.dataaccess.menu.mapper;
 
 import org.example.domain.valueobject.MenuItemId;
 import org.example.domain.valueobject.Money;
-import org.example.menu.service.dataaccess.category.entity.CategoryEntity;
-import org.example.menu.service.dataaccess.menu.entity.MenuItemEntity;
+import org.example.dataaccess.menu.category.entity.CategoryEntity;
+import org.example.dataaccess.menu.entity.MenuItemEntity;
 import org.example.menu.service.domain.entity.Category;
 import org.example.menu.service.domain.entity.MenuItem;
 import org.example.menu.service.domain.valueobject.CategoryId;

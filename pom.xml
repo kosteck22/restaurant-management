@@ -44,6 +44,11 @@
             </dependency>
             <dependency>
                 <groupId>org.example</groupId>
+                <artifactId>common-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
                 <artifactId>invoice-application</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -1,8 +1,8 @@
-package org.example.menu.service.dataaccess.category.entity;
+package org.example.dataaccess.menu.category.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.menu.service.dataaccess.menu.entity.MenuItemEntity;
+import org.example.dataaccess.menu.entity.MenuItemEntity;
 
 import java.util.List;
 import java.util.UUID;

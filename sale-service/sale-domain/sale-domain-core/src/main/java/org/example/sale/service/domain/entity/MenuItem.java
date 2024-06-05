@@ -21,6 +21,14 @@ public class MenuItem extends BaseEntity<MenuItemId> {
         super.setId(menuItemId);
     }
 
+    private MenuItem(Builder builder) {
+        setId(builder.menuItemId);
+        name = builder.name;
+        grossPrice = builder.grossPrice;
+        vatRate = builder.vatRate;
+        active = builder.active;
+    }
+
     public void updateWithConfirmedData(String name, Money grossPrice, VatRate vatRate, boolean active) {
         this.name = name;
         this.grossPrice = grossPrice;
@@ -42,5 +50,49 @@ public class MenuItem extends BaseEntity<MenuItemId> {
 
     public boolean isActive() {
         return active;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private MenuItemId menuItemId;
+        private String name;
+        private Money grossPrice;
+        private VatRate vatRate;
+        private boolean active;
+
+        private Builder() {
+        }
+
+        public Builder menuItemId(MenuItemId val) {
+            menuItemId = val;
+            return this;
+        }
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder grossPrice(Money val) {
+            grossPrice = val;
+            return this;
+        }
+
+        public Builder vatRate(VatRate val) {
+            vatRate = val;
+            return this;
+        }
+
+        public Builder active(boolean val) {
+            active = val;
+            return this;
+        }
+
+        public MenuItem build() {
+            return new MenuItem(this);
+        }
     }
 }

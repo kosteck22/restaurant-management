@@ -21,6 +21,7 @@
     <file url="file://$PROJECT_DIR$/invoice-service/invoice-messaging/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/invoice-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/invoice-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-service/menu-application/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/menu-service/menu-container/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/menu-service/menu-dataaccess/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/menu-service/menu-domain/menu-application-service/src/main/java" charset="UTF-8" />

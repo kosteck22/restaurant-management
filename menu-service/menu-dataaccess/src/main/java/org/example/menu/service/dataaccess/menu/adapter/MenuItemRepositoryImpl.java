@@ -1,7 +1,7 @@
 package org.example.menu.service.dataaccess.menu.adapter;
 
+import org.example.dataaccess.menu.repository.MenuItemJpaRepository;
 import org.example.menu.service.dataaccess.menu.mapper.MenuItemDataAccessMapper;
-import org.example.menu.service.dataaccess.menu.repository.MenuItemJpaRepository;
 import org.example.menu.service.domain.entity.MenuItem;
 import org.example.menu.service.domain.ports.output.repository.MenuItemRepository;
 import org.springframework.stereotype.Component;

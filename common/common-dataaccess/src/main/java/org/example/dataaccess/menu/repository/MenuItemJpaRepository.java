@@ -1,6 +1,6 @@
-package org.example.menu.service.dataaccess.menu.repository;
+package org.example.dataaccess.menu.repository;
 
-import org.example.menu.service.dataaccess.menu.entity.MenuItemEntity;
+import org.example.dataaccess.menu.entity.MenuItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

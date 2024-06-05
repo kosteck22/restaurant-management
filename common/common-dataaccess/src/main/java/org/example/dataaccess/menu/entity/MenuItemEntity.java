@@ -1,10 +1,10 @@
-package org.example.menu.service.dataaccess.menu.entity;
+package org.example.dataaccess.menu.entity;
 
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.dataaccess.menu.category.entity.CategoryEntity;
 import org.example.domain.valueobject.VatRate;
-import org.example.menu.service.dataaccess.category.entity.CategoryEntity;
 
 import java.math.BigDecimal;
 import java.util.UUID;
