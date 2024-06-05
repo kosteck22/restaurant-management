@@ -1,14 +1,13 @@
 package org.example.sale.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.domain.DomainConstants;
 import org.example.sale.service.domain.entity.Menu;
 import org.example.sale.service.domain.entity.MenuItem;
 import org.example.sale.service.domain.entity.Sale;
 import org.example.sale.service.domain.event.SaleCreatedEvent;
 import org.example.sale.service.domain.event.SalePaidEvent;
 import org.example.sale.service.domain.exception.SaleDomainException;
-import org.example.sale.service.domain.valueobject.MenuItemId;
+import org.example.domain.valueobject.MenuItemId;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

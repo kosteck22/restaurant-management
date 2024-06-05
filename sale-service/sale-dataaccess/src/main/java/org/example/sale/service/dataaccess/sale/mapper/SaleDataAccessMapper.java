@@ -1,6 +1,5 @@
 package org.example.sale.service.dataaccess.sale.mapper;
 
-import org.example.domain.DomainConstants;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.TrackingId;
 import org.example.sale.service.dataaccess.sale.entity.SaleEntity;
@@ -8,7 +7,7 @@ import org.example.sale.service.dataaccess.sale.entity.SaleItemEntity;
 import org.example.sale.service.domain.entity.MenuItem;
 import org.example.sale.service.domain.entity.Sale;
 import org.example.sale.service.domain.entity.SaleItem;
-import org.example.sale.service.domain.valueobject.MenuItemId;
+import org.example.domain.valueobject.MenuItemId;
 import org.example.sale.service.domain.valueobject.SaleId;
 import org.example.sale.service.domain.valueobject.SaleItemId;
 import org.springframework.stereotype.Component;

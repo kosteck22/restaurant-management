@@ -3,7 +3,7 @@ package org.example.sale.service.domain.entity;
 import org.example.domain.entity.BaseEntity;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.VatRate;
-import org.example.sale.service.domain.valueobject.MenuItemId;
+import org.example.domain.valueobject.MenuItemId;
 
 public class MenuItem extends BaseEntity<MenuItemId> {
     private String name;

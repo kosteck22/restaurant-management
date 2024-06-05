@@ -7,7 +7,7 @@ import org.example.sale.service.domain.entity.Menu;
 import org.example.sale.service.domain.entity.MenuItem;
 import org.example.sale.service.domain.entity.Sale;
 import org.example.sale.service.domain.entity.SaleItem;
-import org.example.sale.service.domain.valueobject.MenuItemId;
+import org.example.domain.valueobject.MenuItemId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

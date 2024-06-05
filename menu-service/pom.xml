@@ -15,6 +15,7 @@
         <module>menu-domain</module>
         <module>menu-dataaccess</module>
         <module>menu-container</module>
+        <module>menu-application</module>
     </modules>
 
 </project>
