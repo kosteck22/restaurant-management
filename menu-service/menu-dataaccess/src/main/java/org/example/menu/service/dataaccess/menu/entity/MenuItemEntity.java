@@ -4,6 +4,7 @@ package org.example.menu.service.dataaccess.menu.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.domain.valueobject.VatRate;
+import org.example.menu.service.dataaccess.category.entity.CategoryEntity;
 
 import java.math.BigDecimal;
 import java.util.UUID;
