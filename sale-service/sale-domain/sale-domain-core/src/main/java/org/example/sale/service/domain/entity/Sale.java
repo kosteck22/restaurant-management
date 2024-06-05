@@ -9,11 +9,12 @@ import org.example.sale.service.domain.valueobject.SaleItemId;
 import org.example.sale.service.domain.valueobject.SaleStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 public class Sale extends AggregateRoot<SaleId> {
-    private LocalDate date;
+    private LocalDateTime date;
     private final Money grossPrice;
     private final List<SaleItem> items;
 
@@ -39,7 +40,7 @@ public class Sale extends AggregateRoot<SaleId> {
         setId(new SaleId(UUID.randomUUID()));
         trackingId = new TrackingId(UUID.randomUUID());
         saleStatus = SaleStatus.PENDING;
-        date = LocalDate.now();
+        date = LocalDateTime.now();
         initializeSaleItems();
         initializeNetPriceAndVat();
     }
@@ -116,7 +117,7 @@ public class Sale extends AggregateRoot<SaleId> {
         return new Builder();
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -158,7 +159,7 @@ public class Sale extends AggregateRoot<SaleId> {
 
     public static final class Builder {
         private SaleId saleId;
-        private LocalDate date;
+        private LocalDateTime date;
         private Money netPrice;
         private Money vat;
         private Money grossPrice;
@@ -175,7 +176,7 @@ public class Sale extends AggregateRoot<SaleId> {
             return this;
         }
 
-        public Builder date(LocalDate val) {
+        public Builder date(LocalDateTime val) {
             date = val;
             return this;
         }
