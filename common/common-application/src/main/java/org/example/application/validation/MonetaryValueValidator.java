@@ -1,4 +1,4 @@
-package org.example.invoice.service.domain.dto.validation;
+package org.example.application.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

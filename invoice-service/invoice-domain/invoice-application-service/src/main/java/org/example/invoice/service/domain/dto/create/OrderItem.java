@@ -2,7 +2,7 @@ package org.example.invoice.service.domain.dto.create;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-import org.example.invoice.service.domain.dto.validation.MonetaryValue;
+import org.example.application.validation.MonetaryValue;
 import org.hibernate.validator.constraints.Range;
 
 import java.math.BigDecimal;

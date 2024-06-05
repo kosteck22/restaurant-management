@@ -104,7 +104,7 @@ public class SaleItem extends BaseEntity<SaleItemId> {
             return this;
         }
 
-        public Builder product(MenuItem val) {
+        public Builder menuItem(MenuItem val) {
             product = val;
             return this;
         }
