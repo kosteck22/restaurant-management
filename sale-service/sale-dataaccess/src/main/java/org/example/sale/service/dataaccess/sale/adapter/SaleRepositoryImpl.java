@@ -29,6 +29,7 @@ public class SaleRepositoryImpl implements SaleRepository {
 
     @Override
     public Optional<Sale> findById(SaleId saleId) {
-        return Optional.empty();
+        return saleJpaRepository.findById(saleId.getValue())
+                .map(saleDataAccessMapper::saleEntityToSale);
     }
 }

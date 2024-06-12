@@ -9,7 +9,7 @@ import org.example.invoice.service.domain.entity.OrderItem;
 import org.example.invoice.service.domain.entity.Product;
 import org.example.invoice.service.domain.valueobject.Company;
 import org.example.domain.valueobject.Money;
-import org.example.invoice.service.domain.valueobject.UnitOfMeasure;
+import org.example.domain.valueobject.UnitOfMeasure;
 import org.example.domain.valueobject.VatRate;
 import org.springframework.stereotype.Component;
 

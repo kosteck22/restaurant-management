@@ -4,7 +4,7 @@ import org.example.domain.entity.BaseEntity;
 import org.example.invoice.service.domain.exception.InvoiceDomainException;
 import org.example.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.ProductId;
-import org.example.invoice.service.domain.valueobject.UnitOfMeasure;
+import org.example.domain.valueobject.UnitOfMeasure;
 import org.example.domain.valueobject.VatRate;
 
 public class Product extends BaseEntity<ProductId> {
