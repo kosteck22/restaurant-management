@@ -141,7 +141,7 @@
             </dependency>
             <dependency>
                 <groupId>org.example</groupId>
-                <artifactId>stock-domain-application-service</artifactId>
+                <artifactId>stock-application-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
