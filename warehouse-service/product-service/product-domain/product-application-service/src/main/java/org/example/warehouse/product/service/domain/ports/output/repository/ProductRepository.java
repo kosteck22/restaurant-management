@@ -1,7 +1,7 @@
 package org.example.warehouse.product.service.domain.ports.output.repository;
 
 import org.example.warehouse.product.service.domain.entity.Product;
-import org.example.warehouse.product.service.domain.valueobject.ProductId;
+import org.example.domain.valueobject.ProductId;
 
 import java.util.Optional;
 

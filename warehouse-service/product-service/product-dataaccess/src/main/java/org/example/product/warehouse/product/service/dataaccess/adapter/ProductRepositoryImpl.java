@@ -4,7 +4,7 @@ import org.example.product.warehouse.product.service.dataaccess.mapper.ProductDa
 import org.example.product.warehouse.product.service.dataaccess.repository.ProductJpaRepository;
 import org.example.warehouse.product.service.domain.entity.Product;
 import org.example.warehouse.product.service.domain.ports.output.repository.ProductRepository;
-import org.example.warehouse.product.service.domain.valueobject.ProductId;
+import org.example.domain.valueobject.ProductId;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

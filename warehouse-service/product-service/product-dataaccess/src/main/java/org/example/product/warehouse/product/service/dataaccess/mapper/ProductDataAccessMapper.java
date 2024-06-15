@@ -3,8 +3,8 @@ package org.example.product.warehouse.product.service.dataaccess.mapper;
 import org.example.domain.valueobject.UnitOfMeasure;
 import org.example.product.warehouse.product.service.dataaccess.entity.ProductEntity;
 import org.example.warehouse.product.service.domain.entity.Product;
-import org.example.warehouse.product.service.domain.valueobject.Category;
-import org.example.warehouse.product.service.domain.valueobject.ProductId;
+import org.example.domain.valueobject.Category;
+import org.example.domain.valueobject.ProductId;
 import org.springframework.stereotype.Component;
 
 @Component

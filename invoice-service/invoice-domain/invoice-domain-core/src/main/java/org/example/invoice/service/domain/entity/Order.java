@@ -2,7 +2,7 @@ package org.example.invoice.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
 import org.example.invoice.service.domain.exception.InvoiceDomainException;
-import org.example.invoice.service.domain.valueobject.InvoiceId;
+import org.example.domain.valueobject.InvoiceId;
 import org.example.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.OrderId;
 import org.example.invoice.service.domain.valueobject.OrderItemId;

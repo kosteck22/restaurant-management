@@ -46,6 +46,7 @@ public class SaleDomainServiceImpl implements SaleDomainService {
             MenuItem currentMenuItem = saleItem.getMenuItem();
             MenuItem menuItem = menuItemMapFromMenu.get(currentMenuItem.getId());
             if (menuItem == null) {
+                log.info("Menu item not found for id: {}", currentMenuItem.getId().getValue());
                 throw new SaleDomainException("Menu item not found for id " + currentMenuItem.getId().getValue());
             }
             currentMenuItem.updateWithConfirmedData(

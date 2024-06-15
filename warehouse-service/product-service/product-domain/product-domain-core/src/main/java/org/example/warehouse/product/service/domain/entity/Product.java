@@ -2,8 +2,8 @@ package org.example.warehouse.product.service.domain.entity;
 
 import org.example.domain.entity.AggregateRoot;
 import org.example.domain.valueobject.UnitOfMeasure;
-import org.example.warehouse.product.service.domain.valueobject.Category;
-import org.example.warehouse.product.service.domain.valueobject.ProductId;
+import org.example.domain.valueobject.Category;
+import org.example.domain.valueobject.ProductId;
 
 import java.util.UUID;
 
