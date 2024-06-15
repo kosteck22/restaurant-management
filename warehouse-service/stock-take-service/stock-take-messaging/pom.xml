@@ -5,18 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>warehouse-service</artifactId>
+        <artifactId>stock-take-service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>stock-take-service</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>stock-take-domain</module>
-        <module>stock-take-dataaccess</module>
-        <module>stock-take-application</module>
-        <module>stock-take-container</module>
-        <module>stock-take-messaging</module>
-    </modules>
+    <artifactId>stock-take-messaging</artifactId>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>stock-take-application-service</artifactId>
+        </dependency>
+    </dependencies>
 </project>
