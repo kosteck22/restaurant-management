@@ -1,4 +1,4 @@
-package org.example.stock.take.service.domain;
+package org.example.warehouse.stock.take.service.domain;
 
 
 import org.springframework.boot.SpringApplication;

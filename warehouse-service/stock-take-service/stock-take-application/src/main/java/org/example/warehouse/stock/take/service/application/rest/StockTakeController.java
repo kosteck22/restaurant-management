@@ -1,4 +1,4 @@
-package org.example.stock.take.service.application.rest;
+package org.example.warehouse.stock.take.service.application.rest;
 
 
 import lombok.extern.slf4j.Slf4j;

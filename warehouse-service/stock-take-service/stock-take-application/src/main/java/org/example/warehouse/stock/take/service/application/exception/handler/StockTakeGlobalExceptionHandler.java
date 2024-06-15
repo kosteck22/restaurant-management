@@ -1,4 +1,4 @@
-package org.example.stock.take.service.application.exception.handler;
+package org.example.warehouse.stock.take.service.application.exception.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
