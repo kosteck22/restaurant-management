@@ -4,7 +4,7 @@ import org.example.sale.service.dataaccess.sale.mapper.SaleDataAccessMapper;
 import org.example.sale.service.dataaccess.sale.repository.SaleJpaRepository;
 import org.example.sale.service.domain.entity.Sale;
 import org.example.sale.service.domain.ports.output.repository.SaleRepository;
-import org.example.sale.service.domain.valueobject.SaleId;
+import org.example.domain.valueobject.SaleId;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

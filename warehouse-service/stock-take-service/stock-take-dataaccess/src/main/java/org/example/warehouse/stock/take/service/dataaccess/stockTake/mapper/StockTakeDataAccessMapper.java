@@ -8,7 +8,7 @@ import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.Stoc
 import org.example.warehouse.stock.take.service.domain.entity.StockItem;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
 import org.example.warehouse.stock.take.service.domain.valueobject.StockItemId;
-import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeId;
+import org.example.domain.valueobject.StockTakeId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -7,7 +7,7 @@ import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
 import org.example.warehouse.stock.take.service.domain.exception.StockTakeDomainException;
 import org.example.warehouse.stock.take.service.domain.valueobject.StockItemId;
-import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeId;
+import org.example.domain.valueobject.StockTakeId;
 
 public class StockItem extends BaseEntity<StockItemId> {
     private StockTakeId stockTakeId;

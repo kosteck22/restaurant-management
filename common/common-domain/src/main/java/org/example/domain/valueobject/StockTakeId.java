@@ -1,4 +1,4 @@
-package org.example.warehouse.stock.take.service.domain.valueobject;
+package org.example.domain.valueobject;
 
 import org.example.domain.valueobject.BaseId;
 

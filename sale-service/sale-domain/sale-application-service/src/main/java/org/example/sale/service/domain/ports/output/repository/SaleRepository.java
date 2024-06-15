@@ -1,7 +1,7 @@
 package org.example.sale.service.domain.ports.output.repository;
 
 import org.example.sale.service.domain.entity.Sale;
-import org.example.sale.service.domain.valueobject.SaleId;
+import org.example.domain.valueobject.SaleId;
 
 import java.util.Optional;
 

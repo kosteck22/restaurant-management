@@ -2,7 +2,7 @@ package org.example.sale.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
 import org.example.domain.valueobject.Money;
-import org.example.sale.service.domain.valueobject.SaleId;
+import org.example.domain.valueobject.SaleId;
 import org.example.sale.service.domain.valueobject.SaleItemId;
 
 import java.math.BigDecimal;

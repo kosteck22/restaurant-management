@@ -4,11 +4,10 @@ import org.example.domain.entity.AggregateRoot;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.TrackingId;
 import org.example.sale.service.domain.exception.SaleDomainException;
-import org.example.sale.service.domain.valueobject.SaleId;
+import org.example.domain.valueobject.SaleId;
 import org.example.sale.service.domain.valueobject.SaleItemId;
 import org.example.sale.service.domain.valueobject.SaleStatus;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
