@@ -3,10 +3,16 @@ package org.example.warehouse.stock.service.domain.entity;
 import org.example.domain.entity.AggregateRoot;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.StockTakeId;
+import org.example.warehouse.stock.service.domain.exception.StockDomainException;
+import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionId;
+import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionType;
 import org.example.warehouse.stock.service.domain.valueobject.StockId;
 import org.example.warehouse.stock.service.domain.valueobject.StockStatus;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Stock extends AggregateRoot<StockId> {
 
@@ -59,6 +65,19 @@ public class Stock extends AggregateRoot<StockId> {
 
     public StockStatus getStatus() {
         return status;
+    }
+
+    public void addStockAddTransactions(List<StockAddTransaction> transactions) {
+        if (isClosed()) {
+            throw new StockDomainException("You cannot add new transactions. Stock is closed!");
+        }
+
+        long transactionId = addingTransactions.size();
+        for (StockAddTransaction stockAddTransaction : transactions) {
+            stockAddTransaction.validate();
+            stockAddTransaction.initialize(super.getId(), new StockAddTransactionId(++transactionId));
+            addingTransactions.add(stockAddTransaction);
+        }
     }
 
 

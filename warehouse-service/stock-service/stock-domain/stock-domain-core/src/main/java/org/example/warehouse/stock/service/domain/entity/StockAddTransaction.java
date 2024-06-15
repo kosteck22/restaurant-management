@@ -5,6 +5,7 @@ import org.example.domain.valueobject.InvoiceId;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
+import org.example.warehouse.stock.service.domain.exception.StockDomainException;
 import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionId;
 import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionType;
 import org.example.warehouse.stock.service.domain.valueobject.StockId;
@@ -12,7 +13,7 @@ import org.example.warehouse.stock.service.domain.valueobject.StockId;
 import java.time.LocalDateTime;
 
 public class StockAddTransaction extends BaseEntity<StockAddTransactionId> {
-    private final StockId stockId;
+    private  StockId stockId;
     private final LocalDateTime additionDate;
     private final ProductId productId;
     private final Quantity quantity;
@@ -65,6 +66,24 @@ public class StockAddTransaction extends BaseEntity<StockAddTransactionId> {
         return invoiceId;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public void validate() {
+        if (quantity.isNegative() || !grossPrice.isGreaterThanZero() ||
+                !totalGrossPrice.equals(grossPrice.multiply(quantity.getValue()))) {
+            throw new StockDomainException("StockAddTransaction is not correctly initialized!");
+        }
+        if (getStockAddTransactionType().equals(StockAddTransactionType.INVOICE) && invoiceId == null) {
+            throw new StockDomainException("InvoiceId is required for Invoice transaction type!");
+        }
+    }
+
+    public void initialize(StockId id, StockAddTransactionId stockAddTransactionId) {
+        stockId = id;
+        super.setId(stockAddTransactionId);
+    }
 
     public static final class Builder {
         private StockAddTransactionId stockAddTransactionId;
@@ -78,10 +97,6 @@ public class StockAddTransaction extends BaseEntity<StockAddTransactionId> {
         private InvoiceId invoiceId;
 
         private Builder() {
-        }
-
-        public static Builder builder() {
-            return new Builder();
         }
 
         public Builder stockAddTransactionId(StockAddTransactionId val) {
