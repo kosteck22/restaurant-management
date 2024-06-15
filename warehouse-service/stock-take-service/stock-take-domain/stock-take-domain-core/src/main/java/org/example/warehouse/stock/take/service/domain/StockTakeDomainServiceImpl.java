@@ -1,6 +1,7 @@
 package org.example.warehouse.stock.take.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.event.publisher.DomainEventPublisher;
 import org.example.domain.valueobject.ProductId;
 import org.example.warehouse.stock.take.service.domain.entity.Product;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
@@ -20,12 +21,14 @@ import static org.example.domain.DomainConstants.UTC;
 public class StockTakeDomainServiceImpl implements StockTakeDomainService {
 
     @Override
-    public StockTakeCreatedEvent validateAndInitiateStockTake(StockTake stockTake, List<Product> products) {
+    public StockTakeCreatedEvent validateAndInitiateStockTake(StockTake stockTake,
+                                                              List<Product> products,
+                                                              DomainEventPublisher<StockTakeCreatedEvent> stockTakeCreatedEventDomainEventPublisher) {
         setStockItemInformation(stockTake, products);
         stockTake.validateStockTake();
         stockTake.initializeStockTake();
         log.info("Stock take with id: {} is initiated", stockTake.getId().getValue());
-        return new StockTakeCreatedEvent(stockTake, ZonedDateTime.now(ZoneId.of(UTC)));
+        return new StockTakeCreatedEvent(stockTake, ZonedDateTime.now(ZoneId.of(UTC)), stockTakeCreatedEventDomainEventPublisher);
 
     }
 

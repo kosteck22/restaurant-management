@@ -4,11 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.warehouse.stock.take.service.domain.dto.create.CreateStockTakeCommand;
 import org.example.warehouse.stock.take.service.domain.dto.create.CreateStockTakeResponse;
 import org.example.warehouse.stock.take.service.domain.entity.Product;
-import org.example.warehouse.stock.take.service.domain.entity.StockItem;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
 import org.example.warehouse.stock.take.service.domain.event.StockTakeCreatedEvent;
 import org.example.warehouse.stock.take.service.domain.exception.StockTakeDomainException;
 import org.example.warehouse.stock.take.service.domain.mapper.StockTakeDataMapper;
+import org.example.warehouse.stock.take.service.domain.ports.output.message.publisher.StockTakeCreatedMessagePublisher;
 import org.example.warehouse.stock.take.service.domain.ports.output.repository.ProductRepository;
 import org.example.warehouse.stock.take.service.domain.ports.output.repository.StockTakeRepository;
 import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeStatus;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -25,15 +24,18 @@ public class StockTakeCreateCommandHandler {
     private final StockTakeRepository stockTakeRepository;
     private final ProductRepository productRepository;
     private final StockTakeDomainService stockTakeDomainService;
+    private final StockTakeCreatedMessagePublisher stockTakeCreatedMessagePublisher;
 
     public StockTakeCreateCommandHandler(StockTakeDataMapper stockTakeDataMapper,
                                          StockTakeRepository stockTakeRepository,
                                          ProductRepository productRepository,
-                                         StockTakeDomainService stockTakeDomainService) {
+                                         StockTakeDomainService stockTakeDomainService,
+                                         StockTakeCreatedMessagePublisher stockTakeCreatedMessagePublisher) {
         this.stockTakeDataMapper = stockTakeDataMapper;
         this.stockTakeRepository = stockTakeRepository;
         this.productRepository = productRepository;
         this.stockTakeDomainService = stockTakeDomainService;
+        this.stockTakeCreatedMessagePublisher = stockTakeCreatedMessagePublisher;
     }
 
     @Transactional
@@ -41,8 +43,10 @@ public class StockTakeCreateCommandHandler {
         checkPreparedDate(createStockTakeCommand);
         List<Product> products = getProducts(createStockTakeCommand);
         StockTake stockTake = stockTakeDataMapper.createStockTakeCommandToStockTake(createStockTakeCommand);
-        StockTakeCreatedEvent stockTakeCreatedEvent = stockTakeDomainService.validateAndInitiateStockTake(stockTake, products);
+        StockTakeCreatedEvent stockTakeCreatedEvent = stockTakeDomainService.validateAndInitiateStockTake(stockTake, products, stockTakeCreatedMessagePublisher);
         StockTake savedStockTake = saveStockTake(stockTake);
+        log.info("Stock take is created with id: {}", stockTake.getId().getValue());
+        stockTakeCreatedMessagePublisher.publish(stockTakeCreatedEvent);
         return stockTakeDataMapper.stockTakeToCreateStockTakeResponse(
                 savedStockTake,
                 "Stock take created successfully!");

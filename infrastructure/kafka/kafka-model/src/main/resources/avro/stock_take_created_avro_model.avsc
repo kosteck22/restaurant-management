@@ -1,0 +1,126 @@
+{
+  "type": "record",
+  "name": "StockTakeAvroModel",
+  "namespace": "org.example.kafka.stock.take.avro.model",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "sagaId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "createdAt",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
+    {
+      "name": "stockTakeId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "preparedDate",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
+    {
+      "name": "totalPrice",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 10,
+        "scale": 2
+      }
+    },
+    {
+      "name": "items",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "StockItem",
+          "fields": [
+            {
+              "name": "stockTakeId",
+              "type": {
+                "type": "string",
+                "logicalType": "uuid"
+              }
+            },
+            {
+              "name": "StockItemId",
+              "type": {
+                "type": "long"
+              }
+            },
+            {
+              "name": "productId",
+              "type": {
+                "type": "string",
+                "logicalType": "uuid"
+              }
+            },
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "quantity",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 10,
+                "scale": 3
+              }
+            },
+            {
+              "name": "grossPrice",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 10,
+                "scale": 2
+              }
+            },
+            {
+              "name": "totalGrossPrice",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 10,
+                "scale": 2
+              }
+            },
+            {
+              "name": "invoiceId",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "StockTakeStatus",
+        "symbols": ["PENDING", "REJECTED", "ACCEPTED"]
+      }
+    }
+  ]
+}
