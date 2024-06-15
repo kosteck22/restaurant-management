@@ -15,6 +15,7 @@
         <module>stock-take-domain</module>
         <module>stock-take-dataaccess</module>
         <module>stock-take-application</module>
+        <module>stock-take-container</module>
     </modules>
 
 </project>
