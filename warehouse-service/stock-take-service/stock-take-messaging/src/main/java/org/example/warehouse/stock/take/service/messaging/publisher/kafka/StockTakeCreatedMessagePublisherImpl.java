@@ -36,21 +36,21 @@ public class StockTakeCreatedMessagePublisherImpl implements StockTakeCreatedMes
         log.info("Received StockTakeCreatedEvent for stock take id: {}", stockTakeId);
 
         try {
-            StockTakeAvroModel stockTakeCreatedAvroModel = stockTakeMessagingDataMapper
+            StockTakeAvroModel stockTakeAvroModel = stockTakeMessagingDataMapper
                     .stockTakeCreatedEventToStockTakeAvroModel(domainEvent);
 
             kafkaProducer.send(stockTakeServiceConfigData.getStockTakeCreatedTopicName(),
                     stockTakeId,
-                    stockTakeCreatedAvroModel,
+                    stockTakeAvroModel,
                     kafkaMessageHelper
                             .getKafkaCallback(stockTakeServiceConfigData.getStockTakeCreatedResponseTopicName(),
-                                    stockTakeCreatedAvroModel,
+                                    stockTakeAvroModel,
                                     stockTakeId,
-                                    "StockTakeCreatedAvroModel"));
+                                    "StockTakeAvroModel"));
 
-            log.info("StockTakeCreatedAvroModel sent to Kafka for stock take id: {}", stockTakeCreatedAvroModel.getStockTakeId());
+            log.info("StockTakeAvroModel sent to Kafka for stock take id: {}", stockTakeAvroModel.getStockTakeId());
         } catch (Exception e) {
-            log.error("Error while sending StockTakeCreatedAvroModel message" +
+            log.error("Error while sending StockTakeAvroModel message" +
                     " to kafka with stock take id: {}, error: {}", stockTakeId, e.getMessage());
         }
     }
