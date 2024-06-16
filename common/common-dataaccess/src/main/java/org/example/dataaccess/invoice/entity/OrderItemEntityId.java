@@ -1,4 +1,4 @@
-package org.example.invoice.service.dataaccess.invoice.entity;
+package org.example.dataaccess.invoice.entity;
 
 import lombok.*;
 

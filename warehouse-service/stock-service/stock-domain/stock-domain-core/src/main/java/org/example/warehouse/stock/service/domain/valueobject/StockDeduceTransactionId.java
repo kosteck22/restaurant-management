@@ -4,8 +4,8 @@ import org.example.domain.valueobject.BaseId;
 
 import java.util.UUID;
 
-public class StockDeduceTransactionId extends BaseId<UUID> {
-    public StockDeduceTransactionId(UUID value) {
+public class StockDeduceTransactionId extends BaseId<Long> {
+    public StockDeduceTransactionId(Long value) {
         super(value);
     }
 }

@@ -66,10 +66,6 @@ public class StockAddTransaction extends BaseEntity<StockAddTransactionId> {
         return invoiceId;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public void validate() {
         if (quantity.isNegative() || !grossPrice.isGreaterThanZero() ||
                 !totalGrossPrice.equals(grossPrice.multiply(quantity.getValue()))) {
@@ -83,6 +79,10 @@ public class StockAddTransaction extends BaseEntity<StockAddTransactionId> {
     public void initialize(StockId id, StockAddTransactionId stockAddTransactionId) {
         stockId = id;
         super.setId(stockAddTransactionId);
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static final class Builder {

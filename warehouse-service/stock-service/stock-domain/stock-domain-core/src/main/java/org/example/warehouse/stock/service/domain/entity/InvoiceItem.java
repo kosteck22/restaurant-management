@@ -36,6 +36,9 @@ public class InvoiceItem extends BaseEntity<InvoiceItemId> {
         return grossPrice;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static final class Builder {
         private InvoiceItemId invoiceItemId;
@@ -45,10 +48,6 @@ public class InvoiceItem extends BaseEntity<InvoiceItemId> {
         private UnitOfMeasure unitOfMeasure;
 
         private Builder() {
-        }
-
-        public static Builder builder() {
-            return new Builder();
         }
 
         public Builder invoiceItemId(InvoiceItemId val) {

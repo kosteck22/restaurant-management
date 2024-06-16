@@ -1,6 +1,6 @@
-package org.example.invoice.service.dataaccess.invoice.repository;
+package org.example.dataaccess.invoice.repository;
 
-import org.example.invoice.service.dataaccess.invoice.entity.InvoiceEntity;
+import org.example.dataaccess.invoice.entity.InvoiceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

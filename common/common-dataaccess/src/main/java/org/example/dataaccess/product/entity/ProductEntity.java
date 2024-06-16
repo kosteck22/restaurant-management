@@ -1,6 +1,9 @@
-package org.example.invoice.service.dataaccess.invoice.entity;
+package org.example.dataaccess.product.entity;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 
 import java.util.Objects;
@@ -11,28 +14,20 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "companies")
+@Table(name = "products")
 @Entity
-public class CompanyEntity {
+public class ProductEntity {
     @Id
     private UUID id;
     private String name;
-    private String nip;
-    private String regon;
-    private String street1;
-    private String street2;
-    private String city;
-    private String postalCode;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "INVOICE_ID")
-    private InvoiceEntity invoice;
+    private String category;
+    private String unitOfMeasure;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CompanyEntity that = (CompanyEntity) o;
+        ProductEntity that = (ProductEntity) o;
         return Objects.equals(id, that.id);
     }
 

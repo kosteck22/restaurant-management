@@ -1,7 +1,7 @@
 package org.example.product.warehouse.product.service.dataaccess.adapter;
 
 import org.example.product.warehouse.product.service.dataaccess.mapper.ProductDataAccessMapper;
-import org.example.product.warehouse.product.service.dataaccess.repository.ProductJpaRepository;
+import org.example.dataaccess.product.repository.ProductJpaRepository;
 import org.example.warehouse.product.service.domain.entity.Product;
 import org.example.warehouse.product.service.domain.ports.output.repository.ProductRepository;
 import org.example.domain.valueobject.ProductId;

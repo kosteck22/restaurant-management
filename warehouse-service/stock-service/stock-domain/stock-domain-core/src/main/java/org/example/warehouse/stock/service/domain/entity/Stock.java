@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
 public class Stock extends AggregateRoot<StockId> {
 
     private final List<StockAddTransaction> addingTransactions;
@@ -43,6 +44,19 @@ public class Stock extends AggregateRoot<StockId> {
         return status.equals(StockStatus.CLOSED);
     }
 
+    public void addStockAddTransactions(List<StockAddTransaction> transactions) {
+        if (isClosed()) {
+            throw new StockDomainException("You cannot add new transactions. Stock is closed!");
+        }
+
+        long transactionId = addingTransactions.size();
+        for (StockAddTransaction stockAddTransaction : transactions) {
+            stockAddTransaction.validate();
+            stockAddTransaction.initialize(super.getId(), new StockAddTransactionId(++transactionId));
+            addingTransactions.add(stockAddTransaction);
+        }
+    }
+
     public List<StockAddTransaction> getAddingTransactions() {
         return addingTransactions;
     }
@@ -67,19 +81,9 @@ public class Stock extends AggregateRoot<StockId> {
         return status;
     }
 
-    public void addStockAddTransactions(List<StockAddTransaction> transactions) {
-        if (isClosed()) {
-            throw new StockDomainException("You cannot add new transactions. Stock is closed!");
-        }
-
-        long transactionId = addingTransactions.size();
-        for (StockAddTransaction stockAddTransaction : transactions) {
-            stockAddTransaction.validate();
-            stockAddTransaction.initialize(super.getId(), new StockAddTransactionId(++transactionId));
-            addingTransactions.add(stockAddTransaction);
-        }
+    public static Builder builder() {
+        return new Builder();
     }
-
 
     public static final class Builder {
         private StockId stockId;
@@ -91,10 +95,6 @@ public class Stock extends AggregateRoot<StockId> {
         private StockStatus status;
 
         private Builder() {
-        }
-
-        public static Builder builder() {
-            return new Builder();
         }
 
         public Builder stockId(StockId val) {

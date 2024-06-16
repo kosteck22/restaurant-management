@@ -4,7 +4,6 @@ import org.example.domain.valueobject.InvoiceId;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.TrackingId;
 import org.example.domain.valueobject.UnitOfMeasure;
-import org.example.invoice.service.dataaccess.invoice.entity.*;
 import org.example.invoice.service.domain.entity.Invoice;
 import org.example.invoice.service.domain.entity.Order;
 import org.example.invoice.service.domain.entity.OrderItem;

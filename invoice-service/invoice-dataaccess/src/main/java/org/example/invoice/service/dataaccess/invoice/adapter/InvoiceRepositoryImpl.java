@@ -1,7 +1,7 @@
 package org.example.invoice.service.dataaccess.invoice.adapter;
 
 import org.example.invoice.service.dataaccess.invoice.mapper.InvoiceDataAccessMapper;
-import org.example.invoice.service.dataaccess.invoice.repository.InvoiceJpaRepository;
+import org.example.dataaccess.invoice.repository.InvoiceJpaRepository;
 import org.example.invoice.service.domain.entity.Invoice;
 import org.example.invoice.service.domain.ports.output.repository.InvoiceRepository;
 import org.springframework.stereotype.Component;

@@ -24,6 +24,9 @@ public class Invoice extends AggregateRoot<InvoiceId> {
         return items;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static final class Builder {
         private InvoiceId invoiceId;
@@ -31,10 +34,6 @@ public class Invoice extends AggregateRoot<InvoiceId> {
         private List<InvoiceItem> items;
 
         private Builder() {
-        }
-
-        public static Builder builder() {
-            return new Builder();
         }
 
         public Builder invoiceId(InvoiceId val) {

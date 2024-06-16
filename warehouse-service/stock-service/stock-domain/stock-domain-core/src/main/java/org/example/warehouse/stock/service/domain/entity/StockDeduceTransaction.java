@@ -52,6 +52,10 @@ public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId>
         return saleId;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static final class Builder {
         private StockDeduceTransactionId stockDeduceTransactionId;
         private StockId stockId;
@@ -62,10 +66,6 @@ public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId>
         private SaleId saleId;
 
         private Builder() {
-        }
-
-        public static Builder builder() {
-            return new Builder();
         }
 
         public Builder stockDeduceTransactionId(StockDeduceTransactionId val) {

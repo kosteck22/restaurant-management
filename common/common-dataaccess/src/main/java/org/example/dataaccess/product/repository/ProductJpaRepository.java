@@ -1,6 +1,6 @@
-package org.example.product.warehouse.product.service.dataaccess.repository;
+package org.example.dataaccess.product.repository;
 
-import org.example.product.warehouse.product.service.dataaccess.entity.ProductEntity;
+import org.example.dataaccess.product.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

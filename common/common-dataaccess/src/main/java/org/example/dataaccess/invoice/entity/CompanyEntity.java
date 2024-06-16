@@ -1,10 +1,8 @@
-package org.example.invoice.service.dataaccess.invoice.entity;
+package org.example.dataaccess.invoice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.domain.valueobject.VatRate;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -13,27 +11,28 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "products")
+@Table(name = "companies")
 @Entity
-public class ProductEntity {
+public class CompanyEntity {
     @Id
     private UUID id;
     private String name;
-    private BigDecimal netPrice;
-    private BigDecimal grossPrice;
-    @Enumerated(value = EnumType.STRING)
-    private VatRate vatRate;
-    private String unitOfMeasure;
+    private String nip;
+    private String regon;
+    private String street1;
+    private String street2;
+    private String city;
+    private String postalCode;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ORDER_ITEM_ID")
-    private OrderItemEntity orderItem;
+    @JoinColumn(name = "INVOICE_ID")
+    private InvoiceEntity invoice;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductEntity that = (ProductEntity) o;
+        CompanyEntity that = (CompanyEntity) o;
         return Objects.equals(id, that.id);
     }
 
