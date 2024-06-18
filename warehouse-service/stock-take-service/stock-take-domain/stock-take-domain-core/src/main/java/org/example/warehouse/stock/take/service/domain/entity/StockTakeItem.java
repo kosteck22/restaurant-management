@@ -6,10 +6,10 @@ import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
 import org.example.warehouse.stock.take.service.domain.exception.StockTakeDomainException;
-import org.example.warehouse.stock.take.service.domain.valueobject.StockItemId;
 import org.example.domain.valueobject.StockTakeId;
+import org.example.domain.valueobject.StockTakeItemId;
 
-public class StockItem extends BaseEntity<StockItemId> {
+public class StockTakeItem extends BaseEntity<StockTakeItemId> {
     private StockTakeId stockTakeId;
     private ProductId productId;
     private String name;
@@ -18,8 +18,8 @@ public class StockItem extends BaseEntity<StockItemId> {
     private Money totalGrossPrice;
     private InvoiceId invoiceId;
 
-    private StockItem(Builder builder) {
-        setId(builder.stockItemId);
+    private StockTakeItem(Builder builder) {
+        setId(builder.stockTakeItemId);
         stockTakeId = builder.stockTakeId;
         productId = builder.productId;
         name = builder.name;
@@ -71,14 +71,14 @@ public class StockItem extends BaseEntity<StockItemId> {
         }
     }
 
-    public void initializeStockItem(StockTakeId stockTakeId, StockItemId stockItemId) {
+    public void initializeStockItem(StockTakeId stockTakeId, StockTakeItemId stockTakeItemId) {
         this.stockTakeId = stockTakeId;
-        super.setId(stockItemId);
+        super.setId(stockTakeItemId);
     }
 
     public static final class Builder {
         private StockTakeId stockTakeId;
-        private StockItemId stockItemId;
+        private StockTakeItemId stockTakeItemId;
         private ProductId productId;
         private String name;
         private Quantity quantity;
@@ -99,8 +99,8 @@ public class StockItem extends BaseEntity<StockItemId> {
             return this;
         }
 
-        public Builder stockItemId(StockItemId val) {
-            stockItemId = val;
+        public Builder stockTakeItemId(StockTakeItemId val) {
+            stockTakeItemId = val;
             return this;
         }
 
@@ -129,8 +129,8 @@ public class StockItem extends BaseEntity<StockItemId> {
             return this;
         }
 
-        public StockItem build() {
-            return new StockItem(this);
+        public StockTakeItem build() {
+            return new StockTakeItem(this);
         }
     }
 }

@@ -4,7 +4,7 @@ import org.example.domain.entity.AggregateRoot;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.TrackingId;
 import org.example.warehouse.stock.take.service.domain.exception.StockTakeDomainException;
-import org.example.warehouse.stock.take.service.domain.valueobject.StockItemId;
+import org.example.domain.valueobject.StockTakeItemId;
 import org.example.domain.valueobject.StockTakeId;
 import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeStatus;
 
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class StockTake extends AggregateRoot<StockTakeId> {
     private final LocalDateTime preparedDate;
     private final Money totalPrice;
-    private final List<StockItem> items;
+    private final List<StockTakeItem> items;
 
 
     private StockTakeStatus status;
@@ -54,7 +54,7 @@ public class StockTake extends AggregateRoot<StockTakeId> {
         return totalPrice;
     }
 
-    public List<StockItem> getItems() {
+    public List<StockTakeItem> getItems() {
         return items;
     }
 
@@ -68,7 +68,7 @@ public class StockTake extends AggregateRoot<StockTakeId> {
     }
 
     private void validateStockItems() {
-        items.forEach(StockItem::validateQuantity);
+        items.forEach(StockTakeItem::validateQuantity);
     }
 
     private void validateInitialStockTake() {
@@ -86,8 +86,8 @@ public class StockTake extends AggregateRoot<StockTakeId> {
 
     private void initializeStockTakeItems() {
         long itemId = 1;
-        for (StockItem stockItem: items) {
-            stockItem.initializeStockItem(super.getId(), new StockItemId(itemId++));
+        for (StockTakeItem stockItem: items) {
+            stockItem.initializeStockItem(super.getId(), new StockTakeItemId(itemId++));
         }
     }
 
@@ -96,7 +96,7 @@ public class StockTake extends AggregateRoot<StockTakeId> {
         private LocalDateTime preparedDate;
         private Money totalPrice;
         private StockTakeStatus status;
-        private List<StockItem> items;
+        private List<StockTakeItem> items;
         private TrackingId trackingId;
         private List<String> failureMessages;
 
@@ -133,7 +133,7 @@ public class StockTake extends AggregateRoot<StockTakeId> {
             return this;
         }
 
-        public Builder items(List<StockItem> val) {
+        public Builder items(List<StockTakeItem> val) {
             items = val;
             return this;
         }

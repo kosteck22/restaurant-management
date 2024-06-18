@@ -39,7 +39,7 @@ public class StockTakeCreatedKafkaListener implements KafkaConsumer<StockTakeAvr
                 offsets.toString());
 
         messages.forEach(stockTakeAvroModel -> {
-            log.info("Processing close stock and open a new one for stock take id: {}", stockTakeAvroModel.getStockTakeId());
+            log.info("Processing update stock for stock take id: {}", stockTakeAvroModel.getStockTakeId());
             stockTakeCreatedMessageListener.updateStock(
                     stockMessagingDataMapper.stockTakeAvroModelToStockTakeCreatedRequest(
                             stockTakeAvroModel));

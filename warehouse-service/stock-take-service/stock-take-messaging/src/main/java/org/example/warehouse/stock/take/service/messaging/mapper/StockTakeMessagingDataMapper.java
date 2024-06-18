@@ -3,6 +3,7 @@ package org.example.warehouse.stock.take.service.messaging.mapper;
 import org.example.kafka.stock.take.avro.model.StockItem;
 import org.example.kafka.stock.take.avro.model.StockTakeAvroModel;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
+import org.example.warehouse.stock.take.service.domain.entity.StockTakeItem;
 import org.example.warehouse.stock.take.service.domain.event.StockTakeCreatedEvent;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public class StockTakeMessagingDataMapper {
         return stockTakeAvroModel;
     }
 
-    private List<StockItem> stockItemsToStockItemsAvroModel(List<org.example.warehouse.stock.take.service.domain.entity.StockItem> items) {
+    private List<StockItem> stockItemsToStockItemsAvroModel(List<StockTakeItem> items) {
         return items.stream()
                 .map(stockItem -> StockItem.newBuilder()
                         .setStockItemId(stockItem.getId().getValue())

@@ -5,7 +5,7 @@ import org.example.domain.valueobject.Quantity;
 import org.example.warehouse.stock.take.service.domain.dto.create.CreateStockTakeCommand;
 import org.example.warehouse.stock.take.service.domain.dto.create.CreateStockTakeResponse;
 import org.example.warehouse.stock.take.service.domain.entity.Product;
-import org.example.warehouse.stock.take.service.domain.entity.StockItem;
+import org.example.warehouse.stock.take.service.domain.entity.StockTakeItem;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +22,9 @@ public class StockTakeDataMapper {
                 .build();
     }
 
-    private List<StockItem> stockItemsToStockItemEntities(List<org.example.warehouse.stock.take.service.domain.dto.create.StockItem> items) {
+    private List<StockTakeItem> stockItemsToStockItemEntities(List<org.example.warehouse.stock.take.service.domain.dto.create.StockItem> items) {
         return items.stream()
-                .map(stockItem -> StockItem.builder()
+                .map(stockItem -> StockTakeItem.builder()
                         .productId(new ProductId(stockItem.productId()))
                         .quantity(new Quantity(stockItem.quantity()))
                         .build())

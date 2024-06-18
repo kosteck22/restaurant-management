@@ -5,9 +5,9 @@ import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
 import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.StockItemEntity;
 import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.StockTakeEntity;
-import org.example.warehouse.stock.take.service.domain.entity.StockItem;
+import org.example.warehouse.stock.take.service.domain.entity.StockTakeItem;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
-import org.example.warehouse.stock.take.service.domain.valueobject.StockItemId;
+import org.example.domain.valueobject.StockTakeItemId;
 import org.example.domain.valueobject.StockTakeId;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class StockTakeDataAccessMapper {
         return stockTakeEntity;
     }
 
-    private List<StockItemEntity> stockItemsToStockItemEntities(List<StockItem> items) {
+    private List<StockItemEntity> stockItemsToStockItemEntities(List<StockTakeItem> items) {
         return items.stream()
                 .map(stockItem -> StockItemEntity.builder()
                         .id(stockItem.getId().getValue())
@@ -48,10 +48,10 @@ public class StockTakeDataAccessMapper {
                 .build();
     }
 
-    private List<StockItem> stockTakeItemEntitiesToStockTakeItems(List<StockItemEntity> items) {
+    private List<StockTakeItem> stockTakeItemEntitiesToStockTakeItems(List<StockItemEntity> items) {
         return items.stream()
-                .map(stockItemEntity -> StockItem.builder()
-                        .stockItemId(new StockItemId(stockItemEntity.getId()))
+                .map(stockItemEntity -> StockTakeItem.builder()
+                        .stockItemId(new StockTakeItemId(stockItemEntity.getId()))
                         .stockTakeId(new StockTakeId(stockItemEntity.getStockTake().getId()))
                         .productId(new ProductId(stockItemEntity.getProductId()))
                         .name(stockItemEntity.getName())

@@ -1,9 +1,8 @@
 package org.example.warehouse.stock.service.domain.dto.message;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
-public record StockTakeItem(
+public record StockTakeItemRequest(
         String stockTakeItemId,
         String name,
         BigDecimal quantity,

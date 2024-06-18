@@ -2,7 +2,7 @@ package org.example.waregouse.stock.service.messaging.mapper;
 
 import org.example.kafka.stock.take.avro.model.StockTakeAvroModel;
 import org.example.warehouse.stock.service.domain.dto.message.StockTakeCreatedRequest;
-import org.example.warehouse.stock.service.domain.dto.message.StockTakeItem;
+import org.example.warehouse.stock.service.domain.dto.message.StockTakeItemRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ public class StockMessagingDataMapper {
                 stockTakeAvroModel.getPreparedDate(),
                 stockTakeAvroModel.getStockTakeId(),
                 stockTakeAvroModel.getItems().stream()
-                        .map(stockItem -> new StockTakeItem(
+                        .map(stockItem -> new StockTakeItemRequest(
                                 stockItem.getStockTakeId(),
                                 stockItem.getName(),
                                 stockItem.getQuantity(),
