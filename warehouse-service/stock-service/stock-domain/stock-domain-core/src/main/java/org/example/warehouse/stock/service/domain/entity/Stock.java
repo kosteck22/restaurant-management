@@ -128,6 +128,10 @@ public class Stock extends AggregateRoot<StockId> {
         return status;
     }
 
+    public void setToStockTake(StockTakeId toStockTake) {
+        this.toStockTake = toStockTake;
+    }
+
     public static Builder builder() {
         return new Builder();
     }

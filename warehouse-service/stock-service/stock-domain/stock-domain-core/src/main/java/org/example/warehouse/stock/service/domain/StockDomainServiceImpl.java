@@ -1,11 +1,12 @@
 package org.example.warehouse.stock.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.event.publisher.DomainEventPublisher;
 import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
 import org.example.warehouse.stock.service.domain.entity.*;
-import org.example.warehouse.stock.service.domain.event.ClosingStockFailedEvent;
-import org.example.warehouse.stock.service.domain.event.ClosingStockSuccessfullEvent;
+import org.example.warehouse.stock.service.domain.event.StockClosedFailedEvent;
+import org.example.warehouse.stock.service.domain.event.StockClosedSuccessEvent;
 import org.example.warehouse.stock.service.domain.event.StockEvent;
 import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionType;
 import org.example.warehouse.stock.service.domain.valueobject.StockStatus;
@@ -33,17 +34,20 @@ public class StockDomainServiceImpl implements StockDomainService {
     }
 
     @Override
-    public StockEvent closeActiveStock(Stock stock, StockTake stockTake, List<String> failureMessages) {
+    public StockEvent closeActiveStock(Stock stock, StockTake stockTake, List<String> failureMessages,
+                                       DomainEventPublisher<StockClosedSuccessEvent> stockClosedSuccessEventPublisherDomainEventPublisher,
+                                       DomainEventPublisher<StockClosedFailedEvent> stockClosedFailedEventDomainEventPublisher) {
         validateStockTakeList(stock, stockTake, failureMessages);
         if (!failureMessages.isEmpty()) {
             log.info("Closing stock failed for stock take id: {}", stockTake.getId().getValue());
-            return new ClosingStockFailedEvent(stock, ZonedDateTime.now(ZoneId.of(UTC)));
+            stock.setToStockTake(stockTake.getId());
+            return new StockClosedFailedEvent(stock, ZonedDateTime.now(ZoneId.of(UTC)), stockClosedFailedEventDomainEventPublisher);
         } else {
             log.info("Stock with id: {} is closed", stock.getId().getValue());
             stock.initializeStockItemsBeforeClosing(stockTake);
             stock.close(stockTake);
             Stock newStock = initializeNewStock(stockTake, stock.getStockItemsBeforeClosing());
-            return new ClosingStockSuccessfullEvent(newStock, ZonedDateTime.now(ZoneId.of(UTC)));
+            return new StockClosedSuccessEvent(newStock, ZonedDateTime.now(ZoneId.of(UTC)), stockClosedSuccessEventPublisherDomainEventPublisher);
         }
     }
 
@@ -70,6 +74,21 @@ public class StockDomainServiceImpl implements StockDomainService {
         checkIfGivenQuantitiesAreValid(stock, stockTake, failureMessages);
     }
 
+    private static void checkIfProductsExistsInStock(Stock stock, StockTake stockTake, List<String> failureMessages) {
+        Map<ProductId, StockAddTransaction> productIdStockAddTransactionMap =
+                stock.getAddingTransactions()
+                        .stream()
+                        .collect(Collectors.toMap(StockAddTransaction::getProductId, Function.identity()));
+        stockTake.getItems()
+                .forEach(stockTakeItem -> {
+                    StockAddTransaction stockAddTransaction = productIdStockAddTransactionMap.get(stockTakeItem.getProductId());
+                    if (stockAddTransaction == null) {
+                        log.error("There is no product with id: {} in stock", stockTakeItem.getProductId().getValue());
+                        failureMessages.add("There is no product with id: %s in stock".formatted(stockTakeItem.getProductId().getValue()));
+                    }
+                });
+    }
+
     private void checkIfGivenQuantitiesAreValid(Stock stock, StockTake stockTake, List<String> failureMessages) {
         //checking if stock take quantities aren't bigger than stock add transactions
         Map<ProductId, Quantity> productIdToQuantityMap = stock.getAddingTransactions().stream()
@@ -91,21 +110,6 @@ public class StockDomainServiceImpl implements StockDomainService {
                         "cannot be greater than the quantity added to the stock").formatted(productId.getValue()));
             }
         });
-    }
-
-    private static void checkIfProductsExistsInStock(Stock stock, StockTake stockTake, List<String> failureMessages) {
-        Map<ProductId, StockAddTransaction> productIdStockAddTransactionMap =
-                stock.getAddingTransactions()
-                        .stream()
-                        .collect(Collectors.toMap(StockAddTransaction::getProductId, Function.identity()));
-        stockTake.getItems()
-                .forEach(stockTakeItem -> {
-                    StockAddTransaction stockAddTransaction = productIdStockAddTransactionMap.get(stockTakeItem.getProductId());
-                    if (stockAddTransaction == null) {
-                        log.error("There is no product with id: {} in stock", stockTakeItem.getProductId().getValue());
-                        failureMessages.add("There is no product with id: %s in stock".formatted(stockTakeItem.getProductId().getValue()));
-                    }
-                });
     }
 
     private void initializeMissingProducts(Invoice invoice, List<Product> products) {

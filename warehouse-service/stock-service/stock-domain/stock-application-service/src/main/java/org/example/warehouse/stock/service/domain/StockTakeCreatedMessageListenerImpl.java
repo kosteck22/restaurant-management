@@ -2,6 +2,7 @@ package org.example.warehouse.stock.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.warehouse.stock.service.domain.dto.message.StockTakeCreatedRequest;
+import org.example.warehouse.stock.service.domain.event.StockEvent;
 import org.example.warehouse.stock.service.domain.ports.input.message.listener.StockTakeCreatedMessageListener;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,7 @@ public class StockTakeCreatedMessageListenerImpl implements StockTakeCreatedMess
     }
 
     @Override
-    public void updateStock(StockTakeCreatedRequest stockTakeCreatedRequest) {
-        stockRequestHelper.updateStock(stockTakeCreatedRequest);
-
+    public StockEvent updateStock(StockTakeCreatedRequest stockTakeCreatedRequest) {
+        return stockRequestHelper.updateStock(stockTakeCreatedRequest);
     }
 }

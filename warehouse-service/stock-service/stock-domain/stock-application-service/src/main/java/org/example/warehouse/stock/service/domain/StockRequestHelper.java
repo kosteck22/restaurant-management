@@ -30,13 +30,16 @@ public class StockRequestHelper {
     }
 
     @Transactional
-    public void updateStock(StockTakeCreatedRequest stockTakeCreatedRequest) {
+    public StockEvent updateStock(StockTakeCreatedRequest stockTakeCreatedRequest) {
         log.info("Received stock take created event for stockTake id: {}", stockTakeCreatedRequest.stockTakeId());
         StockTake stockTake = stockDataMapper.stockTakeCreatedRequestToStockTake(stockTakeCreatedRequest);
         Stock stock = getActiveStock();
         List<String> failureMessages = new ArrayList<>();
         StockEvent stockEvent = stockDomainService.closeActiveStock(stock, stockTake, failureMessages);
-        persistDbObjects(stock, stockEvent.getStock(), failureMessages);
+        if (failureMessages.isEmpty()) {
+            persistDbObjects(stock, stockEvent.getStock(), failureMessages);
+        }
+        return stockEvent;
     }
 
     private void persistDbObjects(Stock closedStock, Stock newStock, List<String> failureMessages) {
