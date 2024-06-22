@@ -6,8 +6,8 @@ logging:
     org.example: DEBUG
 
 stock-service:
-  stock-take-created-topic-name: stock-take-created-request
-  stock-take-created-response-topic-name: stock-take-created-response
+  stock-update-request-topi-name: stock-update-request-topic-name
+  stock-update-response-topic-name: stock-update-response-topic-name
 
 spring:
   jpa:

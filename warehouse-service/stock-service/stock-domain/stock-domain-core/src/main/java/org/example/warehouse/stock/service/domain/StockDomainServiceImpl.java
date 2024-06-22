@@ -40,14 +40,13 @@ public class StockDomainServiceImpl implements StockDomainService {
         validateStockTakeList(stock, stockTake, failureMessages);
         if (!failureMessages.isEmpty()) {
             log.info("Closing stock failed for stock take id: {}", stockTake.getId().getValue());
-            stock.setToStockTake(stockTake.getId());
-            return new StockClosedFailedEvent(stock, ZonedDateTime.now(ZoneId.of(UTC)), stockClosedFailedEventDomainEventPublisher);
+            return new StockClosedFailedEvent(stock, stockTake.getId(), failureMessages, ZonedDateTime.now(ZoneId.of(UTC)), stockClosedFailedEventDomainEventPublisher);
         } else {
             log.info("Stock with id: {} is closed", stock.getId().getValue());
             stock.initializeStockItemsBeforeClosing(stockTake);
             stock.close(stockTake);
             Stock newStock = initializeNewStock(stockTake, stock.getStockItemsBeforeClosing());
-            return new StockClosedSuccessEvent(newStock, ZonedDateTime.now(ZoneId.of(UTC)), stockClosedSuccessEventPublisherDomainEventPublisher);
+            return new StockClosedSuccessEvent(newStock, stockTake.getId(), failureMessages, ZonedDateTime.now(ZoneId.of(UTC)), stockClosedSuccessEventPublisherDomainEventPublisher);
         }
     }
 

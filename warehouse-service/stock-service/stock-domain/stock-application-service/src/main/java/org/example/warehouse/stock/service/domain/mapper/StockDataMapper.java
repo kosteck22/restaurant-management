@@ -1,11 +1,10 @@
 package org.example.warehouse.stock.service.domain.mapper;
 
-import org.example.domain.DomainConstants;
 import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
 import org.example.domain.valueobject.StockTakeId;
 import org.example.domain.valueobject.StockTakeItemId;
-import org.example.warehouse.stock.service.domain.dto.message.StockTakeCreatedRequest;
+import org.example.warehouse.stock.service.domain.dto.message.StockUpdateRequest;
 import org.example.warehouse.stock.service.domain.dto.message.StockTakeItemRequest;
 import org.example.warehouse.stock.service.domain.entity.StockTake;
 import org.example.warehouse.stock.service.domain.entity.StockTakeItem;
@@ -21,7 +20,7 @@ import static org.example.domain.DomainConstants.UTC;
 
 @Component
 public class StockDataMapper {
-    public StockTake stockTakeCreatedRequestToStockTake(StockTakeCreatedRequest stockTakeCreatedRequest) {
+    public StockTake stockTakeCreatedRequestToStockTake(StockUpdateRequest stockTakeCreatedRequest) {
         return StockTake.builder()
                 .id(new StockTakeId(UUID.fromString(stockTakeCreatedRequest.stockTakeId())))
                 .preparedDate(LocalDateTime.ofInstant(stockTakeCreatedRequest.preparedDate(), ZoneId.of(UTC)))

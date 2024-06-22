@@ -3,7 +3,7 @@ package org.example.warehouse.stock.take.service.messaging.publisher.kafka;
 import lombok.extern.slf4j.Slf4j;
 import org.example.kafka.producer.KafkaMessageHelper;
 import org.example.kafka.producer.service.KafkaProducer;
-import org.example.kafka.stock.take.avro.model.StockTakeAvroModel;
+import org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel;
 import org.example.warehouse.stock.take.service.domain.config.StockTakeServiceConfigData;
 import org.example.warehouse.stock.take.service.domain.event.StockTakeCreatedEvent;
 import org.example.warehouse.stock.take.service.domain.ports.output.message.publisher.StockTakeCreatedMessagePublisher;
@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component;
 public class StockTakeCreatedMessagePublisherImpl implements StockTakeCreatedMessagePublisher {
 
     private final StockTakeServiceConfigData stockTakeServiceConfigData;
-    private final KafkaProducer<String, StockTakeAvroModel> kafkaProducer;
+    private final KafkaProducer<String, StockUpdateRequestAvroModel> kafkaProducer;
     private final StockTakeMessagingDataMapper stockTakeMessagingDataMapper;
     private final KafkaMessageHelper kafkaMessageHelper;
 
     public StockTakeCreatedMessagePublisherImpl(StockTakeServiceConfigData stockTakeServiceConfigData,
-                                                KafkaProducer<String, StockTakeAvroModel> kafkaProducer,
+                                                KafkaProducer<String, StockUpdateRequestAvroModel> kafkaProducer,
                                                 StockTakeMessagingDataMapper stockTakeMessagingDataMapper,
                                                 KafkaMessageHelper kafkaMessageHelper) {
         this.stockTakeServiceConfigData = stockTakeServiceConfigData;
@@ -36,21 +36,21 @@ public class StockTakeCreatedMessagePublisherImpl implements StockTakeCreatedMes
         log.info("Received StockTakeCreatedEvent for stock take id: {}", stockTakeId);
 
         try {
-            StockTakeAvroModel stockTakeAvroModel = stockTakeMessagingDataMapper
-                    .stockTakeCreatedEventToStockTakeAvroModel(domainEvent);
+            StockUpdateRequestAvroModel stockUpdateRequestAvroModel = stockTakeMessagingDataMapper
+                    .stockTakeCreatedEventToStockUpdateRequestAvroModel(domainEvent);
 
-            kafkaProducer.send(stockTakeServiceConfigData.getStockTakeCreatedTopicName(),
+            kafkaProducer.send(stockTakeServiceConfigData.getStockUpdateRequestTopicName(),
                     stockTakeId,
-                    stockTakeAvroModel,
+                    stockUpdateRequestAvroModel,
                     kafkaMessageHelper
-                            .getKafkaCallback(stockTakeServiceConfigData.getStockTakeCreatedResponseTopicName(),
-                                    stockTakeAvroModel,
+                            .getKafkaCallback(stockTakeServiceConfigData.getStockUpdateRequestTopicName(),
+                                    stockUpdateRequestAvroModel,
                                     stockTakeId,
-                                    "StockTakeAvroModel"));
+                                    "StockUpdateRequestAvroModel"));
 
-            log.info("StockTakeAvroModel sent to Kafka for stock take id: {}", stockTakeAvroModel.getStockTakeId());
+            log.info("StockUpdateRequestAvroModel sent to Kafka for stock take id: {}", stockUpdateRequestAvroModel.getStockTakeId());
         } catch (Exception e) {
-            log.error("Error while sending StockTakeAvroModel message" +
+            log.error("Error while sending StockUpdateRequestAvroModel message" +
                     " to kafka with stock take id: {}, error: {}", stockTakeId, e.getMessage());
         }
     }

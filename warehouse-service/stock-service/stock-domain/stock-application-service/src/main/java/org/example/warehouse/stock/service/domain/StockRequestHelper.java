@@ -1,11 +1,13 @@
 package org.example.warehouse.stock.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.warehouse.stock.service.domain.dto.message.StockTakeCreatedRequest;
+import org.example.warehouse.stock.service.domain.dto.message.StockUpdateRequest;
 import org.example.warehouse.stock.service.domain.entity.Stock;
 import org.example.warehouse.stock.service.domain.entity.StockTake;
 import org.example.warehouse.stock.service.domain.event.StockEvent;
 import org.example.warehouse.stock.service.domain.mapper.StockDataMapper;
+import org.example.warehouse.stock.service.domain.ports.output.message.publisher.StockClosedFailedMessagePublisher;
+import org.example.warehouse.stock.service.domain.ports.output.message.publisher.StockClosedSuccessMessagePublisher;
 import org.example.warehouse.stock.service.domain.ports.output.repository.StockRepository;
 import org.example.warehouse.stock.service.domain.valueobject.StockStatus;
 import org.springframework.stereotype.Component;
@@ -20,22 +22,29 @@ public class StockRequestHelper {
     private final StockDomainService stockDomainService;
     private final StockRepository stockRepository;
     private final StockDataMapper stockDataMapper;
+    private final StockClosedFailedMessagePublisher stockClosedFailedMessagePublisher;
+    private final StockClosedSuccessMessagePublisher stockClosedSuccessMessagePublisher;
 
     public StockRequestHelper(StockDomainService stockDomainService,
                               StockRepository stockRepository,
-                              StockDataMapper stockDataMapper) {
+                              StockDataMapper stockDataMapper,
+                              StockClosedFailedMessagePublisher stockClosedFailedMessagePublisher,
+                              StockClosedSuccessMessagePublisher stockClosedSuccessMessagePublisher) {
         this.stockDomainService = stockDomainService;
         this.stockRepository = stockRepository;
         this.stockDataMapper = stockDataMapper;
+        this.stockClosedFailedMessagePublisher = stockClosedFailedMessagePublisher;
+        this.stockClosedSuccessMessagePublisher = stockClosedSuccessMessagePublisher;
     }
 
     @Transactional
-    public StockEvent updateStock(StockTakeCreatedRequest stockTakeCreatedRequest) {
-        log.info("Received stock take created event for stockTake id: {}", stockTakeCreatedRequest.stockTakeId());
-        StockTake stockTake = stockDataMapper.stockTakeCreatedRequestToStockTake(stockTakeCreatedRequest);
+    public StockEvent updateStock(StockUpdateRequest stockUpdateRequest) {
+        log.info("Received stock update request for stockTake id: {}", stockUpdateRequest.stockTakeId());
+        StockTake stockTake = stockDataMapper.stockTakeCreatedRequestToStockTake(stockUpdateRequest);
         Stock stock = getActiveStock();
         List<String> failureMessages = new ArrayList<>();
-        StockEvent stockEvent = stockDomainService.closeActiveStock(stock, stockTake, failureMessages);
+        StockEvent stockEvent = stockDomainService.closeActiveStock(stock, stockTake, failureMessages,
+                stockClosedSuccessMessagePublisher, stockClosedFailedMessagePublisher);
         if (failureMessages.isEmpty()) {
             persistDbObjects(stock, stockEvent.getStock(), failureMessages);
         }

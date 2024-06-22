@@ -13,11 +13,11 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -856847302598834957L;
+public class StockUpdateRequestAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = 649805342651370095L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"StockTakeAvroModel\",\"namespace\":\"org.example.kafka.stock.take.avro.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"preparedDate\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"totalPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"StockItem\",\"fields\":[{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"StockItemId\",\"type\":\"long\"},{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"quantity\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":3}},{\"name\":\"grossPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"totalGrossPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"invoiceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"StockTakeStatus\",\"symbols\":[\"PENDING\",\"REJECTED\",\"ACCEPTED\"]}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"StockUpdateRequestAvroModel\",\"namespace\":\"org.example.kafka.stock.take.avro.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"preparedDate\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"totalPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"StockItem\",\"fields\":[{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"StockItemId\",\"type\":\"long\"},{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"quantity\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":3}},{\"name\":\"grossPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"totalGrossPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"invoiceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"StockTakeStatus\",\"symbols\":[\"PENDING\",\"REJECTED\",\"ACCEPTED\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -26,17 +26,17 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
     MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.DecimalConversion());
   }
 
-  private static final BinaryMessageEncoder<StockTakeAvroModel> ENCODER =
-      new BinaryMessageEncoder<StockTakeAvroModel>(MODEL$, SCHEMA$);
+  private static final BinaryMessageEncoder<StockUpdateRequestAvroModel> ENCODER =
+      new BinaryMessageEncoder<StockUpdateRequestAvroModel>(MODEL$, SCHEMA$);
 
-  private static final BinaryMessageDecoder<StockTakeAvroModel> DECODER =
-      new BinaryMessageDecoder<StockTakeAvroModel>(MODEL$, SCHEMA$);
+  private static final BinaryMessageDecoder<StockUpdateRequestAvroModel> DECODER =
+      new BinaryMessageDecoder<StockUpdateRequestAvroModel>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
    * @return the message encoder used by this class
    */
-  public static BinaryMessageEncoder<StockTakeAvroModel> getEncoder() {
+  public static BinaryMessageEncoder<StockUpdateRequestAvroModel> getEncoder() {
     return ENCODER;
   }
 
@@ -44,7 +44,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
    * Return the BinaryMessageDecoder instance used by this class.
    * @return the message decoder used by this class
    */
-  public static BinaryMessageDecoder<StockTakeAvroModel> getDecoder() {
+  public static BinaryMessageDecoder<StockUpdateRequestAvroModel> getDecoder() {
     return DECODER;
   }
 
@@ -53,12 +53,12 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
-  public static BinaryMessageDecoder<StockTakeAvroModel> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<StockTakeAvroModel>(MODEL$, SCHEMA$, resolver);
+  public static BinaryMessageDecoder<StockUpdateRequestAvroModel> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<StockUpdateRequestAvroModel>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
-   * Serializes this StockTakeAvroModel to a ByteBuffer.
+   * Serializes this StockUpdateRequestAvroModel to a ByteBuffer.
    * @return a buffer holding the serialized data for this instance
    * @throws java.io.IOException if this instance could not be serialized
    */
@@ -67,12 +67,12 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
   }
 
   /**
-   * Deserializes a StockTakeAvroModel from a ByteBuffer.
+   * Deserializes a StockUpdateRequestAvroModel from a ByteBuffer.
    * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a StockTakeAvroModel instance decoded from the given buffer
+   * @return a StockUpdateRequestAvroModel instance decoded from the given buffer
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
-  public static StockTakeAvroModel fromByteBuffer(
+  public static StockUpdateRequestAvroModel fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
@@ -91,7 +91,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public StockTakeAvroModel() {}
+  public StockUpdateRequestAvroModel() {}
 
   /**
    * All-args constructor.
@@ -104,7 +104,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
    * @param items The new value for items
    * @param status The new value for status
    */
-  public StockTakeAvroModel(java.lang.String id, java.lang.String sagaId, java.time.Instant createdAt, java.lang.String stockTakeId, java.time.Instant preparedDate, java.math.BigDecimal totalPrice, java.util.List<org.example.kafka.stock.take.avro.model.StockItem> items, org.example.kafka.stock.take.avro.model.StockTakeStatus status) {
+  public StockUpdateRequestAvroModel(java.lang.String id, java.lang.String sagaId, java.time.Instant createdAt, java.lang.String stockTakeId, java.time.Instant preparedDate, java.math.BigDecimal totalPrice, java.util.List<org.example.kafka.stock.take.avro.model.StockItem> items, org.example.kafka.stock.take.avro.model.StockTakeStatus status) {
     this.id = id;
     this.sagaId = sagaId;
     this.createdAt = createdAt.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
@@ -303,45 +303,45 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
   }
 
   /**
-   * Creates a new StockTakeAvroModel RecordBuilder.
-   * @return A new StockTakeAvroModel RecordBuilder
+   * Creates a new StockUpdateRequestAvroModel RecordBuilder.
+   * @return A new StockUpdateRequestAvroModel RecordBuilder
    */
-  public static org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder newBuilder() {
-    return new org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder();
+  public static org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder newBuilder() {
+    return new org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder();
   }
 
   /**
-   * Creates a new StockTakeAvroModel RecordBuilder by copying an existing Builder.
+   * Creates a new StockUpdateRequestAvroModel RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new StockTakeAvroModel RecordBuilder
+   * @return A new StockUpdateRequestAvroModel RecordBuilder
    */
-  public static org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder newBuilder(org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder other) {
+  public static org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder newBuilder(org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder other) {
     if (other == null) {
-      return new org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder();
+      return new org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder();
     } else {
-      return new org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder(other);
+      return new org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder(other);
     }
   }
 
   /**
-   * Creates a new StockTakeAvroModel RecordBuilder by copying an existing StockTakeAvroModel instance.
+   * Creates a new StockUpdateRequestAvroModel RecordBuilder by copying an existing StockUpdateRequestAvroModel instance.
    * @param other The existing instance to copy.
-   * @return A new StockTakeAvroModel RecordBuilder
+   * @return A new StockUpdateRequestAvroModel RecordBuilder
    */
-  public static org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder newBuilder(org.example.kafka.stock.take.avro.model.StockTakeAvroModel other) {
+  public static org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder newBuilder(org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel other) {
     if (other == null) {
-      return new org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder();
+      return new org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder();
     } else {
-      return new org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder(other);
+      return new org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder(other);
     }
   }
 
   /**
-   * RecordBuilder for StockTakeAvroModel instances.
+   * RecordBuilder for StockUpdateRequestAvroModel instances.
    */
   @org.apache.avro.specific.AvroGenerated
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<StockTakeAvroModel>
-    implements org.apache.avro.data.RecordBuilder<StockTakeAvroModel> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<StockUpdateRequestAvroModel>
+    implements org.apache.avro.data.RecordBuilder<StockUpdateRequestAvroModel> {
 
     private java.lang.String id;
     private java.lang.String sagaId;
@@ -361,7 +361,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder other) {
+    private Builder(org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
@@ -398,10 +398,10 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
     }
 
     /**
-     * Creates a Builder by copying an existing StockTakeAvroModel instance
+     * Creates a Builder by copying an existing StockUpdateRequestAvroModel instance
      * @param other The existing instance to copy.
      */
-    private Builder(org.example.kafka.stock.take.avro.model.StockTakeAvroModel other) {
+    private Builder(org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel other) {
       super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
@@ -451,7 +451,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'id'.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder setId(java.lang.String value) {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setId(java.lang.String value) {
       validate(fields()[0], value);
       this.id = value;
       fieldSetFlags()[0] = true;
@@ -471,7 +471,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'id' field.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder clearId() {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearId() {
       id = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -491,7 +491,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'sagaId'.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder setSagaId(java.lang.String value) {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setSagaId(java.lang.String value) {
       validate(fields()[1], value);
       this.sagaId = value;
       fieldSetFlags()[1] = true;
@@ -511,7 +511,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'sagaId' field.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder clearSagaId() {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearSagaId() {
       sagaId = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -531,7 +531,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'createdAt'.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder setCreatedAt(java.time.Instant value) {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setCreatedAt(java.time.Instant value) {
       validate(fields()[2], value);
       this.createdAt = value.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
       fieldSetFlags()[2] = true;
@@ -551,7 +551,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'createdAt' field.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder clearCreatedAt() {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearCreatedAt() {
       fieldSetFlags()[2] = false;
       return this;
     }
@@ -570,7 +570,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'stockTakeId'.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder setStockTakeId(java.lang.String value) {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setStockTakeId(java.lang.String value) {
       validate(fields()[3], value);
       this.stockTakeId = value;
       fieldSetFlags()[3] = true;
@@ -590,7 +590,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'stockTakeId' field.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder clearStockTakeId() {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearStockTakeId() {
       stockTakeId = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -610,7 +610,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'preparedDate'.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder setPreparedDate(java.time.Instant value) {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setPreparedDate(java.time.Instant value) {
       validate(fields()[4], value);
       this.preparedDate = value.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
       fieldSetFlags()[4] = true;
@@ -630,7 +630,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'preparedDate' field.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder clearPreparedDate() {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearPreparedDate() {
       fieldSetFlags()[4] = false;
       return this;
     }
@@ -649,7 +649,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'totalPrice'.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder setTotalPrice(java.math.BigDecimal value) {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setTotalPrice(java.math.BigDecimal value) {
       validate(fields()[5], value);
       this.totalPrice = value;
       fieldSetFlags()[5] = true;
@@ -669,7 +669,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'totalPrice' field.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder clearTotalPrice() {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearTotalPrice() {
       totalPrice = null;
       fieldSetFlags()[5] = false;
       return this;
@@ -689,7 +689,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'items'.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder setItems(java.util.List<org.example.kafka.stock.take.avro.model.StockItem> value) {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setItems(java.util.List<org.example.kafka.stock.take.avro.model.StockItem> value) {
       validate(fields()[6], value);
       this.items = value;
       fieldSetFlags()[6] = true;
@@ -709,7 +709,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'items' field.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder clearItems() {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearItems() {
       items = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -729,7 +729,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'status'.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder setStatus(org.example.kafka.stock.take.avro.model.StockTakeStatus value) {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setStatus(org.example.kafka.stock.take.avro.model.StockTakeStatus value) {
       validate(fields()[7], value);
       this.status = value;
       fieldSetFlags()[7] = true;
@@ -749,7 +749,7 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'status' field.
       * @return This builder.
       */
-    public org.example.kafka.stock.take.avro.model.StockTakeAvroModel.Builder clearStatus() {
+    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearStatus() {
       status = null;
       fieldSetFlags()[7] = false;
       return this;
@@ -757,9 +757,9 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
 
     @Override
     @SuppressWarnings("unchecked")
-    public StockTakeAvroModel build() {
+    public StockUpdateRequestAvroModel build() {
       try {
-        StockTakeAvroModel record = new StockTakeAvroModel();
+        StockUpdateRequestAvroModel record = new StockUpdateRequestAvroModel();
         record.id = fieldSetFlags()[0] ? this.id : (java.lang.String) defaultValue(fields()[0]);
         record.sagaId = fieldSetFlags()[1] ? this.sagaId : (java.lang.String) defaultValue(fields()[1]);
         record.createdAt = fieldSetFlags()[2] ? this.createdAt : (java.time.Instant) defaultValue(fields()[2]);
@@ -778,8 +778,8 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumWriter<StockTakeAvroModel>
-    WRITER$ = (org.apache.avro.io.DatumWriter<StockTakeAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
+  private static final org.apache.avro.io.DatumWriter<StockUpdateRequestAvroModel>
+    WRITER$ = (org.apache.avro.io.DatumWriter<StockUpdateRequestAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -787,8 +787,8 @@ public class StockTakeAvroModel extends org.apache.avro.specific.SpecificRecordB
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumReader<StockTakeAvroModel>
-    READER$ = (org.apache.avro.io.DatumReader<StockTakeAvroModel>)MODEL$.createDatumReader(SCHEMA$);
+  private static final org.apache.avro.io.DatumReader<StockUpdateRequestAvroModel>
+    READER$ = (org.apache.avro.io.DatumReader<StockUpdateRequestAvroModel>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {

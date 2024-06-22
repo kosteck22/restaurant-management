@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "StockTakeAvroModel",
+  "name": "StockUpdateRequestAvroModel",
   "namespace": "org.example.kafka.stock.take.avro.model",
   "fields": [
     {

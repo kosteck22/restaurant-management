@@ -1,7 +1,8 @@
 package org.example.warehouse.stock.take.service.messaging.mapper;
 
 import org.example.kafka.stock.take.avro.model.StockItem;
-import org.example.kafka.stock.take.avro.model.StockTakeAvroModel;
+import org.example.kafka.stock.take.avro.model.StockUpdateAvroModel;
+import org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
 import org.example.warehouse.stock.take.service.domain.entity.StockTakeItem;
 import org.example.warehouse.stock.take.service.domain.event.StockTakeCreatedEvent;
@@ -17,9 +18,9 @@ import static org.example.domain.DomainConstants.UTC;
 @Component
 public class StockTakeMessagingDataMapper {
 
-    public StockTakeAvroModel stockTakeCreatedEventToStockTakeAvroModel(StockTakeCreatedEvent domainEvent) {
+    public StockUpdateRequestAvroModel stockTakeCreatedEventToStockUpdateRequestAvroModel(StockTakeCreatedEvent domainEvent) {
         StockTake stockTake = domainEvent.getStockTake();
-        StockTakeAvroModel stockTakeAvroModel = StockTakeAvroModel.newBuilder()
+        StockUpdateRequestAvroModel stockTakeAvroModel = StockUpdateRequestAvroModel.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setSagaId("")
                 .setCreatedAt(domainEvent.getCreatedAt().toInstant())

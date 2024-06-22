@@ -1,0 +1,55 @@
+package org.example.waregouse.stock.service.messaging.publisher.kafka;
+
+import lombok.extern.slf4j.Slf4j;
+import org.example.kafka.producer.KafkaMessageHelper;
+import org.example.kafka.producer.service.KafkaProducer;
+import org.example.kafka.stock.take.avro.model.StockUpdateResponseAvroModel;
+import org.example.waregouse.stock.service.messaging.mapper.StockMessagingDataMapper;
+import org.example.warehouse.stock.service.domain.config.StockServiceConfigData;
+import org.example.warehouse.stock.service.domain.event.StockClosedSuccessEvent;
+import org.example.warehouse.stock.service.domain.ports.output.message.publisher.StockClosedSuccessMessagePublisher;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+public class StockClosedSuccessKafkaMessagePublisher implements StockClosedSuccessMessagePublisher {
+    private final StockMessagingDataMapper stockMessagingDataMapper;
+    private final KafkaProducer<String, StockUpdateResponseAvroModel> kafkaProducer;
+    private final StockServiceConfigData stockServiceConfigData;
+    private final KafkaMessageHelper kafkaMessageHelper;
+
+    public StockClosedSuccessKafkaMessagePublisher(StockMessagingDataMapper stockMessagingDataMapper,
+                                                   KafkaProducer<String, StockUpdateResponseAvroModel> kafkaProducer,
+                                                   StockServiceConfigData stockServiceConfigData,
+                                                   KafkaMessageHelper kafkaMessageHelper) {
+        this.stockMessagingDataMapper = stockMessagingDataMapper;
+        this.kafkaProducer = kafkaProducer;
+        this.stockServiceConfigData = stockServiceConfigData;
+        this.kafkaMessageHelper = kafkaMessageHelper;
+    }
+
+    @Override
+    public void publish(StockClosedSuccessEvent domainEvent) {
+        String stockTakeId = domainEvent.getStockTakeId().toString();
+
+        log.info("Received StockClosedSuccessEvent for stock take id: {}", stockTakeId);
+
+        try {
+            StockUpdateResponseAvroModel stockAvroModel =
+                    stockMessagingDataMapper.stockClosedSuccessEventToStockUpdateResponseAvroModel(domainEvent);
+
+            kafkaProducer.send(stockServiceConfigData.getStockUpdateResponseTopicName(),
+                    stockTakeId,
+                    stockAvroModel,
+                    kafkaMessageHelper.getKafkaCallback(stockServiceConfigData.getStockUpdateResponseTopicName(),
+                            stockAvroModel,
+                            stockTakeId,
+                            "StockUpdateResponseAvroModel"));
+
+            log.info("StockUpdateResponseAvroModel sent to kafka for stockTakeId id: {}", stockTakeId);
+        } catch (Exception e) {
+            log.error("Error while sending StockUpdateResponseAvroModel message" +
+                    " to kafka with stockTakeId id: {}, error: {}", stockTakeId, e.getMessage());
+        }
+    }
+}
