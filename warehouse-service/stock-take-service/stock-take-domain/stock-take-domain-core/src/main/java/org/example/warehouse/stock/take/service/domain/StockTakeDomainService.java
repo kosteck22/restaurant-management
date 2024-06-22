@@ -9,4 +9,7 @@ import java.util.List;
 
 public interface StockTakeDomainService {
     StockTakeCreatedEvent validateAndInitiateStockTake(StockTake stockTake, List<Product> products, DomainEventPublisher<StockTakeCreatedEvent> stockTakeCreatedEventDomainEventPublisher);
+
+    void acceptStockTake(StockTake stockTake);
+    void rejectStockTake(StockTake stockTake, List<String> strings);
 }

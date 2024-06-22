@@ -32,6 +32,18 @@ public class StockTakeDomainServiceImpl implements StockTakeDomainService {
 
     }
 
+    @Override
+    public void acceptStockTake(StockTake stockTake) {
+        stockTake.accept();
+        log.info("Stock take with id: {} is accepted", stockTake.getId().getValue());
+    }
+
+    @Override
+    public void rejectStockTake(StockTake stockTake, List<String> failureMessages) {
+        stockTake.reject(failureMessages);
+        log.info("Stock take with id: {} is rejected", stockTake.getId().getValue());
+    }
+
     private void setStockItemInformation(StockTake stockTake, List<Product> products) {
         Map<ProductId, Product> productIdToProductMap = products.stream()
                 .collect(Collectors.toMap(Product::getId, Function.identity()));
