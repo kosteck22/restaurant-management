@@ -7,6 +7,7 @@
     <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/company-service/company-application/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/company-service/company-container/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/company-service/company-dataaccess/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/company-service/company-domain/company-application-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/company-service/company-domain/company-domain-core/src/main/java" charset="UTF-8" />

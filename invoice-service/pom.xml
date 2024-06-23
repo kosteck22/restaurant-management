@@ -15,7 +15,6 @@
         <module>invoice-domain</module>
         <module>invoice-application</module>
         <module>invoice-dataaccess</module>
-        <module>invoice-messaging</module>
         <module>invoice-container</module>
     </modules>
 </project>

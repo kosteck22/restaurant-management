@@ -22,10 +22,6 @@
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>invoice-messaging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
             <artifactId>invoice-application</artifactId>
         </dependency>
         <dependency>
