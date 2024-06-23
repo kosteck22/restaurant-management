@@ -15,6 +15,7 @@
         <module>sale-service</module>
         <module>warehouse-service</module>
         <module>infrastructure</module>
+        <module>company-service</module>
     </modules>
 
     <parent>
@@ -47,6 +48,26 @@
             <dependency>
                 <groupId>org.example</groupId>
                 <artifactId>common-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>company-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>company-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>company-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>company-dataaccess</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -1,14 +1,17 @@
-package org.example.invoice.service.domain.dto.create;
+package org.example.company.service.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import org.example.application.validation.ValidTaxNumber;
 
-public record CompanyRequest (
+@Builder
+public record CompanyResponse (
         @NotBlank String name,
         @NotBlank String street1,
-        @NotBlank String street2,
+        String street2,
         @NotBlank String city,
         @NotBlank String postalCode,
-        @NotBlank @ValidTaxNumber String nip,
+        @NotBlank @ValidTaxNumber String taxNumber,
         String regon
-) {}
+){
+}
