@@ -23,6 +23,9 @@
     <file url="file://$PROJECT_DIR$/infrastructure/kafka/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/infrastructure/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/infrastructure/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/invoice-extractor-service/invoice-extractor-application/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/invoice-extractor-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/invoice-extractor-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/invoice-service/invoice-application/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/invoice-service/invoice-application/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/invoice-service/invoice-container/src/main/java" charset="UTF-8" />
