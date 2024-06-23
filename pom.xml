@@ -16,7 +16,7 @@
         <module>warehouse-service</module>
         <module>infrastructure</module>
         <module>company-service</module>
-        <module>invoice-extractor-service</module>
+        <module>image-extractor-service</module>
     </modules>
 
     <parent>
@@ -36,6 +36,21 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>image-extractor-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>image-extractor-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>image-extractor-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.example</groupId>
                 <artifactId>common-domain</artifactId>

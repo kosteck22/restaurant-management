@@ -1,12 +1,15 @@
 package org.example.invoice.service.domain.valueobject;
 
+import lombok.Builder;
+
 import java.util.Objects;
 import java.util.UUID;
 
+@Builder
 public class Company {
     private final UUID id;
     private final String name;
-    private final String nip;
+    private final String taxNumber;
     private final String regon;
     private final String street1;
     private final String street2;
@@ -15,7 +18,7 @@ public class Company {
 
     public Company(UUID id,
                    String name,
-                   String nip,
+                   String taxNumber,
                    String regon,
                    String street1,
                    String street2,
@@ -23,7 +26,7 @@ public class Company {
                    String postalCode) {
         this.id = id;
         this.name = name;
-        this.nip = nip;
+        this.taxNumber = taxNumber;
         this.regon = regon;
         this.street1 = street1;
         this.street2 = street2;
@@ -39,8 +42,8 @@ public class Company {
         return name;
     }
 
-    public String getNip() {
-        return nip;
+    public String getTaxNumber() {
+        return taxNumber;
     }
 
     public String getRegon() {
@@ -68,11 +71,11 @@ public class Company {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
-        return Objects.equals(nip, company.nip);
+        return Objects.equals(taxNumber, company.taxNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nip);
+        return Objects.hash(taxNumber);
     }
 }

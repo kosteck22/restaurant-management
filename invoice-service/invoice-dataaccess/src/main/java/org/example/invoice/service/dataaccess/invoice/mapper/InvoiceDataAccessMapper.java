@@ -1,14 +1,14 @@
 package org.example.invoice.service.dataaccess.invoice.mapper;
 
-import org.example.domain.valueobject.InvoiceId;
-import org.example.domain.valueobject.Money;
-import org.example.domain.valueobject.TrackingId;
-import org.example.domain.valueobject.UnitOfMeasure;
+import org.example.domain.valueobject.*;
 import org.example.invoice.service.domain.entity.Invoice;
 import org.example.invoice.service.domain.entity.Order;
 import org.example.invoice.service.domain.entity.OrderItem;
 import org.example.invoice.service.domain.entity.Product;
-import org.example.invoice.service.domain.valueobject.*;
+import org.example.invoice.service.domain.valueobject.Company;
+import org.example.invoice.service.domain.valueobject.OrderId;
+import org.example.invoice.service.domain.valueobject.OrderItemId;
+import org.example.invoice.service.domain.valueobject.ProductId;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -149,7 +149,7 @@ public class InvoiceDataAccessMapper {
         return CompanyEntity.builder()
                 .id(company.getId())
                 .name(company.getName())
-                .nip(company.getNip())
+                .nip(company.getTaxNumber())
                 .regon(company.getRegon())
                 .street1(company.getStreet1())
                 .street2(company.getStreet2())

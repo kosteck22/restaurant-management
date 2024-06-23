@@ -1,15 +1,18 @@
 package org.example.invoice.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
+import org.example.domain.valueobject.Quantity;
 import org.example.invoice.service.domain.exception.InvoiceDomainException;
 import org.example.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.OrderId;
 import org.example.invoice.service.domain.valueobject.OrderItemId;
 
+import java.math.BigDecimal;
+
 public class OrderItem extends BaseEntity<OrderItemId> {
     private OrderId orderId;
     private final Product product;
-    private final int quantity;
+    private final Quantity quantity;
     private final int discount;
     private final Money netTotal;
     private final Money vat;
@@ -37,14 +40,14 @@ public class OrderItem extends BaseEntity<OrderItemId> {
     }
 
     private void validateTotalPrices() {
-        if (quantity < 1 || discount > 100 ||
+        if (quantity.isZero() || quantity.isNegative() || discount > 100 ||
                 netTotal == null || vat == null || grossTotal == null) {
             throw new InvoiceDomainException("Total prices cannot be null!");
         }
         if (!netTotal.isGreaterThanZero() || vat.isGreaterThanZero() || grossTotal.isGreaterThanZero()) {
             throw new InvoiceDomainException("Total prices must be greater than zero!");
         }
-        if (!netTotal.add(vat).multiply(quantity).equals(grossTotal)) {
+        if (!netTotal.add(vat).multiply(quantity.getValue()).equals(grossTotal)) {
             throw new InvoiceDomainException(
                     "Net price plus vat must be equal to grossPrice for product %s!"
                             .formatted(product.getName()) );
@@ -66,7 +69,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         return product;
     }
 
-    public int getQuantity() {
+    public Quantity getQuantity() {
         return quantity;
     }
 
@@ -94,7 +97,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         private OrderItemId orderItemId;
         private OrderId orderId;
         private Product product;
-        private int quantity;
+        private Quantity quantity;
         private int discount;
         private Money netTotal;
         private Money vat;
@@ -118,7 +121,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
             return this;
         }
 
-        public Builder quantity(int val) {
+        public Builder quantity(Quantity val) {
             quantity = val;
             return this;
         }
