@@ -1,4 +1,4 @@
-package org.example.warehouse.stock.service.domain.dto.addFromInvoice;
+package org.example.warehouse.stock.service.domain.dto.service.add;
 
 import java.util.UUID;
 

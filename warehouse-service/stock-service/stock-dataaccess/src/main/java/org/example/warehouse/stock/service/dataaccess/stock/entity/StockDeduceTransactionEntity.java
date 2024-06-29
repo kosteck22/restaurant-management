@@ -3,7 +3,7 @@ package org.example.warehouse.stock.service.dataaccess.stock.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.warehouse.stock.service.domain.entity.Stock;
-import org.example.warehouse.stock.service.domain.valueobject.StockDeduceTransactionType;
+import org.example.warehouse.stock.service.domain.valueobject.StockSubtractTransactionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,7 +31,7 @@ public class StockDeduceTransactionEntity {
     private BigDecimal quantity;
 
     @Enumerated(value = EnumType.STRING)
-    private StockDeduceTransactionType stockDeduceTransactionType;
+    private StockSubtractTransactionType stockDeduceTransactionType;
     private UUID saleId;
 
     @Override

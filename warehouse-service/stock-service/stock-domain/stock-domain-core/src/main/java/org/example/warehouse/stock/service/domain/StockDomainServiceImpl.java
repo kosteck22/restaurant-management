@@ -2,6 +2,7 @@ package org.example.warehouse.stock.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.event.publisher.DomainEventPublisher;
+import org.example.domain.valueobject.MenuItemId;
 import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
 import org.example.warehouse.stock.service.domain.entity.*;
@@ -27,10 +28,18 @@ import static org.example.domain.DomainConstants.UTC;
 public class StockDomainServiceImpl implements StockDomainService {
 
     @Override
-    public void addProductsToStock(Stock stock, Invoice invoice, List<Product> products) {
+    public void addStock(Stock stock, Invoice invoice, List<Product> products) {
         initializeMissingProducts(invoice, products);
         List<StockAddTransaction> stockAddTransactions = invoiceToStockAddTransaction(invoice, products);
         stock.addStockAddTransactions(stockAddTransactions);
+    }
+
+    @Override
+    public void subtractStock(Stock stock, Sale sale, List<Recipe> recipes, List<String> failureMessages) {
+        checkIfMenuItemHaveRecipe(sale, recipes, failureMessages);
+        if (failureMessages.isEmpty()) {
+            stock.addStockSubtractTransactions(sale, recipes, failureMessages);
+        }
     }
 
     @Override
@@ -48,6 +57,19 @@ public class StockDomainServiceImpl implements StockDomainService {
             Stock newStock = initializeNewStock(stockTake, stock.getStockItemsBeforeClosing());
             return new StockClosedSuccessEvent(newStock, stockTake.getId(), failureMessages, ZonedDateTime.now(ZoneId.of(UTC)), stockClosedSuccessEventPublisherDomainEventPublisher);
         }
+    }
+
+
+    private void checkIfMenuItemHaveRecipe(Sale sale, List<Recipe> recipes, List<String> failureMessages) {
+        Map<MenuItemId, Recipe> menuItemIdRecipeMap = recipes.stream().collect(Collectors.toMap(Recipe::getMenuItemId, Function.identity()));
+        sale.getItems().forEach(saleItem -> {
+            MenuItemId menuItemId = saleItem.getMenuItemId();
+            Recipe recipe = menuItemIdRecipeMap.get(menuItemId);
+            if (recipe == null) {
+                log.warn("Recipe for menu item id: {} not found", menuItemId.getValue());
+                failureMessages.add("Recipe for menu item id: %s not found".formatted(menuItemId.getValue()));
+            }
+        });
     }
 
     private Stock initializeNewStock(StockTake stockTake, List<StockItemBeforeClosing> stockItemsBeforeClosing) {
@@ -75,7 +97,7 @@ public class StockDomainServiceImpl implements StockDomainService {
 
     private static void checkIfProductsExistsInStock(Stock stock, StockTake stockTake, List<String> failureMessages) {
         Map<ProductId, StockAddTransaction> productIdStockAddTransactionMap =
-                stock.getAddingTransactions()
+                stock.getAddTransactions()
                         .stream()
                         .collect(Collectors.toMap(StockAddTransaction::getProductId, Function.identity()));
         stockTake.getItems()
@@ -90,7 +112,7 @@ public class StockDomainServiceImpl implements StockDomainService {
 
     private void checkIfGivenQuantitiesAreValid(Stock stock, StockTake stockTake, List<String> failureMessages) {
         //checking if stock take quantities aren't bigger than stock add transactions
-        Map<ProductId, Quantity> productIdToQuantityMap = stock.getAddingTransactions().stream()
+        Map<ProductId, Quantity> productIdToQuantityMap = stock.getAddTransactions().stream()
                 .collect(Collectors.groupingBy(StockAddTransaction::getProductId,
                         Collectors.collectingAndThen(
                                 Collectors.mapping(

@@ -1,7 +1,7 @@
 package org.example.warehouse.stock.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.warehouse.stock.service.domain.dto.message.StockUpdateRequest;
+import org.example.warehouse.stock.service.domain.dto.message.update.StockUpdateRequest;
 import org.example.warehouse.stock.service.domain.entity.Stock;
 import org.example.warehouse.stock.service.domain.entity.StockTake;
 import org.example.warehouse.stock.service.domain.event.StockEvent;
@@ -18,18 +18,18 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class StockRequestHelper {
+public class StockUpdateRequestHelper {
     private final StockDomainService stockDomainService;
     private final StockRepository stockRepository;
     private final StockDataMapper stockDataMapper;
     private final StockClosedFailedMessagePublisher stockClosedFailedMessagePublisher;
     private final StockClosedSuccessMessagePublisher stockClosedSuccessMessagePublisher;
 
-    public StockRequestHelper(StockDomainService stockDomainService,
-                              StockRepository stockRepository,
-                              StockDataMapper stockDataMapper,
-                              StockClosedFailedMessagePublisher stockClosedFailedMessagePublisher,
-                              StockClosedSuccessMessagePublisher stockClosedSuccessMessagePublisher) {
+    public StockUpdateRequestHelper(StockDomainService stockDomainService,
+                                    StockRepository stockRepository,
+                                    StockDataMapper stockDataMapper,
+                                    StockClosedFailedMessagePublisher stockClosedFailedMessagePublisher,
+                                    StockClosedSuccessMessagePublisher stockClosedSuccessMessagePublisher) {
         this.stockDomainService = stockDomainService;
         this.stockRepository = stockRepository;
         this.stockDataMapper = stockDataMapper;
@@ -40,7 +40,7 @@ public class StockRequestHelper {
     @Transactional
     public StockEvent updateStock(StockUpdateRequest stockUpdateRequest) {
         log.info("Received stock update request for stockTake id: {}", stockUpdateRequest.stockTakeId());
-        StockTake stockTake = stockDataMapper.stockTakeCreatedRequestToStockTake(stockUpdateRequest);
+        StockTake stockTake = stockDataMapper.stockUpdatedRequestToStockTake(stockUpdateRequest);
         Stock stock = getActiveStock();
         List<String> failureMessages = new ArrayList<>();
         StockEvent stockEvent = stockDomainService.closeActiveStock(stock, stockTake, failureMessages,

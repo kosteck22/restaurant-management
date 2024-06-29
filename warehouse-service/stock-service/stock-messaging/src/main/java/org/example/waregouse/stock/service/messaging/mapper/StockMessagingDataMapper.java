@@ -1,9 +1,12 @@
 package org.example.waregouse.stock.service.messaging.mapper;
 
+import org.example.kafka.stock.sale.avro.model.StockDeduceRequestAvroModel;
 import org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel;
 import org.example.kafka.stock.take.avro.model.StockUpdateResponseAvroModel;
-import org.example.warehouse.stock.service.domain.dto.message.StockUpdateRequest;
-import org.example.warehouse.stock.service.domain.dto.message.StockTakeItemRequest;
+import org.example.warehouse.stock.service.domain.dto.message.deduce.SaleItemRequest;
+import org.example.warehouse.stock.service.domain.dto.message.deduce.StockSubtractRequest;
+import org.example.warehouse.stock.service.domain.dto.message.update.StockUpdateRequest;
+import org.example.warehouse.stock.service.domain.dto.message.update.StockTakeItemRequest;
 import org.example.warehouse.stock.service.domain.event.StockClosedFailedEvent;
 import org.example.warehouse.stock.service.domain.event.StockClosedSuccessEvent;
 import org.example.warehouse.stock.service.domain.event.StockEvent;
@@ -48,6 +51,22 @@ public class StockMessagingDataMapper {
                 .setStockId(domainEvent.getStock().getId().toString())
                 .setCreatedAt(domainEvent.getCreatedAt().toInstant())
                 .setFailureMessages(domainEvent.getFailureMessages())
+                .build();
+    }
+
+    public StockSubtractRequest stockDeduceRequestAvroModelToStockDeduceRequest(StockDeduceRequestAvroModel stockDeduceAvroModel) {
+        return StockSubtractRequest.builder()
+                .id(stockDeduceAvroModel.getId())
+                .sagaId("")
+                .createdAt(stockDeduceAvroModel.getCreatedAt())
+                .date(stockDeduceAvroModel.getDate())
+                .saleId(stockDeduceAvroModel.getSaleId())
+                .items(stockDeduceAvroModel.getItems().stream()
+                        .map(saleItemAvro -> SaleItemRequest.builder()
+                                .menuItemId(saleItemAvro.getMenuItemId())
+                                .quantity(saleItemAvro.getQuantity())
+                                .build())
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

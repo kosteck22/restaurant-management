@@ -6,9 +6,9 @@ import org.example.warehouse.stock.service.dataaccess.stock.entity.StockDeduceTr
 import org.example.warehouse.stock.service.dataaccess.stock.entity.StockEntity;
 import org.example.warehouse.stock.service.domain.entity.Stock;
 import org.example.warehouse.stock.service.domain.entity.StockAddTransaction;
-import org.example.warehouse.stock.service.domain.entity.StockDeduceTransaction;
+import org.example.warehouse.stock.service.domain.entity.StockSubtractTransaction;
 import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionId;
-import org.example.warehouse.stock.service.domain.valueobject.StockDeduceTransactionId;
+import org.example.warehouse.stock.service.domain.valueobject.StockSubtractTransactionId;
 import org.example.warehouse.stock.service.domain.valueobject.StockId;
 import org.springframework.stereotype.Component;
 
@@ -29,11 +29,11 @@ public class StockDataAccessMapper {
                 .build();
     }
 
-    private List<StockDeduceTransaction> StockDeduceTransactionEntitiesToStockDeduceTransactions(List<StockDeduceTransactionEntity> deducingTransactions) {
+    private List<StockSubtractTransaction> StockDeduceTransactionEntitiesToStockDeduceTransactions(List<StockDeduceTransactionEntity> deducingTransactions) {
         return deducingTransactions.stream()
                 .map(stockDeduceTransactionEntity ->
-                        StockDeduceTransaction.builder()
-                                .stockDeduceTransactionId(new StockDeduceTransactionId(stockDeduceTransactionEntity.getId()))
+                        StockSubtractTransaction.builder()
+                                .stockDeduceTransactionId(new StockSubtractTransactionId(stockDeduceTransactionEntity.getId()))
                                 .deductionDate(stockDeduceTransactionEntity.getDeductionDate())
                                 .productId(new ProductId(stockDeduceTransactionEntity.getProductId()))
                                 .quantity(new Quantity(stockDeduceTransactionEntity.getQuantity()))

@@ -2,28 +2,27 @@ package org.example.warehouse.stock.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
 import org.example.domain.valueobject.*;
-import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionType;
-import org.example.warehouse.stock.service.domain.valueobject.StockDeduceTransactionId;
-import org.example.warehouse.stock.service.domain.valueobject.StockDeduceTransactionType;
+import org.example.warehouse.stock.service.domain.valueobject.StockSubtractTransactionId;
+import org.example.warehouse.stock.service.domain.valueobject.StockSubtractTransactionType;
 import org.example.warehouse.stock.service.domain.valueobject.StockId;
 
 import java.time.LocalDateTime;
 
-public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId> {
+public class StockSubtractTransaction extends BaseEntity<StockSubtractTransactionId> {
     private final StockId stockId;
-    private final LocalDateTime deductionDate;
+    private final LocalDateTime subtractDate;
     private final ProductId productId;
     private final Quantity quantity;
-    private final StockDeduceTransactionType stockDeduceTransactionType;
+    private final StockSubtractTransactionType stockSubtractTransactionType;
     private final SaleId saleId;
 
-    private StockDeduceTransaction(Builder builder) {
-        setId(builder.stockDeduceTransactionId);
+    private StockSubtractTransaction(Builder builder) {
+        setId(builder.stockSubtractTransactionId);
         stockId = builder.stockId;
-        deductionDate = builder.deductionDate;
+        subtractDate = builder.subtractDate;
         productId = builder.productId;
         quantity = builder.quantity;
-        stockDeduceTransactionType = builder.stockDeduceTransactionType;
+        stockSubtractTransactionType = builder.stockSubtractTransactionType;
         saleId = builder.saleId;
     }
 
@@ -32,8 +31,8 @@ public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId>
         return stockId;
     }
 
-    public LocalDateTime getDeductionDate() {
-        return deductionDate;
+    public LocalDateTime getSubtractDate() {
+        return subtractDate;
     }
 
     public ProductId getProductId() {
@@ -44,8 +43,8 @@ public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId>
         return quantity;
     }
 
-    public StockDeduceTransactionType getStockDeduceTransactionType() {
-        return stockDeduceTransactionType;
+    public StockSubtractTransactionType getStockSubtractTransactionType() {
+        return stockSubtractTransactionType;
     }
 
     public SaleId getSaleId() {
@@ -57,19 +56,19 @@ public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId>
     }
 
     public static final class Builder {
-        private StockDeduceTransactionId stockDeduceTransactionId;
+        private StockSubtractTransactionId stockSubtractTransactionId;
         private StockId stockId;
-        private LocalDateTime deductionDate;
+        private LocalDateTime subtractDate;
         private ProductId productId;
         private Quantity quantity;
-        private StockDeduceTransactionType stockDeduceTransactionType;
+        private StockSubtractTransactionType stockSubtractTransactionType;
         private SaleId saleId;
 
         private Builder() {
         }
 
-        public Builder stockDeduceTransactionId(StockDeduceTransactionId val) {
-            stockDeduceTransactionId = val;
+        public Builder stockSubtractTransactionId(StockSubtractTransactionId val) {
+            stockSubtractTransactionId = val;
             return this;
         }
 
@@ -78,8 +77,8 @@ public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId>
             return this;
         }
 
-        public Builder deductionDate(LocalDateTime val) {
-            deductionDate = val;
+        public Builder subtractDate(LocalDateTime val) {
+            subtractDate = val;
             return this;
         }
 
@@ -93,8 +92,8 @@ public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId>
             return this;
         }
 
-        public Builder stockDeduceTransactionType(StockDeduceTransactionType val) {
-            stockDeduceTransactionType = val;
+        public Builder stockSubtractTransactionType(StockSubtractTransactionType val) {
+            stockSubtractTransactionType = val;
             return this;
         }
 
@@ -103,8 +102,8 @@ public class StockDeduceTransaction extends BaseEntity<StockDeduceTransactionId>
             return this;
         }
 
-        public StockDeduceTransaction build() {
-            return new StockDeduceTransaction(this);
+        public StockSubtractTransaction build() {
+            return new StockSubtractTransaction(this);
         }
     }
 }

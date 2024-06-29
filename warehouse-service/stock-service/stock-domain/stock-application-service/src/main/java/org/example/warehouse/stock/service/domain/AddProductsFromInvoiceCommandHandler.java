@@ -2,10 +2,9 @@ package org.example.warehouse.stock.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.valueobject.InvoiceId;
-import org.example.warehouse.stock.service.domain.dto.addFromInvoice.AddProductsFromInvoiceCommand;
-import org.example.warehouse.stock.service.domain.dto.addFromInvoice.AddProductsFromInvoiceResponse;
+import org.example.warehouse.stock.service.domain.dto.service.add.AddProductsFromInvoiceCommand;
+import org.example.warehouse.stock.service.domain.dto.service.add.AddProductsFromInvoiceResponse;
 import org.example.warehouse.stock.service.domain.entity.Invoice;
-import org.example.warehouse.stock.service.domain.entity.InvoiceItem;
 import org.example.warehouse.stock.service.domain.entity.Product;
 import org.example.warehouse.stock.service.domain.entity.Stock;
 import org.example.warehouse.stock.service.domain.exception.StockDomainException;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -48,10 +46,10 @@ public class AddProductsFromInvoiceCommandHandler {
         Stock stock = checkStock();
         Invoice invoice = checkInvoice(addProductsFromInvoiceCommand);
         List<Product> products = productRepository.findAll();
-        stockDomainService.addProductsToStock(stock, invoice, products);
+        stockDomainService.addStock(stock, invoice, products);
         persistDbObjects(products, stock);
         log.info("Products added successfully to stock for invoice id: {}", invoice.getId().getValue());
-        return new AddProductsFromInvoiceResponse(stock.getId().getValue(), "Products added successfully to stock for invoice id: %s".formatted(invoice.getId().getValue()));
+        return stockDataMapper.stockToAddProductsFromInvoiceResponse(stock, "Products added successfully to stock for invoice id: %s".formatted(invoice.getId().getValue()));
     }
 
     private void persistDbObjects(List<Product> products, Stock stock) {

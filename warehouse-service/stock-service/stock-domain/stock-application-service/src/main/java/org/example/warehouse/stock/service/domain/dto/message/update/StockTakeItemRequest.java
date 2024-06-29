@@ -1,4 +1,4 @@
-package org.example.warehouse.stock.service.domain.dto.message;
+package org.example.warehouse.stock.service.domain.dto.message.update;
 
 import java.math.BigDecimal;
 

@@ -1,27 +1,19 @@
 package org.example.warehouse.stock.service.domain.entity;
 
 import org.example.domain.entity.AggregateRoot;
-import org.example.domain.valueobject.Money;
-import org.example.domain.valueobject.ProductId;
-import org.example.domain.valueobject.Quantity;
-import org.example.domain.valueobject.StockTakeId;
+import org.example.domain.valueobject.*;
 import org.example.warehouse.stock.service.domain.exception.StockDomainException;
-import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionId;
-import org.example.warehouse.stock.service.domain.valueobject.StockId;
-import org.example.warehouse.stock.service.domain.valueobject.StockItemBeforeClosingId;
-import org.example.warehouse.stock.service.domain.valueobject.StockStatus;
+import org.example.warehouse.stock.service.domain.valueobject.*;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 public class Stock extends AggregateRoot<StockId> {
 
-    private final List<StockAddTransaction> addingTransactions;
-    private final List<StockDeduceTransaction> deducingTransactions;
+    private final List<StockAddTransaction> addTransactions;
+    private final List<StockSubtractTransaction> subtractTransactions;
     private final List<StockItemBeforeClosing> stockItemsBeforeClosing;
 
     private StockTakeId fromStockTake;
@@ -32,8 +24,8 @@ public class Stock extends AggregateRoot<StockId> {
 
     private Stock(Builder builder) {
         setId(builder.stockId);
-        addingTransactions = builder.addingTransactions;
-        deducingTransactions = builder.deducingTransactions;
+        addTransactions = builder.addTransactions;
+        subtractTransactions = builder.subtractTransactions;
         stockItemsBeforeClosing = builder.stockItemsBeforeClosing;
         fromStockTake = builder.fromStockTake;
         toStockTake = builder.toStockTake;
@@ -48,7 +40,7 @@ public class Stock extends AggregateRoot<StockId> {
 
     public void initializeStockItemsBeforeClosing(StockTake stockTake) {
         //(FIFO stock) first product's that were put to stock are used first
-        Map<ProductId, List<StockAddTransaction>> productIdToListStockAddTransactionMap = addingTransactions.stream()
+        Map<ProductId, List<StockAddTransaction>> productIdToListStockAddTransactionMap = addTransactions.stream()
                 .collect(Collectors.groupingBy(StockAddTransaction::getProductId))
                 .entrySet().stream()
                 .collect(Collectors.toMap(
@@ -83,12 +75,73 @@ public class Stock extends AggregateRoot<StockId> {
             throw new StockDomainException("You cannot add new transactions. Stock is closed!");
         }
 
-        long transactionId = addingTransactions.size();
+        long transactionId = addTransactions.size();
         for (StockAddTransaction stockAddTransaction : transactions) {
             stockAddTransaction.validate();
             stockAddTransaction.initialize(super.getId(), new StockAddTransactionId(++transactionId));
-            addingTransactions.add(stockAddTransaction);
+            addTransactions.add(stockAddTransaction);
         }
+    }
+
+
+    public void addStockSubtractTransactions(Sale sale, List<Recipe> recipes, List<String> failureMessages) {
+        if (isClosed()) {
+            throw new StockDomainException("You cannot add new subtract transactions. Stock is closed!");
+        }
+
+        Map<MenuItemId, Recipe> menuItemIdRecipeMap = recipes.stream()
+                .collect(Collectors.toMap(Recipe::getMenuItemId, recipe -> recipe));
+
+        Map<ProductId, Quantity> productIdQuantityMap = sale.getItems().stream()
+                .flatMap(saleItem -> menuItemIdRecipeMap.get(saleItem.getMenuItemId())
+                        .getItems().stream()
+                        .map(recipeItem -> new AbstractMap.SimpleEntry<>(
+                                recipeItem.getProductId(),
+                                recipeItem.getQuantity().multiply(saleItem.getQuantity())
+                        )))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        Quantity::add
+                ));
+
+        Map<ProductId, Quantity> addTransactionMap = addTransactions.stream()
+                .collect(Collectors.toMap(
+                        StockAddTransaction::getProductId,
+                        StockAddTransaction::getQuantity,
+                        Quantity::add
+                ));
+
+        Map<ProductId, Quantity> previousSubtractTransactionMap = subtractTransactions.stream()
+                .collect(Collectors.toMap(
+                        StockSubtractTransaction::getProductId,
+                        StockSubtractTransaction::getQuantity,
+                        Quantity::add
+                ));
+
+        productIdQuantityMap.forEach(((productId, quantity) -> {
+            Quantity quantityInStock = addTransactionMap.get(productId)
+                    .subtract(previousSubtractTransactionMap.getOrDefault(
+                            productId, new Quantity(BigDecimal.ZERO)));
+            if (quantity.isGreaterThan(quantityInStock)) {
+                failureMessages.add("Insufficient quantity for product id: %s".formatted(productId));
+            } else {
+                StockSubtractTransaction stockSubtractTransaction = StockSubtractTransaction.builder()
+                        .stockId(getId())
+                        .stockSubtractTransactionId(new StockSubtractTransactionId(1L + subtractTransactions.size()))
+                        .subtractDate(sale.getDate())
+                        .productId(productId)
+                        .quantity(quantity)
+                        .stockSubtractTransactionType(StockSubtractTransactionType.SALE)
+                        .saleId(sale.getId())
+                        .build();
+                subtractTransactions.add(stockSubtractTransaction);
+            }
+        }));
+    }
+
+    public void initializeStock() {
+        setId(new StockId(UUID.randomUUID()));
     }
 
     protected boolean isActive() {
@@ -100,12 +153,12 @@ public class Stock extends AggregateRoot<StockId> {
     }
 
 
-    public List<StockAddTransaction> getAddingTransactions() {
-        return addingTransactions;
+    public List<StockAddTransaction> getAddTransactions() {
+        return addTransactions;
     }
 
-    public List<StockDeduceTransaction> getDeducingTransactions() {
-        return deducingTransactions;
+    public List<StockSubtractTransaction> getSubtractTransactions() {
+        return subtractTransactions;
     }
 
     public List<StockItemBeforeClosing> getStockItemsBeforeClosing() {
@@ -136,15 +189,10 @@ public class Stock extends AggregateRoot<StockId> {
         return new Builder();
     }
 
-    public void initializeStock() {
-        setId(new StockId(UUID.randomUUID()));
-
-    }
-
     public static final class Builder {
         private StockId stockId;
-        private List<StockAddTransaction> addingTransactions;
-        private List<StockDeduceTransaction> deducingTransactions;
+        private List<StockAddTransaction> addTransactions;
+        private List<StockSubtractTransaction> subtractTransactions;
         private List<StockItemBeforeClosing> stockItemsBeforeClosing;
         private StockTakeId fromStockTake;
         private StockTakeId toStockTake;
@@ -160,7 +208,7 @@ public class Stock extends AggregateRoot<StockId> {
         }
 
         public Builder addingTransactions(List<StockAddTransaction> val) {
-            addingTransactions = val;
+            addTransactions = val;
             return this;
         }
 
@@ -169,8 +217,8 @@ public class Stock extends AggregateRoot<StockId> {
             return this;
         }
 
-        public Builder deducingTransactions(List<StockDeduceTransaction> val) {
-            deducingTransactions = val;
+        public Builder deducingTransactions(List<StockSubtractTransaction> val) {
+            subtractTransactions = val;
             return this;
         }
 

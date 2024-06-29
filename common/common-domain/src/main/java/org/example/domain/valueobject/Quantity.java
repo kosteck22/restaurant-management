@@ -21,6 +21,10 @@ public class Quantity {
         return new Quantity(this.value.subtract(quantity.value));
     }
 
+    public Quantity multiply(Quantity quantity) {
+        return new Quantity(this.value.multiply(quantity.value));
+    }
+
     public boolean isZero() {
         return this.value.compareTo(BigDecimal.ZERO) == 0;
     }

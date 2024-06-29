@@ -3,10 +3,6 @@ package org.example.warehouse.stock.service.dataaccess.stock.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.domain.valueobject.Money;
-import org.example.domain.valueobject.StockTakeId;
-import org.example.warehouse.stock.service.domain.entity.StockAddTransaction;
-import org.example.warehouse.stock.service.domain.entity.StockDeduceTransaction;
 import org.example.warehouse.stock.service.domain.valueobject.StockStatus;
 
 import java.math.BigDecimal;

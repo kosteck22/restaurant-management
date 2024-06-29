@@ -2,10 +2,8 @@ package org.example.warehouse.stock.service.domain.valueobject;
 
 import org.example.domain.valueobject.BaseId;
 
-import java.util.UUID;
-
-public class StockDeduceTransactionId extends BaseId<Long> {
-    public StockDeduceTransactionId(Long value) {
+public class StockSubtractTransactionId extends BaseId<Long> {
+    public StockSubtractTransactionId(Long value) {
         super(value);
     }
 }
