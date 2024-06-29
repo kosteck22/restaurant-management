@@ -2,6 +2,7 @@ package org.example.sale.service.domain.entity;
 
 import org.example.domain.entity.BaseEntity;
 import org.example.domain.valueobject.Money;
+import org.example.domain.valueobject.Quantity;
 import org.example.domain.valueobject.SaleId;
 import org.example.sale.service.domain.valueobject.SaleItemId;
 
@@ -11,7 +12,7 @@ import java.math.RoundingMode;
 public class SaleItem extends BaseEntity<SaleItemId> {
     private SaleId saleId;
     private final MenuItem menuItem;
-    private final int quantity;
+    private final Quantity quantity;
     private final int discount;
     private Money netPrice;
     private final Money grossPrice;
@@ -41,7 +42,7 @@ public class SaleItem extends BaseEntity<SaleItemId> {
         return menuItem;
     }
 
-    public int getQuantity() {
+    public Quantity getQuantity() {
         return quantity;
     }
 
@@ -72,7 +73,7 @@ public class SaleItem extends BaseEntity<SaleItemId> {
     public boolean isGrossPriceValid() {
         return grossPrice.isGreaterThanZero() && grossPriceTotal.isGreaterThanZero()
                 && grossPrice.equals(menuItem.getGrossPrice().afterDiscount(discount)) &&
-                grossPriceTotal.equals(menuItem.getGrossPrice().afterDiscount(discount).multiply(quantity));
+                grossPriceTotal.equals(menuItem.getGrossPrice().afterDiscount(discount).multiply(quantity.getValue()));
     }
 
     public void initializeNetPrice() {
@@ -85,7 +86,7 @@ public class SaleItem extends BaseEntity<SaleItemId> {
         private SaleItemId saleItemId;
         private SaleId saleId;
         private MenuItem product;
-        private int quantity;
+        private Quantity quantity;
         private int discount;
         private Money netPrice;
         private Money grossPrice;
@@ -109,7 +110,7 @@ public class SaleItem extends BaseEntity<SaleItemId> {
             return this;
         }
 
-        public Builder quantity(int val) {
+        public Builder quantity(Quantity val) {
             quantity = val;
             return this;
         }

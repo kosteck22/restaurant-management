@@ -1,6 +1,8 @@
 package org.example.sale.service.domain.mapper;
 
 import org.example.domain.valueobject.Money;
+import org.example.domain.valueobject.Quantity;
+import org.example.sale.service.domain.dto.complete.CompleteSaleResponse;
 import org.example.sale.service.domain.dto.create.CreateSaleCommand;
 import org.example.sale.service.domain.dto.create.CreateSaleResponse;
 import org.example.sale.service.domain.entity.Menu;
@@ -10,6 +12,7 @@ import org.example.sale.service.domain.entity.SaleItem;
 import org.example.domain.valueobject.MenuItemId;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +28,7 @@ public class SaleDataMapper {
     private List<SaleItem> saleItemsToSaleItemEntities(List<org.example.sale.service.domain.dto.create.SaleItem> items) {
         return items.stream()
                 .map(saleItem -> SaleItem.builder()
-                        .quantity(saleItem.quantity())
+                        .quantity(new Quantity(BigDecimal.valueOf(saleItem.quantity())))
                         .discount(saleItem.discount())
                         .grossPrice(new Money(saleItem.grossPrice()))
                         .grossPriceTotal(new Money(saleItem.grossPriceTotal()))
@@ -44,5 +47,9 @@ public class SaleDataMapper {
 
     public CreateSaleResponse saleToCreateSaleResponse(Sale sale, String message) {
         return new CreateSaleResponse(sale.getId().getValue(), sale.getSaleStatus(), message);
+    }
+
+    public CompleteSaleResponse saleToCompleteSaleResponse(Sale sale, String message) {
+        return new CompleteSaleResponse(sale.getId().getValue(), sale.getSaleStatus(), message);
     }
 }

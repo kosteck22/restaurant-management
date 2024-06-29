@@ -44,12 +44,26 @@ public class Sale extends AggregateRoot<SaleId> {
         initializeNetPriceAndVat();
     }
 
+    public void complete() {
+        if (SaleStatus.PENDING != saleStatus) {
+            throw new SaleDomainException("Sale is not in correct state for complete operation!");
+        }
+        saleStatus = SaleStatus.PAID;
+    }
+
+    public void cancel() {
+        if (SaleStatus.PENDING != saleStatus) {
+            throw new SaleDomainException("Sale is not in correct state for cancel operation!");
+        }
+        saleStatus = SaleStatus.CANCELLED;
+    }
+
     private void initializeNetPriceAndVat() {
         Money vat = items.stream()
                 .map(saleItem -> {
                     saleItem.initializeNetPrice();
                     return saleItem.getGrossPrice().subtract(saleItem.getNetPrice())
-                            .multiply(saleItem.getQuantity());
+                            .multiply(saleItem.getQuantity().getValue());
                 }).reduce(Money.ZERO, Money::add);
 
         setVat(vat);

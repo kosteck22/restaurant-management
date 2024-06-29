@@ -1,6 +1,7 @@
 package org.example.sale.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.event.publisher.DomainEventPublisher;
 import org.example.sale.service.domain.entity.Menu;
 import org.example.sale.service.domain.entity.MenuItem;
 import org.example.sale.service.domain.entity.Sale;
@@ -30,13 +31,16 @@ public class SaleDomainServiceImpl implements SaleDomainService {
     }
 
     @Override
-    public SalePaidEvent paySale(Sale sale) {
-        return null;
+    public SalePaidEvent completeSale(Sale sale, DomainEventPublisher<SalePaidEvent> salePaidEventMessagePublisher) {
+        sale.complete();
+        log.info("Sale with id: {} is complete", sale.getId().getValue());
+        return new SalePaidEvent(sale, ZonedDateTime.now(ZoneId.of(UTC)), salePaidEventMessagePublisher);
     }
 
     @Override
     public void cancelSale(Sale sale, List<String> failureMessages) {
-
+        sale.cancel();
+        log.info("Sale with id: {} is canceled", sale.getId().getValue());
     }
 
     private void setSaleMenuItemInformation(Sale sale, Menu menu) {

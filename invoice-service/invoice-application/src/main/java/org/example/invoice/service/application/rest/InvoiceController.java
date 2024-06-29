@@ -37,6 +37,7 @@ public class InvoiceController {
     public ResponseEntity<String> extractInvoiceFromImage(
             @RequestParam(name = "file") MultipartFile file,
             @RequestParam(name = "company") CompanyType company) throws IOException {
+        log.info("Extracting invoice from file for company: {}", company.name());
         String id = invoiceApplicationService.extractInvoiceFromImage(file.getBytes(), company);
         return ResponseEntity.ok(id);
     }
