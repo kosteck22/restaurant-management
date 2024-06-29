@@ -13,17 +13,17 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class StockTakeCreatedMessagePublisherImpl implements StockTakeCreatedMessagePublisher {
+public class StockTakeCreatedKafkaMessagePublisher implements StockTakeCreatedMessagePublisher {
 
     private final StockTakeServiceConfigData stockTakeServiceConfigData;
     private final KafkaProducer<String, StockUpdateRequestAvroModel> kafkaProducer;
     private final StockTakeMessagingDataMapper stockTakeMessagingDataMapper;
     private final KafkaMessageHelper kafkaMessageHelper;
 
-    public StockTakeCreatedMessagePublisherImpl(StockTakeServiceConfigData stockTakeServiceConfigData,
-                                                KafkaProducer<String, StockUpdateRequestAvroModel> kafkaProducer,
-                                                StockTakeMessagingDataMapper stockTakeMessagingDataMapper,
-                                                KafkaMessageHelper kafkaMessageHelper) {
+    public StockTakeCreatedKafkaMessagePublisher(StockTakeServiceConfigData stockTakeServiceConfigData,
+                                                 KafkaProducer<String, StockUpdateRequestAvroModel> kafkaProducer,
+                                                 StockTakeMessagingDataMapper stockTakeMessagingDataMapper,
+                                                 KafkaMessageHelper kafkaMessageHelper) {
         this.stockTakeServiceConfigData = stockTakeServiceConfigData;
         this.kafkaProducer = kafkaProducer;
         this.stockTakeMessagingDataMapper = stockTakeMessagingDataMapper;

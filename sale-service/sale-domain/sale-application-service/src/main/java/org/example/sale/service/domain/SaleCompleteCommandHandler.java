@@ -8,7 +8,7 @@ import org.example.sale.service.domain.event.SalePaidEvent;
 import org.example.sale.service.domain.exception.SaleDomainException;
 import org.example.sale.service.domain.exception.SaleNotFoundException;
 import org.example.sale.service.domain.mapper.SaleDataMapper;
-import org.example.sale.service.domain.ports.output.message.publisher.SalePaidEventMessagePublisher;
+import org.example.sale.service.domain.ports.output.message.publisher.SalePaidMessagePublisher;
 import org.example.sale.service.domain.ports.output.repository.SaleRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +22,12 @@ public class SaleCompleteCommandHandler {
     private final SaleDomainService saleDomainService;
     private final SaleRepository saleRepository;
     private final SaleDataMapper saleDataMapper;
-    private final SalePaidEventMessagePublisher salePaidEventMessagePublisher;
+    private final SalePaidMessagePublisher salePaidEventMessagePublisher;
 
     public SaleCompleteCommandHandler(SaleDomainService saleDomainService,
                                       SaleRepository saleRepository,
                                       SaleDataMapper saleDataMapper,
-                                      SalePaidEventMessagePublisher salePaidEventMessagePublisher) {
+                                      SalePaidMessagePublisher salePaidEventMessagePublisher) {
         this.saleDomainService = saleDomainService;
         this.saleRepository = saleRepository;
         this.saleDataMapper = saleDataMapper;
