@@ -5,28 +5,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>stock-service</artifactId>
+        <artifactId>product-service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>stock-container</artifactId>
+    <artifactId>product-container</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>stock-application</artifactId>
+            <artifactId>common-dataaccess</artifactId>
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>stock-application-service</artifactId>
+            <artifactId>product-application-service</artifactId>
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>stock-dataaccess</artifactId>
+            <artifactId>product-dataaccess</artifactId>
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>stock-domain-core</artifactId>
+            <artifactId>product-domain-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -41,7 +41,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>${project.groupId}/stock.service:${project.version}</name>
+                        <name>${project.groupId}/product.service:${project.version}</name>
                     </image>
                 </configuration>
                 <executions>

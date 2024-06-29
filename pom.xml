@@ -16,7 +16,6 @@
         <module>warehouse-service</module>
         <module>infrastructure</module>
         <module>company-service</module>
-        <module>image-extractor-service</module>
     </modules>
 
     <parent>

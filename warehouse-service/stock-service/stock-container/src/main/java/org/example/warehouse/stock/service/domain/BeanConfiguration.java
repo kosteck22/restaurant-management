@@ -1,4 +1,5 @@
-package org.example.warehouse.stock.take.service.domain;
+package org.example.warehouse.stock.service.domain;
+
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfiguration {
     @Bean
-    public StockTakeDomainService stockTakeDomainService() {
-        return new StockTakeDomainServiceImpl();
+    public StockDomainService stockDomainService() {
+        return new StockDomainServiceImpl();
     }
 }
