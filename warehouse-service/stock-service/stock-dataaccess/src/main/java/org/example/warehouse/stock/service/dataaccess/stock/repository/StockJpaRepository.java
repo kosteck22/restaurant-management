@@ -11,5 +11,5 @@ import java.util.UUID;
 
 @Repository
 public interface StockJpaRepository extends JpaRepository<StockEntity, UUID> {
-    List<Stock> findByStatus(StockStatus status);
+    List<StockEntity> findByStatus(StockStatus status);
 }

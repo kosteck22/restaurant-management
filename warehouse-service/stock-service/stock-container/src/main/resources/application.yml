@@ -6,7 +6,7 @@ logging:
     org.example: DEBUG
 
 stock-service:
-  stock-update-request-topi-name: stock-update-request-topic-name
+  stock-update-request-topic-name: stock-update-request-topic-name
   stock-update-response-topic-name: stock-update-response-topic-name
   stock-subtract-request-topic-name: stock-subtract-request-topic-name
   stock-subtract-response-topic-name: stock-subtract-response-topic-name

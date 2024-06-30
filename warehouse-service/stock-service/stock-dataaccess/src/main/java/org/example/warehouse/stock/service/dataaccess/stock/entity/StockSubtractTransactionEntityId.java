@@ -10,7 +10,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockAddTransactionEntityId implements Serializable {
+public class StockSubtractTransactionEntityId implements Serializable {
     private Long id;
     private StockEntity stock;
 
@@ -18,7 +18,7 @@ public class StockAddTransactionEntityId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StockAddTransactionEntityId that = (StockAddTransactionEntityId) o;
+        StockSubtractTransactionEntityId that = (StockSubtractTransactionEntityId) o;
         return Objects.equals(id, that.id) && Objects.equals(stock, that.stock);
     }
 

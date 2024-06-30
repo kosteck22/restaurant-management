@@ -8,6 +8,7 @@ import org.example.warehouse.stock.service.domain.valueobject.StockStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class StockRepositoryImpl implements StockRepository {
@@ -22,7 +23,9 @@ public class StockRepositoryImpl implements StockRepository {
 
     @Override
     public List<Stock> findByStatus(StockStatus status) {
-        return stockJpaRepository.findByStatus(status);
+        return stockJpaRepository.findByStatus(status).stream()
+                .map(stockDataAccessMapper::stockEntityToStock)
+                .collect(Collectors.toList());
     }
 
     @Override

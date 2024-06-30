@@ -25,9 +25,11 @@ public class StockEntity {
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
     private List<StockAddTransactionEntity> addingTransactions;
 
+    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
+    private List<StockSubtractTransactionEntity> subtractTransactions;
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
-    private List<StockDeduceTransactionEntity> deducingTransactions;
+    private List<StockItemBeforeClosingEntity> stockItemsBeforeClosing;
 
     private UUID fromStockTake;
     private UUID toStockTake;

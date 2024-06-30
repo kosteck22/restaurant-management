@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableJpaRepositories(basePackages = { "org.example.stock.take.service.dataaccess"})
-@EntityScan(basePackages = { "org.example.stock.take.service.dataaccess"})
+@EnableJpaRepositories(basePackages = { "org.example.warehouse.stock.take.service.dataaccess"})
+@EntityScan(basePackages = { "org.example.warehouse.stock.take.service.dataaccess"})
 @SpringBootApplication(scanBasePackages = "org.example")
 public class StockTakeServiceApplication {
     public static void main(String[] args) {

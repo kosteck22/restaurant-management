@@ -50,11 +50,12 @@ public class Stock extends AggregateRoot<StockId> {
                                 .collect(Collectors.toList())));
 
         stockTake.getItems().forEach(stockTakeItem -> {
+            long id = stockItemsBeforeClosing.size() + 1;
             Quantity realQuantity = stockTakeItem.getQuantity();
             List<StockAddTransaction> stockAddTransactions = productIdToListStockAddTransactionMap.get(stockTakeItem.getProductId());
             for (StockAddTransaction addTransaction : stockAddTransactions) {
                 stockItemsBeforeClosing.add(StockItemBeforeClosing.builder()
-                        .id(new StockItemBeforeClosingId(UUID.randomUUID()))
+                        .id(new StockItemBeforeClosingId(id))
                         .additionDate(addTransaction.getAdditionDate())
                         .productId(addTransaction.getProductId())
                         .grossPrice(addTransaction.getGrossPrice())
@@ -217,7 +218,7 @@ public class Stock extends AggregateRoot<StockId> {
             return this;
         }
 
-        public Builder deducingTransactions(List<StockSubtractTransaction> val) {
+        public Builder subtractTransactions(List<StockSubtractTransaction> val) {
             subtractTransactions = val;
             return this;
         }

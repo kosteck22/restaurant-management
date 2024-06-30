@@ -15,30 +15,30 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(StockDeduceTransactionEntityId.class)
-@Table(name = "stock-deduce-transactions")
+@IdClass(StockSubtractTransactionEntityId.class)
+@Table(name = "stock-subtract-transactions")
 @Entity
-public class StockDeduceTransactionEntity {
+public class StockSubtractTransactionEntity {
     @Id
     private Long id;
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "STOCK_ID")
-    private Stock stock;
+    private StockEntity stock;
 
-    private LocalDateTime deductionDate;
+    private LocalDateTime subtractDate;
     private UUID productId;
     private BigDecimal quantity;
 
     @Enumerated(value = EnumType.STRING)
-    private StockSubtractTransactionType stockDeduceTransactionType;
+    private StockSubtractTransactionType stockSubtractTransactionType;
     private UUID saleId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StockDeduceTransactionEntity that = (StockDeduceTransactionEntity) o;
+        StockSubtractTransactionEntity that = (StockSubtractTransactionEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(stock, that.stock);
     }
 
