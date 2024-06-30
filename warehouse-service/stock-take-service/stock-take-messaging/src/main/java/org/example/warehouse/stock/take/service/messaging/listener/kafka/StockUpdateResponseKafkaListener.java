@@ -26,7 +26,7 @@ public class StockUpdateResponseKafkaListener implements KafkaConsumer<StockUpda
     }
 
     @Override
-    @KafkaListener(id = "${kafka-consumer-config.stock-take-consumer-group-id}",
+    @KafkaListener(id = "${kafka-consumer-config.stock-update-consumer-group-id}",
             topics = "${stock-take-service.stock-update-response-topic-name}")
     public void receive(@Payload List<StockUpdateResponseAvroModel> messages,
                         @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<String> keys,

@@ -1,9 +1,7 @@
 package org.example.sale.service.dataaccess.sale.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.example.sale.service.domain.valueobject.SaleStatus;
 
@@ -31,6 +29,7 @@ public class SaleEntity {
     private UUID trackingId;
     private String failureMessages;
 
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
     private List<SaleItemEntity> items;
 
     @Override

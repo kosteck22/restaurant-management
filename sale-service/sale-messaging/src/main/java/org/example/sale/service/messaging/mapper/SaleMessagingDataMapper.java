@@ -2,7 +2,7 @@ package org.example.sale.service.messaging.mapper;
 
 import org.example.kafka.stock.sale.avro.model.SaleItem;
 import org.example.kafka.stock.sale.avro.model.SaleStatus;
-import org.example.kafka.stock.sale.avro.model.StockDeduceRequestAvroModel;
+import org.example.kafka.stock.sale.avro.model.StockSubtractRequestAvroModel;
 import org.example.sale.service.domain.event.SalePaidEvent;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class SaleMessagingDataMapper {
-    public StockDeduceRequestAvroModel SalePaidEventToStockDeduceRequestAvroModel(SalePaidEvent domainEvent) {
-        return StockDeduceRequestAvroModel.newBuilder()
+    public StockSubtractRequestAvroModel SalePaidEventToStockSubtractRequestAvroModel(SalePaidEvent domainEvent) {
+        return StockSubtractRequestAvroModel.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setSagaId("")
                 .setSaleId(domainEvent.getSale().getId().toString())

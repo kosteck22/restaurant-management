@@ -3,7 +3,7 @@ server:
 
 logging:
   level:
-    com.food.ordering.system: DEBUG
+    org.example: DEBUG
 
 spring:
   jpa:

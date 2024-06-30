@@ -1,17 +1,15 @@
 package org.example.sale.service.dataaccess.sale.mapper;
 
-import org.example.domain.valueobject.Money;
-import org.example.domain.valueobject.TrackingId;
+import org.example.domain.valueobject.*;
 import org.example.sale.service.dataaccess.sale.entity.SaleEntity;
 import org.example.sale.service.dataaccess.sale.entity.SaleItemEntity;
 import org.example.sale.service.domain.entity.MenuItem;
 import org.example.sale.service.domain.entity.Sale;
 import org.example.sale.service.domain.entity.SaleItem;
-import org.example.domain.valueobject.MenuItemId;
-import org.example.domain.valueobject.SaleId;
 import org.example.sale.service.domain.valueobject.SaleItemId;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,7 +55,7 @@ public class SaleDataAccessMapper {
                 .map(saleItemEntity -> SaleItem.builder()
                         .saleItemId(new SaleItemId(saleItemEntity.getId()))
                         .menuItem(new MenuItem(new MenuItemId(saleItemEntity.getMenuItemId())))
-                        .quantity(saleItemEntity.getQuantity())
+                        .quantity(new Quantity(BigDecimal.valueOf(saleItemEntity.getQuantity())))
                         .discount(saleItemEntity.getDiscount())
                         .netPrice(new Money(saleItemEntity.getSale().getNetPrice()))
                         .grossPrice(new Money(saleItemEntity.getSale().getGrossPrice()))
@@ -71,7 +69,7 @@ public class SaleDataAccessMapper {
                 .map(saleItem -> SaleItemEntity.builder()
                         .id(saleItem.getId().getValue())
                         .menuItemId(saleItem.getMenuItem().getId().getValue())
-                        .quantity(saleItem.getQuantity())
+                        .quantity(saleItem.getQuantity().getValue().intValue())
                         .discount(saleItem.getDiscount())
                         .netPrice(saleItem.getNetPrice().getAmount())
                         .grossPrice(saleItem.getGrossPrice().getAmount())

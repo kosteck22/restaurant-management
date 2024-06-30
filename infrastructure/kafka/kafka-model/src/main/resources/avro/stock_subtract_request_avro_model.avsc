@@ -1,0 +1,73 @@
+{
+  "type": "record",
+  "name": "StockSubtractRequestAvroModel",
+  "namespace": "org.example.kafka.stock.sale.avro.model",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "sagaId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "createdAt",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
+    {
+      "name": "date",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
+    {
+      "name": "saleId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "saleStatus",
+      "type": {
+        "type": "enum",
+        "name": "SaleStatus",
+        "symbols": ["PENDING", "PAID", "CANCELLED"]
+      }
+    },
+    {
+      "name": "items",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "SaleItem",
+          "fields": [
+            {
+              "name": "menuItemId",
+              "type": {
+                "type": "string",
+                "logicalType": "uuid"
+              }
+            },
+            {
+              "name": "quantity",
+              "type": "long"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

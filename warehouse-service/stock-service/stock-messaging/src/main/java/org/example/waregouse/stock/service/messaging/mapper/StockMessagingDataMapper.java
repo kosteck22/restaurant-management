@@ -1,6 +1,6 @@
 package org.example.waregouse.stock.service.messaging.mapper;
 
-import org.example.kafka.stock.sale.avro.model.StockDeduceRequestAvroModel;
+import org.example.kafka.stock.sale.avro.model.StockSubtractRequestAvroModel;
 import org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel;
 import org.example.kafka.stock.take.avro.model.StockUpdateResponseAvroModel;
 import org.example.warehouse.stock.service.domain.dto.message.deduce.SaleItemRequest;
@@ -54,7 +54,7 @@ public class StockMessagingDataMapper {
                 .build();
     }
 
-    public StockSubtractRequest stockDeduceRequestAvroModelToStockDeduceRequest(StockDeduceRequestAvroModel stockDeduceAvroModel) {
+    public StockSubtractRequest stockSubtractRequestAvroModelToStockSubtractRequest(StockSubtractRequestAvroModel stockDeduceAvroModel) {
         return StockSubtractRequest.builder()
                 .id(stockDeduceAvroModel.getId())
                 .sagaId("")

@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "sale-service")
 public class SaleServiceConfigData {
-    private String stockDeduceRequestTopicName;
-    private String stockDeduceResponseTopicName;
+    private String stockSubtractRequestTopicName;
+    private String stockSubtractResponseTopicName;
 }
