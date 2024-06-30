@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.application.handler.ErrorDTO;
 import org.example.application.handler.GlobalExceptionHandler;
 import org.example.company.service.domain.exception.CompanyDomainException;
+import org.example.company.service.domain.exception.CompanyNotFoundException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,6 +18,17 @@ import java.util.Date;
 @Slf4j
 @ControllerAdvice
 public class CompanyGlobalExceptionHandler extends GlobalExceptionHandler {
+    @ResponseBody
+    @ExceptionHandler(value = {CompanyNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDTO handleException(CompanyNotFoundException companyNotFoundException, HttpServletRequest request) {
+        log.error(companyNotFoundException.getMessage(), companyNotFoundException);
+        return new ErrorDTO(
+                request.getRequestURI(),
+                companyNotFoundException.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                new Date());
+    }
 
     @ResponseBody
     @ExceptionHandler(value = {CompanyDomainException.class})

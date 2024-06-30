@@ -63,7 +63,7 @@ public class Company extends AggregateRoot<CompanyId> {
     }
 
     private boolean isPostalCodeIncorrectFormat() {
-        return postalCode.matches("^\\d{2}-\\d{3}$");
+        return !postalCode.matches("^\\d{2}-\\d{3}$");
     }
 
     private boolean isTaxNumberIncorrectLength() {

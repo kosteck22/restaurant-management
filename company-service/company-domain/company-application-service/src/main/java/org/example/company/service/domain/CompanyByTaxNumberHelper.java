@@ -32,7 +32,7 @@ public class CompanyByTaxNumberHelper {
     }
 
     public CompanyResponse getCompanyByTaxNumber(String taxNumber) {
-        return companyRepository.getCompanyByTaxNumber(taxNumber)
+        return companyRepository.getCompanyByTaxNumber(taxNumber.replace("-", ""))
                 .map(companyDataMapper::companyToCompanyResponse)
                 .orElseGet(() -> fetchAndSaveCompanyFromExternalApi(taxNumber));
     }
@@ -41,9 +41,10 @@ public class CompanyByTaxNumberHelper {
         CompanyRequest companyRequest = companyExternalProvider.getCompanyRequestByTaxNumber(taxNumber.replace("-", ""))
                 .orElseThrow(() -> {
                     log.warn("There is no company for tax number: {}", taxNumber);
-                    return new CompanyNotFoundException(
+                    return  new CompanyNotFoundException(
                             "There is no company for tax number: %s".formatted(taxNumber));
                 });
+        log.info("Company info from external api: {}", companyRequest);
         Company company = companyDataMapper.companyRequestToCompany(companyRequest);
         companyDomainService.validateAndInitializeCompany(company);
         Company savedCompany = saveCompany(company);

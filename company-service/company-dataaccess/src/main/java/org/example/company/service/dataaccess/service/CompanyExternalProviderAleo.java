@@ -24,7 +24,7 @@ public class CompanyExternalProviderAleo {
     }
 
     public Optional<CompanyRequest> findCompanyByTaxNumber(String taxNumber) {
-        log.info("Searching for company with tax number: {}, Ale Provider", taxNumber);
+        log.info("Searching for company with tax number: {}, Aleo Provider", taxNumber);
         String html = companyAleApiClient.getSite(taxNumber);
         if (html == null) {
             log.warn("No html found for tax number: {}, Aleo Provider", taxNumber);
@@ -39,7 +39,8 @@ public class CompanyExternalProviderAleo {
             }
 
             return Optional.of(createCompanyRequestFromJsonObject(contentObject));
-        } catch (CompanyNotFoundException ex) {
+        } catch (Exception ex) {
+            log.warn("Company not found for tax number: {}", taxNumber);
             return Optional.empty();
         }
     }
@@ -74,7 +75,6 @@ public class CompanyExternalProviderAleo {
             log.warn("Company not found for tax number: {}", taxNumber);
             throw new CompanyNotFoundException("Company not found for tax number: %s".formatted(taxNumber));
         }
-
         return companyCatalog.getAsJsonArray("content").get(0).getAsJsonObject();
     }
 }
