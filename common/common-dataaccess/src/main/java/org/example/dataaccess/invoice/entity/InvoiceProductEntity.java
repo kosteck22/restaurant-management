@@ -13,27 +13,31 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "products")
+@Table(name = "invoice_products")
 @Entity
-public class ProductEntity {
+public class InvoiceProductEntity {
     @Id
     private UUID id;
     private String name;
     private BigDecimal netPrice;
     private BigDecimal grossPrice;
+
     @Enumerated(value = EnumType.STRING)
     private VatRate vatRate;
     private String unitOfMeasure;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ORDER_ITEM_ID")
+    @JoinColumns({
+            @JoinColumn(name = "order_item_id", referencedColumnName = "id"),
+            @JoinColumn(name = "order_id", referencedColumnName = "ORDER_ID")
+    })
     private OrderItemEntity orderItem;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductEntity that = (ProductEntity) o;
+        InvoiceProductEntity that = (InvoiceProductEntity) o;
         return Objects.equals(id, that.id);
     }
 

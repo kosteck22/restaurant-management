@@ -6,7 +6,7 @@ import org.example.application.validation.ValidTaxNumber;
 public record CompanyRequest (
         @NotBlank String name,
         @NotBlank String street1,
-        @NotBlank String street2,
+        String street2,
         @NotBlank String city,
         @NotBlank String postalCode,
         @NotBlank @ValidTaxNumber String nip,

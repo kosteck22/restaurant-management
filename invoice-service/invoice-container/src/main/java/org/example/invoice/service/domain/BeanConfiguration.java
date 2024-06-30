@@ -1,5 +1,6 @@
 package org.example.invoice.service.domain;
 
+import org.example.dataaccess.invoice.repository.InvoiceJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.regions.Region;

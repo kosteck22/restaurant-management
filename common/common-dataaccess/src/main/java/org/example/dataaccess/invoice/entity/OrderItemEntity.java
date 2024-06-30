@@ -28,8 +28,8 @@ public class OrderItemEntity {
     private BigDecimal vat;
     private BigDecimal grossTotal;
 
-    @OneToOne(mappedBy = "order_item", cascade = CascadeType.ALL)
-    private ProductEntity product;
+    @OneToOne(mappedBy = "orderItem", cascade = CascadeType.ALL)
+    private InvoiceProductEntity product;
 
     @Override
     public boolean equals(Object o) {

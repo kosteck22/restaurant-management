@@ -1,5 +1,6 @@
 package org.example.invoice.service.domain.mapper;
 
+import org.example.domain.valueobject.Quantity;
 import org.example.invoice.service.domain.dto.create.CompanyRequest;
 import org.example.invoice.service.domain.dto.create.CreateInvoiceCommand;
 import org.example.invoice.service.domain.dto.create.CreateInvoiceResponse;
@@ -72,7 +73,7 @@ public class InvoiceDataMapper {
 
         return OrderItem.builder()
                 .product(product)
-                .quantity(orderItem.quantity().intValue())
+                .quantity(new Quantity(orderItem.quantity()))
                 .discount(orderItem.discount())
                 .netTotal(netTotal)
                 .vat(vat)

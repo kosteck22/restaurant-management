@@ -1,5 +1,6 @@
 package org.example.invoice.service.dataaccess.invoice.mapper;
 
+import org.example.dataaccess.invoice.entity.*;
 import org.example.domain.valueobject.*;
 import org.example.invoice.service.domain.entity.Invoice;
 import org.example.invoice.service.domain.entity.Order;
@@ -11,6 +12,7 @@ import org.example.invoice.service.domain.valueobject.OrderItemId;
 import org.example.invoice.service.domain.valueobject.ProductId;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +71,7 @@ public class InvoiceDataAccessMapper {
                         .orderItemId(new OrderItemId(orderItemEntity.getId()))
                         .orderId(new OrderId(orderItemEntity.getOrder().getId()))
                         .product(productEntityToProduct(orderItemEntity.getProduct()))
-                        .quantity(orderItemEntity.getQuantity())
+                        .quantity(new Quantity(BigDecimal.valueOf(orderItemEntity.getQuantity())))
                         .discount(orderItemEntity.getDiscount())
                         .netTotal(new Money(orderItemEntity.getNetTotal()))
                         .vat(new Money(orderItemEntity.getVat()))
@@ -78,7 +80,7 @@ public class InvoiceDataAccessMapper {
                 .collect(Collectors.toList());
     }
 
-    private Product productEntityToProduct(ProductEntity product) {
+    private Product productEntityToProduct(InvoiceProductEntity product) {
         return Product.builder()
                 .productId(new ProductId(product.getId()))
                 .name(product.getName())
@@ -120,7 +122,7 @@ public class InvoiceDataAccessMapper {
                 .map(orderItem -> {
                     OrderItemEntity orderItemEntity = OrderItemEntity.builder()
                             .id(orderItem.getId().getValue())
-                            .quantity(orderItem.getQuantity())
+                            .quantity(orderItem.getQuantity().getValue().intValue())
                             .discount(orderItem.getDiscount())
                             .netTotal(orderItem.getNetTotal().getAmount())
                             .vat(orderItem.getVat().getAmount())
@@ -134,8 +136,8 @@ public class InvoiceDataAccessMapper {
                 .collect(Collectors.toList());
     }
 
-    private ProductEntity productToProductEntity(Product product) {
-        return ProductEntity.builder()
+    private InvoiceProductEntity productToProductEntity(Product product) {
+        return InvoiceProductEntity.builder()
                 .id(product.getId().getValue())
                 .name(product.getName())
                 .netPrice(product.getNetPrice().getAmount())
