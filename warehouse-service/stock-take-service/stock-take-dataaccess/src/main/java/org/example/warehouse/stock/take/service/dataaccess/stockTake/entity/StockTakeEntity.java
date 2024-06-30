@@ -2,7 +2,6 @@ package org.example.warehouse.stock.take.service.dataaccess.stockTake.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.domain.valueobject.Money;
 import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeStatus;
 
 import java.math.BigDecimal;
@@ -19,6 +18,7 @@ import java.util.UUID;
 @Table(name = "stock-takes")
 @Entity
 public class StockTakeEntity {
+    @Id
     private UUID id;
     private LocalDateTime preparedDate;
     private BigDecimal totalPrice;
@@ -27,7 +27,7 @@ public class StockTakeEntity {
     private StockTakeStatus status;
 
     @OneToMany(mappedBy = "stockTake", cascade = CascadeType.ALL)
-    private List<StockItemEntity> items;
+    private List<StockTakeItemEntity> items;
 
     @Override
     public boolean equals(Object o) {

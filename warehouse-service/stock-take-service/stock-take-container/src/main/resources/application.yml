@@ -6,7 +6,7 @@ logging:
     org.example: DEBUG
 
 stock-take-service:
-  stock-update-request-topi-name: stock-update-request-topic-name
+  stock-update-request-topic-name: stock-update-request-topic-name
   stock-update-response-topic-name: stock-update-response-topic-name
 
 spring:

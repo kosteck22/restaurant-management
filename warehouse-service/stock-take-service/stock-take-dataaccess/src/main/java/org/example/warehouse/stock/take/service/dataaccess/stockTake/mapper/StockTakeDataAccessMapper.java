@@ -3,7 +3,7 @@ package org.example.warehouse.stock.take.service.dataaccess.stockTake.mapper;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
-import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.StockItemEntity;
+import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.StockTakeItemEntity;
 import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.StockTakeEntity;
 import org.example.warehouse.stock.take.service.domain.entity.StockTakeItem;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
@@ -23,13 +23,13 @@ public class StockTakeDataAccessMapper {
                 .totalPrice(stockTake.getTotalPrice().getAmount())
                 .items(stockItemsToStockItemEntities(stockTake.getItems()))
                 .build();
-        stockTakeEntity.getItems().forEach(stockItemEntity -> stockItemEntity.setStockTake(stockTakeEntity));
+        stockTakeEntity.getItems().forEach(stockTakeItemEntity -> stockTakeItemEntity.setStockTake(stockTakeEntity));
         return stockTakeEntity;
     }
 
-    private List<StockItemEntity> stockItemsToStockItemEntities(List<StockTakeItem> items) {
+    private List<StockTakeItemEntity> stockItemsToStockItemEntities(List<StockTakeItem> items) {
         return items.stream()
-                .map(stockItem -> StockItemEntity.builder()
+                .map(stockItem -> StockTakeItemEntity.builder()
                         .id(stockItem.getId().getValue())
                         .productId(stockItem.getProductId().getValue())
                         . name(stockItem.getName())
@@ -48,15 +48,15 @@ public class StockTakeDataAccessMapper {
                 .build();
     }
 
-    private List<StockTakeItem> stockTakeItemEntitiesToStockTakeItems(List<StockItemEntity> items) {
+    private List<StockTakeItem> stockTakeItemEntitiesToStockTakeItems(List<StockTakeItemEntity> items) {
         return items.stream()
-                .map(stockItemEntity -> StockTakeItem.builder()
-                        .stockItemId(new StockTakeItemId(stockItemEntity.getId()))
-                        .stockTakeId(new StockTakeId(stockItemEntity.getStockTake().getId()))
-                        .productId(new ProductId(stockItemEntity.getProductId()))
-                        .name(stockItemEntity.getName())
-                        .quantity(new Quantity(stockItemEntity.getQuantity()))
-                        .totalPrice(new Money(stockItemEntity.getTotalPrice()))
+                .map(stockTakeItemEntity -> StockTakeItem.builder()
+                        .stockTakeItemId(new StockTakeItemId(stockTakeItemEntity.getId()))
+                        .stockTakeId(new StockTakeId(stockTakeItemEntity.getStockTake().getId()))
+                        .productId(new ProductId(stockTakeItemEntity.getProductId()))
+                        .name(stockTakeItemEntity.getName())
+                        .quantity(new Quantity(stockTakeItemEntity.getQuantity()))
+                        .totalPrice(new Money(stockTakeItemEntity.getTotalPrice()))
                         .build())
                 .collect(Collectors.toList());
     }

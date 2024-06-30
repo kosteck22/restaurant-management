@@ -1,24 +1,40 @@
 package org.example.warehouse.stock.take.service.dataaccess.stockTake.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
+
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockItemEntityId implements Serializable {
+@IdClass(StockTakeItemEntityId.class)
+@Table(name = "order_items")
+@Entity
+public class StockTakeItemEntity {
+    @Id
     private Long id;
+
+    @Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "STOCK_TAKE_ID")
     private StockTakeEntity stockTake;
+
+    private UUID productId;
+    private String name;
+    private BigDecimal quantity;
+    private BigDecimal totalPrice;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StockItemEntityId that = (StockItemEntityId) o;
+        StockTakeItemEntity that = (StockTakeItemEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(stockTake, that.stockTake);
     }
 
