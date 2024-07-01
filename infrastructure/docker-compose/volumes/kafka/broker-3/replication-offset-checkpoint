@@ -2,11 +2,11 @@
 63
 stock-update-response-topic-name 2 0
 stock-subtract-request-topic-name 2 0
-__consumer_offsets 29 1
+__consumer_offsets 29 3
 __consumer_offsets 43 0
 __consumer_offsets 0 0
 __consumer_offsets 6 0
-__consumer_offsets 35 4
+__consumer_offsets 35 10
 __consumer_offsets 30 0
 __consumer_offsets 13 0
 __consumer_offsets 26 0
@@ -38,7 +38,7 @@ __consumer_offsets 16 1
 __consumer_offsets 10 0
 __consumer_offsets 11 0
 stock-update-response-topic-name 1 0
-_schemas 0 2
+_schemas 0 3
 stock-update-request-topic-name 0 0
 __consumer_offsets 20 0
 __consumer_offsets 47 0
@@ -48,7 +48,7 @@ __consumer_offsets 48 0
 stock-update-request-topic-name 2 0
 stock-subtract-response-topic-name 1 0
 __consumer_offsets 36 0
-__consumer_offsets 22 3
+__consumer_offsets 22 4
 __consumer_offsets 46 0
 __consumer_offsets 23 0
 __consumer_offsets 42 0

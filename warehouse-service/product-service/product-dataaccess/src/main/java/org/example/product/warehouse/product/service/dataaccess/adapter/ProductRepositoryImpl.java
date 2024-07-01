@@ -7,7 +7,9 @@ import org.example.warehouse.product.service.domain.ports.output.repository.Prod
 import org.example.domain.valueobject.ProductId;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductRepositoryImpl implements ProductRepository {
@@ -30,5 +32,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Optional<Product> findById(ProductId productId) {
         return productJpaRepository.findById(productId.getValue())
                 .map(productDataAccessMapper::productEntityToProduct);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productJpaRepository.findAll().stream()
+                .map(productDataAccessMapper::productEntityToProduct)
+                .collect(Collectors.toList());
     }
 }

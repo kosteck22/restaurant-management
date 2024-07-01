@@ -48,7 +48,7 @@ public class Product extends AggregateRoot<ProductId> {
         private Builder() {
         }
 
-        public Builder id(ProductId val) {
+        public Builder productId(ProductId val) {
             productId = val;
             return this;
         }

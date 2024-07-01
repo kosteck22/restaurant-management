@@ -20,7 +20,7 @@ public class CompanyController {
     }
 
     @GetMapping("tax-number/{tax-number}")
-    public ResponseEntity<CompanyResponse> getCompanyByNip(@PathVariable("tax-number") String taxNumber) {
+    public ResponseEntity<CompanyResponse> getCompanyByTaxNumber(@PathVariable("tax-number") String taxNumber) {
         log.info("Getting company by tax number: {}", taxNumber);
         CompanyResponse companyResponse = companyApplicationService.getCompanyByTaxNumber(taxNumber);
 
