@@ -15,6 +15,7 @@
         <module>product-service</module>
         <module>stock-service</module>
         <module>stock-take-service</module>
+        <module>recipe-service</module>
     </modules>
 
 </project>

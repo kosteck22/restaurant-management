@@ -3,7 +3,7 @@ package org.example.warehouse.stock.service.domain.entity;
 import org.example.domain.entity.BaseEntity;
 import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
-import org.example.warehouse.stock.service.domain.valueobject.RecipeItemId;
+import org.example.domain.valueobject.RecipeItemId;
 
 public class RecipeItem extends BaseEntity<RecipeItemId> {
     private final ProductId productId;

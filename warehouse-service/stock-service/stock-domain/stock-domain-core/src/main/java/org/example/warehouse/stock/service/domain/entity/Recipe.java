@@ -2,7 +2,7 @@ package org.example.warehouse.stock.service.domain.entity;
 
 import org.example.domain.entity.AggregateRoot;
 import org.example.domain.valueobject.MenuItemId;
-import org.example.warehouse.stock.service.domain.valueobject.RecipeId;
+import org.example.domain.valueobject.RecipeId;
 
 import java.util.List;
 
