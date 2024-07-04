@@ -15,5 +15,6 @@
         <module>recipe-domain</module>
         <module>recipe-dataaccess</module>
         <module>recipe-application</module>
+        <module>recipe-container</module>
     </modules>
 </project>

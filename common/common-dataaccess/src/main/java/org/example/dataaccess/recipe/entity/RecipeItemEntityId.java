@@ -1,7 +1,6 @@
 package org.example.dataaccess.recipe.entity;
 
 import lombok.*;
-import org.example.warehouse.recipe.service.domain.entity.RecipeItem;
 
 import java.io.Serializable;
 import java.util.Objects;

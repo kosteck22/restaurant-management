@@ -1,8 +1,6 @@
 package org.example.dataaccess.recipe.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -22,6 +20,8 @@ public class RecipeEntity {
     private UUID id;
     private UUID menuItemId;
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeItemEntity> items;
 
     @Override

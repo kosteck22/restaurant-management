@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface RecipeJpaRepository extends JpaRepository<RecipeEntity, UUID> {
-    @Query("SELECT r FROM Recipe r WHERE r.menuItemId IN :menuItemIds AND r.createdAt = (SELECT MAX(r2.createdAt) FROM Recipe r2 WHERE r2.menuItemId = r.menuItemId)")
+    @Query("SELECT r FROM RecipeEntity r WHERE r.menuItemId IN :menuItemIds AND r.createdAt = (SELECT MAX(r2.createdAt) FROM RecipeEntity r2 WHERE r2.menuItemId = r.menuItemId)")
     List<RecipeEntity> findNewestRecipesByMenuItemIds(@Param("menuItemIds") List<UUID> menuItemIds);
 }

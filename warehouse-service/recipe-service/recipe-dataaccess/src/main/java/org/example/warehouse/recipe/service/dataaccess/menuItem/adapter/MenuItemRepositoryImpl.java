@@ -4,10 +4,12 @@ import org.example.dataaccess.menu.repository.MenuItemJpaRepository;
 import org.example.warehouse.recipe.service.dataaccess.menuItem.mapper.MenuItemDataAccessMapper;
 import org.example.warehouse.recipe.service.domain.entity.MenuItem;
 import org.example.warehouse.recipe.service.domain.ports.output.repositorty.MenuItemRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Component
 public class MenuItemRepositoryImpl implements MenuItemRepository {
     private final MenuItemJpaRepository menuItemJpaRepository;
     private final MenuItemDataAccessMapper menuItemDataAccessMapper;
