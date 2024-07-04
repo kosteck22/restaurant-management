@@ -39,7 +39,7 @@ public class StockSubtractRequestHelper {
     public void subtractStock(StockSubtractRequest stockSubtractRequest) {
         log.info("Received stock subtract request for sale id: {}", stockSubtractRequest.saleId());
         Sale sale = stockDataMapper.stockSubtractRequestToSale(stockSubtractRequest);
-        List<Recipe> recipes = recipeRepository.findAllById(sale.getItems().stream()
+        List<Recipe> recipes = recipeRepository.findAllByMenuItemIds(sale.getItems().stream()
                 .map(saleItem -> saleItem.getMenuItemId().getValue())
                 .collect(Collectors.toList()));
         Stock stock = getActiveStock();

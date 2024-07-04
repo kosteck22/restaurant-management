@@ -1,8 +1,8 @@
 package org.example.warehouse.recipe.service.dataaccess.recipe.mapper;
 
 import org.example.domain.valueobject.*;
-import org.example.warehouse.recipe.service.dataaccess.recipe.entity.RecipeEntity;
-import org.example.warehouse.recipe.service.dataaccess.recipe.entity.RecipeItemEntity;
+import org.example.dataaccess.recipe.entity.RecipeEntity;
+import org.example.dataaccess.recipe.entity.RecipeItemEntity;
 import org.example.warehouse.recipe.service.domain.entity.Recipe;
 import org.example.warehouse.recipe.service.domain.entity.RecipeItem;
 import org.springframework.stereotype.Component;

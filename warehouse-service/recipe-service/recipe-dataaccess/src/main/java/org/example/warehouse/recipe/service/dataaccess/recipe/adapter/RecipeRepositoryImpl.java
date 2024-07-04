@@ -1,7 +1,7 @@
 package org.example.warehouse.recipe.service.dataaccess.recipe.adapter;
 
 import org.example.warehouse.recipe.service.dataaccess.recipe.mapper.RecipeDataAccessMapper;
-import org.example.warehouse.recipe.service.dataaccess.recipe.repository.RecipeJpaRepository;
+import org.example.dataaccess.recipe.repository.RecipeJpaRepository;
 import org.example.warehouse.recipe.service.domain.entity.Recipe;
 import org.example.warehouse.recipe.service.domain.ports.output.repositorty.RecipeRepository;
 import org.springframework.stereotype.Component;

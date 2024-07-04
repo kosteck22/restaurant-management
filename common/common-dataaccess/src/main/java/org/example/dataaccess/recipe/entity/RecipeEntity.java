@@ -1,4 +1,4 @@
-package org.example.warehouse.recipe.service.dataaccess.recipe.entity;
+package org.example.dataaccess.recipe.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
