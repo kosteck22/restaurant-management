@@ -5,10 +5,7 @@ import org.example.warehouse.product.service.domain.dto.get.ProductResponse;
 import org.example.warehouse.product.service.domain.ports.input.service.ProductApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class ProductController {
         this.productApplicationService = productApplicationService;
     }
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts() {
         log.info("Getting list of products");
         List<ProductResponse> products = productApplicationService.getProducts();
