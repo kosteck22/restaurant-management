@@ -15,6 +15,7 @@ import org.example.warehouse.stock.service.domain.valueobject.StockSubtractTrans
 import org.example.warehouse.stock.service.domain.valueobject.StockId;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class StockDataAccessMapper {
     }
 
     private List<StockItemBeforeClosing> StockItemsBeforeClosingEntitiesToStockItemsBeforeClosing(List<StockItemBeforeClosingEntity> stockItemsBeforeClosing) {
-        return stockItemsBeforeClosing.stream()
+        return stockItemsBeforeClosing == null ? new ArrayList<>() : stockItemsBeforeClosing.stream()
                 .map(stockItemBeforeClosingEntity ->
                         StockItemBeforeClosing.builder()
                                 .id(new StockItemBeforeClosingId(stockItemBeforeClosingEntity.getId()))
@@ -48,7 +49,7 @@ public class StockDataAccessMapper {
     }
 
     private List<StockSubtractTransaction> StockSubtractTransactionEntitiesToStockSubtractTransactions(List<StockSubtractTransactionEntity> subtractTransactions) {
-        return subtractTransactions.stream()
+        return subtractTransactions == null ? new ArrayList<>() : subtractTransactions.stream()
                 .map(stockSubtractTransactionEntity ->
                         StockSubtractTransaction.builder()
                                 .stockSubtractTransactionId(new StockSubtractTransactionId(stockSubtractTransactionEntity.getId()))
@@ -62,23 +63,24 @@ public class StockDataAccessMapper {
     }
 
     private List<StockAddTransaction> StockAddTransactionEntitiesToStockAddTransactions(List<StockAddTransactionEntity> addingTransactions) {
-        return addingTransactions.stream()
-                .map(stockAddTransactionEntity ->
-                        StockAddTransaction.builder()
-                                .stockAddTransactionId(new StockAddTransactionId(stockAddTransactionEntity.getId()))
-                                .additionDate(stockAddTransactionEntity.getAdditionDate())
-                                .productId(new ProductId(stockAddTransactionEntity.getProductId()))
-                                .grossPrice(new Money(stockAddTransactionEntity.getGrossPrice()))
-                                .totalGrossPrice(new Money(stockAddTransactionEntity.getTotalGrossPrice()))
-                                .quantity(new Quantity(stockAddTransactionEntity.getQuantity()))
-                                .stockAddTransactionType(stockAddTransactionEntity.getStockAddTransactionType())
-                                .invoiceId(new InvoiceId(stockAddTransactionEntity.getInvoiceId()))
-                                .build())
-                .collect(Collectors.toList());
+        return addingTransactions == null ? new ArrayList<>() :
+                addingTransactions.stream()
+                        .map(stockAddTransactionEntity ->
+                                StockAddTransaction.builder()
+                                        .stockAddTransactionId(new StockAddTransactionId(stockAddTransactionEntity.getId()))
+                                        .additionDate(stockAddTransactionEntity.getAdditionDate())
+                                        .productId(new ProductId(stockAddTransactionEntity.getProductId()))
+                                        .grossPrice(new Money(stockAddTransactionEntity.getGrossPrice()))
+                                        .totalGrossPrice(new Money(stockAddTransactionEntity.getTotalGrossPrice()))
+                                        .quantity(new Quantity(stockAddTransactionEntity.getQuantity()))
+                                        .stockAddTransactionType(stockAddTransactionEntity.getStockAddTransactionType())
+                                        .invoiceId(new InvoiceId(stockAddTransactionEntity.getInvoiceId()))
+                                        .build())
+                        .collect(Collectors.toList());
     }
 
     public StockEntity stockToStockEntity(Stock stock) {
-        return StockEntity.builder()
+        StockEntity stockEntity = StockEntity.builder()
                 .id(stock.getId().getValue())
                 .totalGrossPrice(stock.getTotalGrossPrice().getAmount())
                 .fromStockTake(stock.getFromStockTake().getValue())
@@ -88,17 +90,50 @@ public class StockDataAccessMapper {
                 .subtractTransactions(StockSubtractTransactionsToStockSubtractTransactionEntities(stock.getSubtractTransactions()))
                 .stockItemsBeforeClosing(StockItemsBeforeClosingToStockItemBeforeClosingEntities(stock.getStockItemsBeforeClosing()))
                 .build();
+        stockEntity.getSubtractTransactions().forEach(stockSubtractTransactionEntity -> stockSubtractTransactionEntity.setStock(stockEntity));
+        stockEntity.getStockItemsBeforeClosing().forEach(stockItemBeforeClosingEntity -> stockItemBeforeClosingEntity.setStock(stockEntity));
+        stockEntity.getAddingTransactions().forEach(stockAddTransactionEntity -> stockAddTransactionEntity.setStock(stockEntity));
+        return stockEntity;
     }
 
     private List<StockItemBeforeClosingEntity> StockItemsBeforeClosingToStockItemBeforeClosingEntities(List<StockItemBeforeClosing> stockItemsBeforeClosing) {
-        return null;
+        return stockItemsBeforeClosing.stream()
+                .map(stockItemBeforeClosing -> StockItemBeforeClosingEntity.builder()
+                        .id(stockItemBeforeClosing.getId().getValue())
+                        .additionDate(stockItemBeforeClosing.getAdditionDate())
+                        .productId(stockItemBeforeClosing.getProductId().getValue())
+                        .quantity(stockItemBeforeClosing.getQuantity().getValue())
+                        .grossPrice(stockItemBeforeClosing.getGrossPrice().getAmount())
+                        .invoiceId(stockItemBeforeClosing.getInvoiceId().getValue())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private List<StockSubtractTransactionEntity> StockSubtractTransactionsToStockSubtractTransactionEntities(List<StockSubtractTransaction> subtractTransactions) {
-        return null;
+        return subtractTransactions.stream()
+                .map(stockSubtractTransaction -> StockSubtractTransactionEntity.builder()
+                        .id(stockSubtractTransaction.getId().getValue())
+                        .subtractDate(stockSubtractTransaction.getSubtractDate())
+                        .productId(stockSubtractTransaction.getProductId().getValue())
+                        .quantity(stockSubtractTransaction.getQuantity().getValue())
+                        .stockSubtractTransactionType(stockSubtractTransaction.getStockSubtractTransactionType())
+                        .saleId(stockSubtractTransaction.getSaleId() == null ? null : stockSubtractTransaction.getSaleId().getValue())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private List<StockAddTransactionEntity> StockAddTransactionsToStockAddTransactionEntities(List<StockAddTransaction> addTransactions) {
-        return null;
+        return addTransactions.stream()
+                .map(addTransaction -> StockAddTransactionEntity.builder()
+                        .id(addTransaction.getId().getValue())
+                        .additionDate(addTransaction.getAdditionDate())
+                        .productId(addTransaction.getProductId().getValue())
+                        .quantity(addTransaction.getQuantity().getValue())
+                        .grossPrice(addTransaction.getGrossPrice().getAmount())
+                        .totalGrossPrice(addTransaction.getTotalGrossPrice().getAmount())
+                        .stockAddTransactionType(addTransaction.getStockAddTransactionType())
+                        .invoiceId(addTransaction.getStockAddTransactionType() == null ? null : addTransaction.getInvoiceId().getValue())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

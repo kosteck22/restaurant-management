@@ -2,6 +2,7 @@ package org.example.warehouse.stock.service.dataaccess.invoice.mapper;
 
 import org.example.dataaccess.invoice.entity.InvoiceEntity;
 import org.example.dataaccess.invoice.entity.OrderItemEntity;
+import org.example.domain.valueobject.InvoiceId;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.Quantity;
 import org.example.domain.valueobject.UnitOfMeasure;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class InvoiceDataAccessMapper {
     public Invoice invoiceEntityToinvoice(InvoiceEntity invoiceEntity) {
         return Invoice.builder()
+                .invoiceId(new InvoiceId(invoiceEntity.getId()))
                 .date(invoiceEntity.getCreatedAt())
                 .items(invoiceOrderItemEntitiesToInvoiceItem(invoiceEntity.getOrder().getItems()))
                 .build();

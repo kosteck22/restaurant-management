@@ -90,7 +90,7 @@ public class InvoiceDataMapper {
                 .vatRate(VatRate.valueOf(orderItem.vatRate()))
                 .grossPrice(new Money(orderItem.netPrice()
                         .multiply(BigDecimal.valueOf(orderItem.vatRate())
-                                .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP)
+                                .divide(BigDecimal.valueOf(100))
                                 .add(BigDecimal.ONE))
                         .setScale(2, RoundingMode.HALF_UP)))
                 .unitOfMeasure(new UnitOfMeasure(orderItem.unitOfMeasure()))

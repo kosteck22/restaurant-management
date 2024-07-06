@@ -23,7 +23,7 @@ public class ProductDataAccessMapper {
         return ProductEntity.builder()
                 .id(product.getId().getValue())
                 .name(product.getName())
-                .category(product.getCategory().getName())
+                .category(product.getCategory() != null ? product.getCategory().getName() : null)
                 .unitOfMeasure(product.getUnitOfMeasure().getName())
                 .build();
     }
