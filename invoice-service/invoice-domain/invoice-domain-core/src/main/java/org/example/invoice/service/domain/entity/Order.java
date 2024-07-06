@@ -42,7 +42,7 @@ public class Order extends BaseEntity<OrderId> {
     void validateTotalPrices() {
         if (netPrice == null || grossPrice == null || vat == null ||
         !netPrice.isGreaterThanZero() || !grossPrice.isGreaterThanZero() ||
-        !vat.isGreaterThanZero()) {
+                !vat.isGreaterThanOrEqualZero()) {
             throw new InvoiceDomainException("Total prices must be greater than zero!");
         }
         if (!netPrice.add(vat).equals(grossPrice)) {

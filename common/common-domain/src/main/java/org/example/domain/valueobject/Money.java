@@ -18,6 +18,11 @@ public class Money {
                 this.amount.compareTo(BigDecimal.ZERO) > 0;
     }
 
+    public boolean isGreaterThanOrEqualZero() {
+        return this.amount != null &&
+                this.amount.compareTo(BigDecimal.ZERO) >= 0;
+    }
+
     public boolean isGreaterThan(Money money) {
         return this.amount != null &&
                 money != null &&

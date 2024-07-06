@@ -47,7 +47,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
                 netTotal == null || vat == null || grossTotal == null) {
             throw new InvoiceDomainException("Total prices cannot be null!");
         }
-        if (!netTotal.isGreaterThanZero() || !vat.isGreaterThanZero() || !grossTotal.isGreaterThanZero()) {
+        if (!netTotal.isGreaterThanZero() || !vat.isGreaterThanOrEqualZero() || !grossTotal.isGreaterThanZero()) {
             throw new InvoiceDomainException("Total prices must be greater than zero!");
         }
         if (!netTotal.add(vat).equals(grossTotal)) {
