@@ -12,6 +12,7 @@
     <artifactId>sale-container</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>sale-messaging</artifactId>

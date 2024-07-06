@@ -1,5 +1,6 @@
 package org.example.sale.service.dataaccess.sale.adapter;
 
+import org.example.sale.service.dataaccess.sale.entity.SaleEntity;
 import org.example.sale.service.dataaccess.sale.mapper.SaleDataAccessMapper;
 import org.example.sale.service.dataaccess.sale.repository.SaleJpaRepository;
 import org.example.sale.service.domain.entity.Sale;
@@ -23,8 +24,10 @@ public class SaleRepositoryImpl implements SaleRepository {
 
     @Override
     public Sale save(Sale sale) {
+        SaleEntity entity = saleDataAccessMapper.saleToSaleEntity(sale);
+        SaleEntity save = saleJpaRepository.save(entity);
         return saleDataAccessMapper.saleEntityToSale(
-                saleJpaRepository.save(saleDataAccessMapper.saleToSaleEntity(sale)));
+                save);
     }
 
     @Override

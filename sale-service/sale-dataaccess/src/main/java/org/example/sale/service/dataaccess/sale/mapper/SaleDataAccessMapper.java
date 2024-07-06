@@ -36,7 +36,7 @@ public class SaleDataAccessMapper {
     }
 
     public SaleEntity saleToSaleEntity(Sale sale) {
-        return SaleEntity.builder()
+        SaleEntity saleEntity = SaleEntity.builder()
                 .id(sale.getId().getValue())
                 .date(sale.getDate())
                 .items(saleItemsToSaleItemEntities(sale.getItems()))
@@ -48,6 +48,9 @@ public class SaleDataAccessMapper {
                 .failureMessages(sale.getFailureMessages() != null ?
                         String.join(FAILURE_MESSAGE_DELIMITER, sale.getFailureMessages()) : "")
                 .build();
+        saleEntity.getItems().forEach(saleItemEntity -> saleItemEntity.setSale(saleEntity));
+
+        return saleEntity;
     }
 
     private List<SaleItem> saleItemEntitiesToSaleItems(List<SaleItemEntity> items) {

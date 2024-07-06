@@ -4,7 +4,6 @@ server:
 logging:
   level:
     org.example: DEBUG
-
 sale-service:
   stock-subtract-request-topic-name: stock-subtract-request-topic-name
   stock-subtract-response-topic-name: stock-subtract-response-topic-name

@@ -40,7 +40,7 @@ public class SaleCreateCommandHandler {
         Menu menu = checkMenu(createSaleCommand);
         Sale sale = saleDataMapper.CreateSaleCommandToSale(createSaleCommand);
         SaleCreatedEvent saleCreatedEvent = saleDomainService.validateAndInitiateSale(sale, menu);
-        saveSale(sale);
+        saveSale(saleCreatedEvent.getSale());
         log.info("Sale is created with id: {}", saleCreatedEvent.getSale().getId().getValue());
         return saleDataMapper.saleToCreateSaleResponse(sale, "Sale created successfully");
     }

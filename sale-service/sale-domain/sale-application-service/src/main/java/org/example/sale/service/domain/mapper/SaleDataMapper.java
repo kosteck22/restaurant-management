@@ -29,7 +29,7 @@ public class SaleDataMapper {
         return items.stream()
                 .map(saleItem -> SaleItem.builder()
                         .quantity(new Quantity(BigDecimal.valueOf(saleItem.quantity())))
-                        .discount(saleItem.discount())
+                        .discount(saleItem.discount() == null ? 0 : saleItem.discount())
                         .grossPrice(new Money(saleItem.grossPrice()))
                         .grossPriceTotal(new Money(saleItem.grossPriceTotal()))
                         .menuItem(new MenuItem(new MenuItemId(saleItem.menuItemId())))
