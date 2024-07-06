@@ -1,13 +1,12 @@
 package org.example.invoice.service.domain.valueobject;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-
-import java.util.Objects;
-import java.util.UUID;
+import lombok.NoArgsConstructor;
 
 @Builder
+@AllArgsConstructor
 public class Company {
-    private final UUID id;
     private final String name;
     private final String taxNumber;
     private final String regon;
@@ -16,27 +15,16 @@ public class Company {
     private final String city;
     private final String postalCode;
 
-    public Company(UUID id,
-                   String name,
-                   String taxNumber,
-                   String regon,
-                   String street1,
-                   String street2,
-                   String city,
-                   String postalCode) {
-        this.id = id;
-        this.name = name;
-        this.taxNumber = taxNumber;
-        this.regon = regon;
-        this.street1 = street1;
-        this.street2 = street2;
-        this.city = city;
-        this.postalCode = postalCode;
+    private Company(Builder builder) {
+        name = builder.name;
+        taxNumber = builder.taxNumber;
+        regon = builder.regon;
+        street1 = builder.street1;
+        street2 = builder.street2;
+        city = builder.city;
+        postalCode = builder.postalCode;
     }
 
-    public UUID getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
@@ -66,16 +54,59 @@ public class Company {
         return postalCode;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Company company = (Company) o;
-        return Objects.equals(taxNumber, company.taxNumber);
+    public static Builder builder() {
+        return new Builder();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(taxNumber);
+    public static final class Builder {
+        private String name;
+        private String taxNumber;
+        private String regon;
+        private String street1;
+        private String street2;
+        private String city;
+        private String postalCode;
+
+        private Builder() {
+        }
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder taxNumber(String val) {
+            taxNumber = val;
+            return this;
+        }
+
+        public Builder regon(String val) {
+            regon = val;
+            return this;
+        }
+
+        public Builder street1(String val) {
+            street1 = val;
+            return this;
+        }
+
+        public Builder street2(String val) {
+            street2 = val;
+            return this;
+        }
+
+        public Builder city(String val) {
+            city = val;
+            return this;
+        }
+
+        public Builder postalCode(String val) {
+            postalCode = val;
+            return this;
+        }
+
+        public Company build() {
+            return new Company(this);
+        }
     }
 }

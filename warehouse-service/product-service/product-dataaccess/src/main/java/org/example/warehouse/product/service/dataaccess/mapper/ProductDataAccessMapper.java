@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class ProductDataAccessMapper {
     public Product productEntityToProduct(ProductEntity productEntity) {
         return Product.builder()
-                .id(new ProductId(productEntity.getId()))
+                .productId(new ProductId(productEntity.getId()))
                 .name(productEntity.getName())
                 .category(new Category(productEntity.getCategory()))
                 .unitOfMeasure(new UnitOfMeasure(productEntity.getUnitOfMeasure()))

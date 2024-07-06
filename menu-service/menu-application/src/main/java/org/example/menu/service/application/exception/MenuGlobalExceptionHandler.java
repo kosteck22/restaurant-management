@@ -27,4 +27,16 @@ public class MenuGlobalExceptionHandler extends GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 new Date());
     }
+
+    @ResponseBody
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleException(IllegalArgumentException illegalArgumentException, HttpServletRequest request) {
+        log.error(illegalArgumentException.getMessage(), illegalArgumentException);
+        return new ErrorDTO(
+                request.getRequestURI(),
+                illegalArgumentException.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                new Date());
+    }
 }

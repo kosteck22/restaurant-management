@@ -55,12 +55,12 @@ public class Order extends BaseEntity<OrderId> {
         Money orderItemsNetTotal = Money.ZERO;
         Money orderItemsVatTotal = Money.ZERO;
 
-        items.forEach(orderItem -> {
+        for (OrderItem orderItem : items) {
             orderItem.validate();
-            orderItemsGrossTotal.add(orderItem.getGrossTotal());
-            orderItemsNetTotal.add(orderItem.getNetTotal());
-            orderItemsVatTotal.add(orderItem.getVat());
-        });
+            orderItemsGrossTotal = orderItemsGrossTotal.add(orderItem.getGrossTotal());
+            orderItemsNetTotal = orderItemsNetTotal.add(orderItem.getNetTotal());
+            orderItemsVatTotal = orderItemsVatTotal.add(orderItem.getVat());
+        }
 
         if (!grossPrice.equals(orderItemsGrossTotal) ||
         !netPrice.equals(orderItemsNetTotal) ||

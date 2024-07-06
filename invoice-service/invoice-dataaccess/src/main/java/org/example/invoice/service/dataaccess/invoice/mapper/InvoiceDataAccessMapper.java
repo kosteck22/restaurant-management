@@ -6,7 +6,6 @@ import org.example.invoice.service.domain.entity.Invoice;
 import org.example.invoice.service.domain.entity.Order;
 import org.example.invoice.service.domain.entity.OrderItem;
 import org.example.invoice.service.domain.entity.Product;
-import org.example.invoice.service.domain.valueobject.Company;
 import org.example.invoice.service.domain.valueobject.OrderId;
 import org.example.invoice.service.domain.valueobject.OrderItemId;
 import org.example.invoice.service.domain.valueobject.ProductId;
@@ -49,8 +48,6 @@ public class InvoiceDataAccessMapper {
                         String.join(FAILURE_MESSAGE_DELIMITER, invoice.getFailureMessages()) : "")
                 .trackingId(invoice.getTrackingId().getValue())
                 .build();
-        invoiceEntity.getSeller().setInvoice(invoiceEntity);
-        invoiceEntity.getBuyer().setInvoice(invoiceEntity);
         invoiceEntity.getOrder().setInvoice(invoiceEntity);
 
         return invoiceEntity;
@@ -91,9 +88,8 @@ public class InvoiceDataAccessMapper {
                 .build();
     }
 
-    private Company companyEntityToCompany(CompanyEntity companyEntity) {
-        return new Company(
-                companyEntity.getId(),
+    private org.example.invoice.service.domain.valueobject.Company companyEntityToCompany(Company companyEntity) {
+        return new org.example.invoice.service.domain.valueobject.Company(
                 companyEntity.getName(),
                 companyEntity.getNip(),
                 companyEntity.getRegon(),
@@ -147,9 +143,8 @@ public class InvoiceDataAccessMapper {
                 .build();
     }
 
-    private CompanyEntity companyToCompanyEntity(Company company) {
-        return CompanyEntity.builder()
-                .id(company.getId())
+    private Company companyToCompanyEntity(org.example.invoice.service.domain.valueobject.Company company) {
+        return Company.builder()
                 .name(company.getName())
                 .nip(company.getTaxNumber())
                 .regon(company.getRegon())

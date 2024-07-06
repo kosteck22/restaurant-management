@@ -19,6 +19,8 @@ import java.util.UUID;
 public class MenuItemEntity {
     @Id
     private UUID id;
+
+    @Column(unique = true)
     private String name;
     private String shortName;
     private String description;

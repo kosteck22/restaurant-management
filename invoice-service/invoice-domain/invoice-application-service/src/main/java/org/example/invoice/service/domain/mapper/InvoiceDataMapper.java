@@ -62,19 +62,21 @@ public class InvoiceDataMapper {
     private OrderItem orderItemToOrderItemEntity(org.example.invoice.service.domain.dto.create.OrderItem orderItem) {
         Product product = orderItemToProduct(orderItem);
         Money netTotal = new Money(orderItem.netPrice())
-                .afterDiscount(orderItem.discount())
+                .afterDiscount(orderItem.discount() == null ? 0 : orderItem.discount())
                 .multiply(orderItem.quantity().intValue());
 
-        Money grossTotal = new Money(netTotal.getAmount()
-                .multiply(BigDecimal.valueOf(orderItem.vatRate())
-                        .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP)
-                        .add(BigDecimal.ONE)).setScale(2, RoundingMode.HALF_UP));
+        BigDecimal add = BigDecimal.valueOf(orderItem.vatRate())
+                .divide(BigDecimal.valueOf(100))
+                .add(BigDecimal.ONE);
+        BigDecimal amount = netTotal.getAmount()
+                .multiply(add).setScale(2, RoundingMode.HALF_UP);
+        Money grossTotal = new Money(amount);
         Money vat = grossTotal.subtract(netTotal);
 
         return OrderItem.builder()
                 .product(product)
                 .quantity(new Quantity(orderItem.quantity()))
-                .discount(orderItem.discount())
+                .discount(orderItem.discount() == null ? 0 : orderItem.discount())
                 .netTotal(netTotal)
                 .vat(vat)
                 .grossTotal(grossTotal)
@@ -97,7 +99,6 @@ public class InvoiceDataMapper {
 
     private Company companyRequestToCompany(CompanyRequest companyRequest) {
         return new Company(
-                UUID.randomUUID(),
                 companyRequest.name(),
                 companyRequest.nip(),
                 companyRequest.regon(),

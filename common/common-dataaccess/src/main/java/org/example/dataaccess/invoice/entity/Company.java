@@ -1,21 +1,21 @@
 package org.example.dataaccess.invoice.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
-import java.util.UUID;
 
+
+@Embeddable
 @Getter
-@Setter
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "companies")
-@Entity
-public class CompanyEntity {
-    @Id
-    private UUID id;
+@NoArgsConstructor
+@Builder
+public class Company {
+
     private String name;
     private String nip;
     private String regon;
@@ -24,20 +24,16 @@ public class CompanyEntity {
     private String city;
     private String postalCode;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "INVOICE_ID")
-    private InvoiceEntity invoice;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CompanyEntity that = (CompanyEntity) o;
-        return Objects.equals(id, that.id);
+        Company that = (Company) o;
+        return Objects.equals(nip, that.nip);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(nip);
     }
 }

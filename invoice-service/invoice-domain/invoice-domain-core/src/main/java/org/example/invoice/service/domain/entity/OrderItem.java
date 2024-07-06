@@ -6,8 +6,10 @@ import org.example.invoice.service.domain.exception.InvoiceDomainException;
 import org.example.domain.valueobject.Money;
 import org.example.invoice.service.domain.valueobject.OrderId;
 import org.example.invoice.service.domain.valueobject.OrderItemId;
+import org.example.invoice.service.domain.valueobject.ProductId;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class OrderItem extends BaseEntity<OrderItemId> {
     private OrderId orderId;
@@ -32,6 +34,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
     void initializeOrderItem(OrderId orderId, OrderItemId orderItemId) {
         this.orderId = orderId;
         super.setId(orderItemId);
+        product.setId(new ProductId(UUID.randomUUID()));
     }
 
     void validate() {
@@ -44,10 +47,10 @@ public class OrderItem extends BaseEntity<OrderItemId> {
                 netTotal == null || vat == null || grossTotal == null) {
             throw new InvoiceDomainException("Total prices cannot be null!");
         }
-        if (!netTotal.isGreaterThanZero() || vat.isGreaterThanZero() || grossTotal.isGreaterThanZero()) {
+        if (!netTotal.isGreaterThanZero() || !vat.isGreaterThanZero() || !grossTotal.isGreaterThanZero()) {
             throw new InvoiceDomainException("Total prices must be greater than zero!");
         }
-        if (!netTotal.add(vat).multiply(quantity.getValue()).equals(grossTotal)) {
+        if (!netTotal.add(vat).equals(grossTotal)) {
             throw new InvoiceDomainException(
                     "Net price plus vat must be equal to grossPrice for product %s!"
                             .formatted(product.getName()) );
