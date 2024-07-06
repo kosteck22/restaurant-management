@@ -7,6 +7,7 @@ import org.example.warehouse.stock.service.domain.dto.service.add.AddProductsFro
 import org.example.warehouse.stock.service.domain.entity.Invoice;
 import org.example.warehouse.stock.service.domain.entity.Product;
 import org.example.warehouse.stock.service.domain.entity.Stock;
+import org.example.warehouse.stock.service.domain.entity.StockAddTransaction;
 import org.example.warehouse.stock.service.domain.exception.StockDomainException;
 import org.example.warehouse.stock.service.domain.mapper.StockDataMapper;
 import org.example.warehouse.stock.service.domain.ports.output.repository.InvoiceRepository;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -44,12 +46,23 @@ public class AddProductsFromInvoiceCommandHandler {
     @Transactional
     public AddProductsFromInvoiceResponse addProductsFromInvoice(AddProductsFromInvoiceCommand addProductsFromInvoiceCommand) {
         Stock stock = checkStock();
+        checkIfInvoiceAlreadyAdded(stock, addProductsFromInvoiceCommand.invoiceId());
         Invoice invoice = checkInvoice(addProductsFromInvoiceCommand);
         List<Product> products = productRepository.findAll();
         stockDomainService.addStock(stock, invoice, products);
         persistDbObjects(products, stock);
         log.info("Products added successfully to stock for invoice id: {}", invoice.getId().getValue());
         return stockDataMapper.stockToAddProductsFromInvoiceResponse(stock, "Products added successfully to stock for invoice id: %s".formatted(invoice.getId().getValue()));
+    }
+
+    private void checkIfInvoiceAlreadyAdded(Stock stock, UUID invoiceId) {
+        List<StockAddTransaction> addTransactionsForInvoiceId = stock.getAddTransactions().stream()
+                .filter(addTransaction -> addTransaction.getInvoiceId().getValue().equals(invoiceId))
+                .toList();
+        if (!addTransactionsForInvoiceId.isEmpty()) {
+            log.warn("Invoice with id: {} already added to stock", invoiceId);
+            throw new StockDomainException("Invoice with id: %s already added to stock");
+        }
     }
 
     private void persistDbObjects(List<Product> products, Stock stock) {
@@ -74,6 +87,5 @@ public class AddProductsFromInvoiceCommandHandler {
             throw new StockDomainException("Could not find invoice with invoice id: %s".formatted(invoiceId));
         }
         return optionalInvoice.get();
-
     }
 }
