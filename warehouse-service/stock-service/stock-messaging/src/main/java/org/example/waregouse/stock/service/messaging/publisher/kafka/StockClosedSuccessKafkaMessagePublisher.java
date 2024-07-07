@@ -36,7 +36,7 @@ public class StockClosedSuccessKafkaMessagePublisher implements StockClosedSucce
 
         try {
             StockUpdateResponseAvroModel stockAvroModel =
-                    stockMessagingDataMapper.stockClosedSuccessEventToStockUpdateResponseAvroModel(domainEvent);
+                    stockMessagingDataMapper.stockClosedFailedEventToStockUpdateResponseAvroModel(domainEvent);
 
             kafkaProducer.send(stockServiceConfigData.getStockUpdateResponseTopicName(),
                     stockTakeId,

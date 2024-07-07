@@ -35,11 +35,11 @@ public class StockMessagingDataMapper {
         );
     }
 
-    public StockUpdateResponseAvroModel stockClosedSuccessEventToStockUpdateResponseAvroModel(StockClosedSuccessEvent domainEvent) {
+    public StockUpdateResponseAvroModel stockClosedFailedEventToStockUpdateResponseAvroModel(StockClosedSuccessEvent domainEvent) {
         return StockEventToStockUpdateResponseAvroModel(domainEvent);
     }
 
-    public StockUpdateResponseAvroModel stockClosedSuccessEventToStockUpdateResponseAvroModel(StockClosedFailedEvent domainEvent) {
+    public StockUpdateResponseAvroModel stockClosedFailedEventToStockUpdateResponseAvroModel(StockClosedFailedEvent domainEvent) {
         return StockEventToStockUpdateResponseAvroModel(domainEvent);
     }
 
@@ -47,21 +47,21 @@ public class StockMessagingDataMapper {
         return StockUpdateResponseAvroModel.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setSagaId("")
-                .setStockTakeId(domainEvent.getStockTakeId().toString())
-                .setStockId(domainEvent.getStock().getId().toString())
+                .setStockTakeId(domainEvent.getStockTakeId().getValue().toString())
+                .setStockId(domainEvent.getStock().getId().getValue().toString())
                 .setCreatedAt(domainEvent.getCreatedAt().toInstant())
                 .setFailureMessages(domainEvent.getFailureMessages())
                 .build();
     }
 
-    public StockSubtractRequest stockSubtractRequestAvroModelToStockSubtractRequest(StockSubtractRequestAvroModel stockDeduceAvroModel) {
+    public StockSubtractRequest stockSubtractRequestAvroModelToStockSubtractRequest(StockSubtractRequestAvroModel stockSubtractRequestAvroModel) {
         return StockSubtractRequest.builder()
-                .id(stockDeduceAvroModel.getId())
+                .id(stockSubtractRequestAvroModel.getId())
                 .sagaId("")
-                .createdAt(stockDeduceAvroModel.getCreatedAt())
-                .date(stockDeduceAvroModel.getDate())
-                .saleId(stockDeduceAvroModel.getSaleId())
-                .items(stockDeduceAvroModel.getItems().stream()
+                .createdAt(stockSubtractRequestAvroModel.getCreatedAt())
+                .date(stockSubtractRequestAvroModel.getDate())
+                .saleId(stockSubtractRequestAvroModel.getSaleId())
+                .items(stockSubtractRequestAvroModel.getItems().stream()
                         .map(saleItemAvro -> SaleItemRequest.builder()
                                 .menuItemId(saleItemAvro.getMenuItemId())
                                 .quantity(saleItemAvro.getQuantity())
