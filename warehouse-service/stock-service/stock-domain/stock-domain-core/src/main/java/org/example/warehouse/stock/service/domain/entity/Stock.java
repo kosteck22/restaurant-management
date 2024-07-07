@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 
 public class Stock extends AggregateRoot<StockId> {
 
-    private final List<StockAddTransaction> addTransactions;
-    private final List<StockSubtractTransaction> subtractTransactions;
-    private final List<StockItemBeforeClosing> stockItemsBeforeClosing;
+    private List<StockAddTransaction> addTransactions;
+    private List<StockSubtractTransaction> subtractTransactions;
+    private List<StockItemBeforeClosing> stockItemsBeforeClosing;
 
     private StockTakeId fromStockTake;
     private StockTakeId toStockTake;
@@ -39,6 +39,7 @@ public class Stock extends AggregateRoot<StockId> {
     }
 
     public void initializeStockItemsBeforeClosing(StockTake stockTake) {
+        stockItemsBeforeClosing = new ArrayList<>();
         //(FIFO stock) first product's that were put to stock are used first
         Map<ProductId, List<StockAddTransaction>> productIdToListStockAddTransactionMap = addTransactions.stream()
                 .collect(Collectors.groupingBy(StockAddTransaction::getProductId))
@@ -56,6 +57,7 @@ public class Stock extends AggregateRoot<StockId> {
             for (StockAddTransaction addTransaction : stockAddTransactions) {
                 stockItemsBeforeClosing.add(StockItemBeforeClosing.builder()
                         .id(new StockItemBeforeClosingId(id))
+                        .stockId(getId())
                         .additionDate(addTransaction.getAdditionDate())
                         .productId(addTransaction.getProductId())
                         .grossPrice(addTransaction.getGrossPrice())
@@ -75,11 +77,11 @@ public class Stock extends AggregateRoot<StockId> {
         if (isClosed()) {
             throw new StockDomainException("You cannot add new transactions. Stock is closed!");
         }
-
+        addTransactions = addTransactions == null ? new ArrayList<>() : addTransactions;
         long transactionId = addTransactions.size();
         for (StockAddTransaction stockAddTransaction : transactions) {
             stockAddTransaction.validate();
-            stockAddTransaction.initialize(super.getId(), new StockAddTransactionId(++transactionId));
+            stockAddTransaction.initialize(getId(), new StockAddTransactionId(++transactionId));
             addTransactions.add(stockAddTransaction);
         }
     }
@@ -89,7 +91,7 @@ public class Stock extends AggregateRoot<StockId> {
         if (isClosed()) {
             throw new StockDomainException("You cannot add new subtract transactions. Stock is closed!");
         }
-
+        subtractTransactions = subtractTransactions == null ? new ArrayList<>() : subtractTransactions;
         Map<MenuItemId, Recipe> menuItemIdRecipeMap = recipes.stream()
                 .collect(Collectors.toMap(Recipe::getMenuItemId, recipe -> recipe));
 
@@ -143,6 +145,9 @@ public class Stock extends AggregateRoot<StockId> {
 
     public void initializeStock() {
         setId(new StockId(UUID.randomUUID()));
+        addTransactions = new ArrayList<>();
+        subtractTransactions = new ArrayList<>();
+        stockItemsBeforeClosing = new ArrayList<>();
     }
 
     protected boolean isActive() {

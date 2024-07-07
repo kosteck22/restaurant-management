@@ -9,6 +9,7 @@ import org.example.warehouse.stock.service.domain.entity.*;
 import org.example.warehouse.stock.service.domain.event.StockClosedFailedEvent;
 import org.example.warehouse.stock.service.domain.event.StockClosedSuccessEvent;
 import org.example.warehouse.stock.service.domain.event.StockEvent;
+import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionId;
 import org.example.warehouse.stock.service.domain.valueobject.StockAddTransactionType;
 import org.example.warehouse.stock.service.domain.valueobject.StockStatus;
 
@@ -80,9 +81,13 @@ public class StockDomainServiceImpl implements StockDomainService {
         stock.initializeStock();
         stock.addStockAddTransactions(stockItemsBeforeClosing.stream()
                 .map(stockItemBeforeClosing -> StockAddTransaction.builder()
+                        .stockId(stock.getId())
+                        .stockAddTransactionId(new StockAddTransactionId(1L + stock.getAddTransactions().size()))
                         .stockAddTransactionType(StockAddTransactionType.STOCK_TAKE)
                         .invoiceId(stockItemBeforeClosing.getInvoiceId())
+                        .quantity(stockItemBeforeClosing.getQuantity())
                         .grossPrice(stockItemBeforeClosing.getGrossPrice())
+                        .totalGrossPrice(stockItemBeforeClosing.getGrossPrice().multiply(stockItemBeforeClosing.getQuantity().getValue()))
                         .productId(stockItemBeforeClosing.getProductId())
                         .additionDate(stockItemBeforeClosing.getAdditionDate())
                         .build())

@@ -30,7 +30,7 @@ public class StockClosedSuccessKafkaMessagePublisher implements StockClosedSucce
 
     @Override
     public void publish(StockClosedSuccessEvent domainEvent) {
-        String stockTakeId = domainEvent.getStockTakeId().toString();
+        String stockTakeId = domainEvent.getStockTakeId().getValue().toString();
 
         log.info("Received StockClosedSuccessEvent for stock take id: {}", stockTakeId);
 

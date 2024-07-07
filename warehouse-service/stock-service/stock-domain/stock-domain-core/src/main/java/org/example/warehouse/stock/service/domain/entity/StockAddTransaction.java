@@ -76,8 +76,8 @@ public class StockAddTransaction extends BaseEntity<StockAddTransactionId> {
         }
     }
 
-    public void initialize(StockId id, StockAddTransactionId stockAddTransactionId) {
-        stockId = id;
+    public void initialize(StockId stockId, StockAddTransactionId stockAddTransactionId) {
+        this.stockId = stockId;
         super.setId(stockAddTransactionId);
     }
 

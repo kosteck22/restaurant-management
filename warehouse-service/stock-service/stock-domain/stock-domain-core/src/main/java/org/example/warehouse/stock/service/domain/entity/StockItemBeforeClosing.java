@@ -5,11 +5,13 @@ import org.example.domain.valueobject.InvoiceId;
 import org.example.domain.valueobject.Money;
 import org.example.domain.valueobject.ProductId;
 import org.example.domain.valueobject.Quantity;
+import org.example.warehouse.stock.service.domain.valueobject.StockId;
 import org.example.warehouse.stock.service.domain.valueobject.StockItemBeforeClosingId;
 
 import java.time.LocalDateTime;
 
 public class StockItemBeforeClosing extends BaseEntity<StockItemBeforeClosingId> {
+    private StockId stockId;
     private final LocalDateTime additionDate;
     private final ProductId productId;
     private final Quantity quantity;
@@ -18,6 +20,7 @@ public class StockItemBeforeClosing extends BaseEntity<StockItemBeforeClosingId>
 
     private StockItemBeforeClosing(Builder builder) {
         setId(builder.stockItemBeforeClosingId);
+        stockId = builder.stockId;
         productId = builder.productId;
         quantity = builder.quantity;
         grossPrice = builder.grossPrice;
@@ -30,6 +33,7 @@ public class StockItemBeforeClosing extends BaseEntity<StockItemBeforeClosingId>
     }
 
     public static final class Builder {
+        private StockId stockId;
         private StockItemBeforeClosingId stockItemBeforeClosingId;
         private ProductId productId;
         private Quantity quantity;
@@ -47,6 +51,11 @@ public class StockItemBeforeClosing extends BaseEntity<StockItemBeforeClosingId>
 
         public Builder additionDate(LocalDateTime val) {
             additionDate = val;
+            return this;
+        }
+
+        public Builder stockId(StockId val) {
+            stockId = val;
             return this;
         }
 
@@ -73,6 +82,10 @@ public class StockItemBeforeClosing extends BaseEntity<StockItemBeforeClosingId>
         public StockItemBeforeClosing build() {
             return new StockItemBeforeClosing(this);
         }
+    }
+
+    public StockId getStockId() {
+        return stockId;
     }
 
     public ProductId getProductId() {

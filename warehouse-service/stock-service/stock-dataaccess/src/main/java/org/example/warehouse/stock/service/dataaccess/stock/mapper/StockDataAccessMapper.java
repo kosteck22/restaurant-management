@@ -82,9 +82,9 @@ public class StockDataAccessMapper {
     public StockEntity stockToStockEntity(Stock stock) {
         StockEntity stockEntity = StockEntity.builder()
                 .id(stock.getId().getValue())
-                .totalGrossPrice(stock.getTotalGrossPrice().getAmount())
-                .fromStockTake(stock.getFromStockTake().getValue())
-                .toStockTake(stock.getToStockTake().getValue())
+                .totalGrossPrice(stock.getTotalGrossPrice() == null ? null : stock.getTotalGrossPrice().getAmount())
+                .fromStockTake(stock.getFromStockTake() == null ? null : stock.getFromStockTake().getValue())
+                .toStockTake(stock.getToStockTake() == null ? null : stock.getToStockTake().getValue())
                 .status(stock.getStatus())
                 .addingTransactions(StockAddTransactionsToStockAddTransactionEntities(stock.getAddTransactions()))
                 .subtractTransactions(StockSubtractTransactionsToStockSubtractTransactionEntities(stock.getSubtractTransactions()))

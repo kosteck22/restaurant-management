@@ -19,7 +19,7 @@ public class StockUpdateRequestMessageListenerImpl implements StockUpdateRequest
     public void updateStock(StockUpdateRequest stockUpdateRequest) {
         StockEvent stockEvent = stockUpdateRequestHelper.updateStock(stockUpdateRequest);
         log.info("Publishing stock event with stock id: {} and stock take id: {}",
-                stockEvent.getStock().getId(), stockUpdateRequest.stockTakeId());
+                stockEvent.getStock().getId().getValue(), stockUpdateRequest.stockTakeId());
         stockEvent.fire();
     }
 }

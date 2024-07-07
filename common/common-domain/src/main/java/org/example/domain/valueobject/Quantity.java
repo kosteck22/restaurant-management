@@ -8,8 +8,6 @@ public class Quantity {
     public static final Quantity ZERO = new Quantity(BigDecimal.ZERO);
 
     public Quantity(BigDecimal value) {
-        if (value.compareTo(BigDecimal.ZERO) < 0)
-            throw new IllegalArgumentException("Quantity cannot be negative!");
         this.value = value;
     }
 
