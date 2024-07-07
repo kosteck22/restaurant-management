@@ -29,6 +29,9 @@ public class StockTakeEntity {
     @OneToMany(mappedBy = "stockTake", cascade = CascadeType.ALL)
     private List<StockTakeItemEntity> items;
 
+    private UUID trackingId;
+    private String failureMessages;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

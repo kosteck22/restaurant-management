@@ -1,18 +1,18 @@
 package org.example.warehouse.stock.take.service.dataaccess.stockTake.mapper;
 
-import org.example.domain.valueobject.Money;
-import org.example.domain.valueobject.ProductId;
-import org.example.domain.valueobject.Quantity;
+import org.example.domain.valueobject.*;
 import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.StockTakeItemEntity;
 import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.StockTakeEntity;
 import org.example.warehouse.stock.take.service.domain.entity.StockTakeItem;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
-import org.example.domain.valueobject.StockTakeItemId;
-import org.example.domain.valueobject.StockTakeId;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.example.domain.DomainConstants.FAILURE_MESSAGE_DELIMITER;
 
 @Component
 public class StockTakeDataAccessMapper {
@@ -20,8 +20,12 @@ public class StockTakeDataAccessMapper {
         StockTakeEntity stockTakeEntity = StockTakeEntity.builder()
                 .id(stockTake.getId().getValue())
                 .preparedDate(stockTake.getPreparedDate())
-                .totalPrice(stockTake.getTotalPrice().getAmount())
+                .status(stockTake.getStatus())
+                .totalPrice(stockTake.getTotalPrice() == null ? null : stockTake.getTotalPrice().getAmount())
                 .items(stockItemsToStockItemEntities(stockTake.getItems()))
+                .trackingId(stockTake.getTrackingId().getValue())
+                .failureMessages(stockTake.getFailureMessages() != null ?
+                        String.join(FAILURE_MESSAGE_DELIMITER, stockTake.getFailureMessages()) : "")
                 .build();
         stockTakeEntity.getItems().forEach(stockTakeItemEntity -> stockTakeItemEntity.setStockTake(stockTakeEntity));
         return stockTakeEntity;
@@ -32,19 +36,24 @@ public class StockTakeDataAccessMapper {
                 .map(stockItem -> StockTakeItemEntity.builder()
                         .id(stockItem.getId().getValue())
                         .productId(stockItem.getProductId().getValue())
-                        . name(stockItem.getName())
+                        .name(stockItem.getName() == null ? null : stockItem.getName())
                         .quantity(stockItem.getQuantity().getValue())
-                        .totalPrice(stockItem.getTotalGrossPrice().getAmount())
+                        .totalPrice(stockItem.getTotalGrossPrice() == null ? null : stockItem.getTotalGrossPrice().getAmount())
                         .build())
                 .collect(Collectors.toList());
     }
 
-    public StockTake stockTakeEntityToStockTake(StockTakeEntity stockTake) {
+    public StockTake stockTakeEntityToStockTake(StockTakeEntity stockTakeEntity) {
         return StockTake.builder()
-                .stockTakeId(new StockTakeId(stockTake.getId()))
-                .preparedDate(stockTake.getPreparedDate())
-                .totalPrice(new Money(stockTake.getTotalPrice()))
-                .items(stockTakeItemEntitiesToStockTakeItems(stockTake.getItems()))
+                .stockTakeId(new StockTakeId(stockTakeEntity.getId()))
+                .preparedDate(stockTakeEntity.getPreparedDate())
+                .stockTakeStatus(stockTakeEntity.getStatus())
+                .totalPrice(new Money(stockTakeEntity.getTotalPrice()))
+                .trackingId(new TrackingId(stockTakeEntity.getTrackingId()))
+                .failureMessages(stockTakeEntity.getFailureMessages().isEmpty() ? new ArrayList<>() :
+                        new ArrayList<>(Arrays.asList(stockTakeEntity.getFailureMessages()
+                                .split(FAILURE_MESSAGE_DELIMITER))))
+                .items(stockTakeItemEntitiesToStockTakeItems(stockTakeEntity.getItems()))
                 .build();
     }
 

@@ -9,6 +9,7 @@ import org.example.warehouse.stock.take.service.domain.event.StockTakeCreatedEve
 import org.example.warehouse.stock.take.service.domain.exception.StockTakeDomainException;
 
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class StockTakeDomainServiceImpl implements StockTakeDomainService {
         stockTake.validateStockTake();
         stockTake.initializeStockTake();
         log.info("Stock take with id: {} is initiated", stockTake.getId().getValue());
-        return new StockTakeCreatedEvent(stockTake, ZonedDateTime.now(ZoneId.of(UTC)), stockTakeCreatedEventDomainEventPublisher);
+        return new StockTakeCreatedEvent(stockTake, ZonedDateTime.now(ZoneOffset.UTC), stockTakeCreatedEventDomainEventPublisher);
 
     }
 

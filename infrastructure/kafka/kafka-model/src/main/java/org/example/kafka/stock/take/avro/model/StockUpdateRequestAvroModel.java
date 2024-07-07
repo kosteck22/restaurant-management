@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class StockUpdateRequestAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 649805342651370095L;
+  private static final long serialVersionUID = 7042093899178843478L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"StockUpdateRequestAvroModel\",\"namespace\":\"org.example.kafka.stock.take.avro.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"preparedDate\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"totalPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"StockItem\",\"fields\":[{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"StockItemId\",\"type\":\"long\"},{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"quantity\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":3}},{\"name\":\"grossPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"totalGrossPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"invoiceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"StockTakeStatus\",\"symbols\":[\"PENDING\",\"REJECTED\",\"ACCEPTED\"]}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"StockUpdateRequestAvroModel\",\"namespace\":\"org.example.kafka.stock.take.avro.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"preparedDate\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"items\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"StockItem\",\"fields\":[{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"StockItemId\",\"type\":\"long\"},{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"quantity\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":3}}]}}},{\"name\":\"status\",\"type\":{\"type\":\"enum\",\"name\":\"StockTakeStatus\",\"symbols\":[\"PENDING\",\"REJECTED\",\"ACCEPTED\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -82,7 +82,6 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
   private java.time.Instant createdAt;
   private java.lang.String stockTakeId;
   private java.time.Instant preparedDate;
-  private java.math.BigDecimal totalPrice;
   private java.util.List<org.example.kafka.stock.take.avro.model.StockItem> items;
   private org.example.kafka.stock.take.avro.model.StockTakeStatus status;
 
@@ -100,17 +99,15 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
    * @param createdAt The new value for createdAt
    * @param stockTakeId The new value for stockTakeId
    * @param preparedDate The new value for preparedDate
-   * @param totalPrice The new value for totalPrice
    * @param items The new value for items
    * @param status The new value for status
    */
-  public StockUpdateRequestAvroModel(java.lang.String id, java.lang.String sagaId, java.time.Instant createdAt, java.lang.String stockTakeId, java.time.Instant preparedDate, java.math.BigDecimal totalPrice, java.util.List<org.example.kafka.stock.take.avro.model.StockItem> items, org.example.kafka.stock.take.avro.model.StockTakeStatus status) {
+  public StockUpdateRequestAvroModel(java.lang.String id, java.lang.String sagaId, java.time.Instant createdAt, java.lang.String stockTakeId, java.time.Instant preparedDate, java.util.List<org.example.kafka.stock.take.avro.model.StockItem> items, org.example.kafka.stock.take.avro.model.StockTakeStatus status) {
     this.id = id;
     this.sagaId = sagaId;
     this.createdAt = createdAt.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
     this.stockTakeId = stockTakeId;
     this.preparedDate = preparedDate.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
-    this.totalPrice = totalPrice;
     this.items = items;
     this.status = status;
   }
@@ -125,9 +122,8 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
     case 2: return createdAt;
     case 3: return stockTakeId;
     case 4: return preparedDate;
-    case 5: return totalPrice;
-    case 6: return items;
-    case 7: return status;
+    case 5: return items;
+    case 6: return status;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -139,7 +135,6 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
       new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
       null,
       new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
-      new org.apache.avro.Conversions.DecimalConversion(),
       null,
       null,
       null
@@ -159,9 +154,8 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
     case 2: createdAt = (java.time.Instant)value$; break;
     case 3: stockTakeId = value$ != null ? value$.toString() : null; break;
     case 4: preparedDate = (java.time.Instant)value$; break;
-    case 5: totalPrice = (java.math.BigDecimal)value$; break;
-    case 6: items = (java.util.List<org.example.kafka.stock.take.avro.model.StockItem>)value$; break;
-    case 7: status = (org.example.kafka.stock.take.avro.model.StockTakeStatus)value$; break;
+    case 5: items = (java.util.List<org.example.kafka.stock.take.avro.model.StockItem>)value$; break;
+    case 6: status = (org.example.kafka.stock.take.avro.model.StockTakeStatus)value$; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -252,23 +246,6 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
   }
 
   /**
-   * Gets the value of the 'totalPrice' field.
-   * @return The value of the 'totalPrice' field.
-   */
-  public java.math.BigDecimal getTotalPrice() {
-    return totalPrice;
-  }
-
-
-  /**
-   * Sets the value of the 'totalPrice' field.
-   * @param value the value to set.
-   */
-  public void setTotalPrice(java.math.BigDecimal value) {
-    this.totalPrice = value;
-  }
-
-  /**
    * Gets the value of the 'items' field.
    * @return The value of the 'items' field.
    */
@@ -348,7 +325,6 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
     private java.time.Instant createdAt;
     private java.lang.String stockTakeId;
     private java.time.Instant preparedDate;
-    private java.math.BigDecimal totalPrice;
     private java.util.List<org.example.kafka.stock.take.avro.model.StockItem> items;
     private org.example.kafka.stock.take.avro.model.StockTakeStatus status;
 
@@ -383,17 +359,13 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
         this.preparedDate = data().deepCopy(fields()[4].schema(), other.preparedDate);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.totalPrice)) {
-        this.totalPrice = data().deepCopy(fields()[5].schema(), other.totalPrice);
+      if (isValidValue(fields()[5], other.items)) {
+        this.items = data().deepCopy(fields()[5].schema(), other.items);
         fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
-      if (isValidValue(fields()[6], other.items)) {
-        this.items = data().deepCopy(fields()[6].schema(), other.items);
+      if (isValidValue(fields()[6], other.status)) {
+        this.status = data().deepCopy(fields()[6].schema(), other.status);
         fieldSetFlags()[6] = other.fieldSetFlags()[6];
-      }
-      if (isValidValue(fields()[7], other.status)) {
-        this.status = data().deepCopy(fields()[7].schema(), other.status);
-        fieldSetFlags()[7] = other.fieldSetFlags()[7];
       }
     }
 
@@ -423,17 +395,13 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
         this.preparedDate = data().deepCopy(fields()[4].schema(), other.preparedDate);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.totalPrice)) {
-        this.totalPrice = data().deepCopy(fields()[5].schema(), other.totalPrice);
+      if (isValidValue(fields()[5], other.items)) {
+        this.items = data().deepCopy(fields()[5].schema(), other.items);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.items)) {
-        this.items = data().deepCopy(fields()[6].schema(), other.items);
+      if (isValidValue(fields()[6], other.status)) {
+        this.status = data().deepCopy(fields()[6].schema(), other.status);
         fieldSetFlags()[6] = true;
-      }
-      if (isValidValue(fields()[7], other.status)) {
-        this.status = data().deepCopy(fields()[7].schema(), other.status);
-        fieldSetFlags()[7] = true;
       }
     }
 
@@ -636,46 +604,6 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
     }
 
     /**
-      * Gets the value of the 'totalPrice' field.
-      * @return The value.
-      */
-    public java.math.BigDecimal getTotalPrice() {
-      return totalPrice;
-    }
-
-
-    /**
-      * Sets the value of the 'totalPrice' field.
-      * @param value The value of 'totalPrice'.
-      * @return This builder.
-      */
-    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setTotalPrice(java.math.BigDecimal value) {
-      validate(fields()[5], value);
-      this.totalPrice = value;
-      fieldSetFlags()[5] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'totalPrice' field has been set.
-      * @return True if the 'totalPrice' field has been set, false otherwise.
-      */
-    public boolean hasTotalPrice() {
-      return fieldSetFlags()[5];
-    }
-
-
-    /**
-      * Clears the value of the 'totalPrice' field.
-      * @return This builder.
-      */
-    public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearTotalPrice() {
-      totalPrice = null;
-      fieldSetFlags()[5] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'items' field.
       * @return The value.
       */
@@ -690,9 +618,9 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
       * @return This builder.
       */
     public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setItems(java.util.List<org.example.kafka.stock.take.avro.model.StockItem> value) {
-      validate(fields()[6], value);
+      validate(fields()[5], value);
       this.items = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[5] = true;
       return this;
     }
 
@@ -701,7 +629,7 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
       * @return True if the 'items' field has been set, false otherwise.
       */
     public boolean hasItems() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[5];
     }
 
 
@@ -711,7 +639,7 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
       */
     public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearItems() {
       items = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -730,9 +658,9 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
       * @return This builder.
       */
     public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder setStatus(org.example.kafka.stock.take.avro.model.StockTakeStatus value) {
-      validate(fields()[7], value);
+      validate(fields()[6], value);
       this.status = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[6] = true;
       return this;
     }
 
@@ -741,7 +669,7 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
       * @return True if the 'status' field has been set, false otherwise.
       */
     public boolean hasStatus() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[6];
     }
 
 
@@ -751,7 +679,7 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
       */
     public org.example.kafka.stock.take.avro.model.StockUpdateRequestAvroModel.Builder clearStatus() {
       status = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -765,9 +693,8 @@ public class StockUpdateRequestAvroModel extends org.apache.avro.specific.Specif
         record.createdAt = fieldSetFlags()[2] ? this.createdAt : (java.time.Instant) defaultValue(fields()[2]);
         record.stockTakeId = fieldSetFlags()[3] ? this.stockTakeId : (java.lang.String) defaultValue(fields()[3]);
         record.preparedDate = fieldSetFlags()[4] ? this.preparedDate : (java.time.Instant) defaultValue(fields()[4]);
-        record.totalPrice = fieldSetFlags()[5] ? this.totalPrice : (java.math.BigDecimal) defaultValue(fields()[5]);
-        record.items = fieldSetFlags()[6] ? this.items : (java.util.List<org.example.kafka.stock.take.avro.model.StockItem>) defaultValue(fields()[6]);
-        record.status = fieldSetFlags()[7] ? this.status : (org.example.kafka.stock.take.avro.model.StockTakeStatus) defaultValue(fields()[7]);
+        record.items = fieldSetFlags()[5] ? this.items : (java.util.List<org.example.kafka.stock.take.avro.model.StockItem>) defaultValue(fields()[5]);
+        record.status = fieldSetFlags()[6] ? this.status : (org.example.kafka.stock.take.avro.model.StockTakeStatus) defaultValue(fields()[6]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;

@@ -56,6 +56,7 @@ public class Recipe extends AggregateRoot<RecipeId> {
 
     public void initializeRecipe() {
         setId(new RecipeId(UUID.randomUUID()));
+        initializeRecipeItems();
         createdAt = LocalDateTime.now();
     }
 

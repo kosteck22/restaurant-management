@@ -39,15 +39,6 @@
       }
     },
     {
-      "name": "totalPrice",
-      "type": {
-        "type": "bytes",
-        "logicalType": "decimal",
-        "precision": 10,
-        "scale": 2
-      }
-    },
-    {
       "name": "items",
       "type": {
         "type": "array",
@@ -87,28 +78,6 @@
                 "precision": 10,
                 "scale": 3
               }
-            },
-            {
-              "name": "grossPrice",
-              "type": {
-                "type": "bytes",
-                "logicalType": "decimal",
-                "precision": 10,
-                "scale": 2
-              }
-            },
-            {
-              "name": "totalGrossPrice",
-              "type": {
-                "type": "bytes",
-                "logicalType": "decimal",
-                "precision": 10,
-                "scale": 2
-              }
-            },
-            {
-              "name": "invoiceId",
-              "type": "string"
             }
           ]
         }

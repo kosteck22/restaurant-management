@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(StockTakeItemEntityId.class)
-@Table(name = "order_items")
+@Table(name = "stock-take-items")
 @Entity
 public class StockTakeItemEntity {
     @Id

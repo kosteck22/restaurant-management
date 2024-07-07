@@ -14,10 +14,10 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class StockItem extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -6764065032918814969L;
+  private static final long serialVersionUID = 5796226576095526810L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"StockItem\",\"namespace\":\"org.example.kafka.stock.take.avro.model\",\"fields\":[{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"StockItemId\",\"type\":\"long\"},{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"quantity\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":3}},{\"name\":\"grossPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"totalGrossPrice\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"invoiceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"StockItem\",\"namespace\":\"org.example.kafka.stock.take.avro.model\",\"fields\":[{\"name\":\"stockTakeId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"StockItemId\",\"type\":\"long\"},{\"name\":\"productId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"quantity\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":3}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -81,9 +81,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
   private java.lang.String productId;
   private java.lang.String name;
   private java.math.BigDecimal quantity;
-  private java.math.BigDecimal grossPrice;
-  private java.math.BigDecimal totalGrossPrice;
-  private java.lang.String invoiceId;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -99,19 +96,13 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
    * @param productId The new value for productId
    * @param name The new value for name
    * @param quantity The new value for quantity
-   * @param grossPrice The new value for grossPrice
-   * @param totalGrossPrice The new value for totalGrossPrice
-   * @param invoiceId The new value for invoiceId
    */
-  public StockItem(java.lang.String stockTakeId, java.lang.Long StockItemId, java.lang.String productId, java.lang.String name, java.math.BigDecimal quantity, java.math.BigDecimal grossPrice, java.math.BigDecimal totalGrossPrice, java.lang.String invoiceId) {
+  public StockItem(java.lang.String stockTakeId, java.lang.Long StockItemId, java.lang.String productId, java.lang.String name, java.math.BigDecimal quantity) {
     this.stockTakeId = stockTakeId;
     this.StockItemId = StockItemId;
     this.productId = productId;
     this.name = name;
     this.quantity = quantity;
-    this.grossPrice = grossPrice;
-    this.totalGrossPrice = totalGrossPrice;
-    this.invoiceId = invoiceId;
   }
 
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
@@ -124,9 +115,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
     case 2: return productId;
     case 3: return name;
     case 4: return quantity;
-    case 5: return grossPrice;
-    case 6: return totalGrossPrice;
-    case 7: return invoiceId;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -138,9 +126,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
       null,
       null,
       new org.apache.avro.Conversions.DecimalConversion(),
-      new org.apache.avro.Conversions.DecimalConversion(),
-      new org.apache.avro.Conversions.DecimalConversion(),
-      null,
       null
   };
 
@@ -158,9 +143,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
     case 2: productId = value$ != null ? value$.toString() : null; break;
     case 3: name = value$ != null ? value$.toString() : null; break;
     case 4: quantity = (java.math.BigDecimal)value$; break;
-    case 5: grossPrice = (java.math.BigDecimal)value$; break;
-    case 6: totalGrossPrice = (java.math.BigDecimal)value$; break;
-    case 7: invoiceId = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -251,57 +233,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
   }
 
   /**
-   * Gets the value of the 'grossPrice' field.
-   * @return The value of the 'grossPrice' field.
-   */
-  public java.math.BigDecimal getGrossPrice() {
-    return grossPrice;
-  }
-
-
-  /**
-   * Sets the value of the 'grossPrice' field.
-   * @param value the value to set.
-   */
-  public void setGrossPrice(java.math.BigDecimal value) {
-    this.grossPrice = value;
-  }
-
-  /**
-   * Gets the value of the 'totalGrossPrice' field.
-   * @return The value of the 'totalGrossPrice' field.
-   */
-  public java.math.BigDecimal getTotalGrossPrice() {
-    return totalGrossPrice;
-  }
-
-
-  /**
-   * Sets the value of the 'totalGrossPrice' field.
-   * @param value the value to set.
-   */
-  public void setTotalGrossPrice(java.math.BigDecimal value) {
-    this.totalGrossPrice = value;
-  }
-
-  /**
-   * Gets the value of the 'invoiceId' field.
-   * @return The value of the 'invoiceId' field.
-   */
-  public java.lang.String getInvoiceId() {
-    return invoiceId;
-  }
-
-
-  /**
-   * Sets the value of the 'invoiceId' field.
-   * @param value the value to set.
-   */
-  public void setInvoiceId(java.lang.String value) {
-    this.invoiceId = value;
-  }
-
-  /**
    * Creates a new StockItem RecordBuilder.
    * @return A new StockItem RecordBuilder
    */
@@ -347,9 +278,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
     private java.lang.String productId;
     private java.lang.String name;
     private java.math.BigDecimal quantity;
-    private java.math.BigDecimal grossPrice;
-    private java.math.BigDecimal totalGrossPrice;
-    private java.lang.String invoiceId;
 
     /** Creates a new Builder */
     private Builder() {
@@ -382,18 +310,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
         this.quantity = data().deepCopy(fields()[4].schema(), other.quantity);
         fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
-      if (isValidValue(fields()[5], other.grossPrice)) {
-        this.grossPrice = data().deepCopy(fields()[5].schema(), other.grossPrice);
-        fieldSetFlags()[5] = other.fieldSetFlags()[5];
-      }
-      if (isValidValue(fields()[6], other.totalGrossPrice)) {
-        this.totalGrossPrice = data().deepCopy(fields()[6].schema(), other.totalGrossPrice);
-        fieldSetFlags()[6] = other.fieldSetFlags()[6];
-      }
-      if (isValidValue(fields()[7], other.invoiceId)) {
-        this.invoiceId = data().deepCopy(fields()[7].schema(), other.invoiceId);
-        fieldSetFlags()[7] = other.fieldSetFlags()[7];
-      }
     }
 
     /**
@@ -421,18 +337,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
       if (isValidValue(fields()[4], other.quantity)) {
         this.quantity = data().deepCopy(fields()[4].schema(), other.quantity);
         fieldSetFlags()[4] = true;
-      }
-      if (isValidValue(fields()[5], other.grossPrice)) {
-        this.grossPrice = data().deepCopy(fields()[5].schema(), other.grossPrice);
-        fieldSetFlags()[5] = true;
-      }
-      if (isValidValue(fields()[6], other.totalGrossPrice)) {
-        this.totalGrossPrice = data().deepCopy(fields()[6].schema(), other.totalGrossPrice);
-        fieldSetFlags()[6] = true;
-      }
-      if (isValidValue(fields()[7], other.invoiceId)) {
-        this.invoiceId = data().deepCopy(fields()[7].schema(), other.invoiceId);
-        fieldSetFlags()[7] = true;
       }
     }
 
@@ -635,126 +539,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
       return this;
     }
 
-    /**
-      * Gets the value of the 'grossPrice' field.
-      * @return The value.
-      */
-    public java.math.BigDecimal getGrossPrice() {
-      return grossPrice;
-    }
-
-
-    /**
-      * Sets the value of the 'grossPrice' field.
-      * @param value The value of 'grossPrice'.
-      * @return This builder.
-      */
-    public org.example.kafka.stock.take.avro.model.StockItem.Builder setGrossPrice(java.math.BigDecimal value) {
-      validate(fields()[5], value);
-      this.grossPrice = value;
-      fieldSetFlags()[5] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'grossPrice' field has been set.
-      * @return True if the 'grossPrice' field has been set, false otherwise.
-      */
-    public boolean hasGrossPrice() {
-      return fieldSetFlags()[5];
-    }
-
-
-    /**
-      * Clears the value of the 'grossPrice' field.
-      * @return This builder.
-      */
-    public org.example.kafka.stock.take.avro.model.StockItem.Builder clearGrossPrice() {
-      grossPrice = null;
-      fieldSetFlags()[5] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'totalGrossPrice' field.
-      * @return The value.
-      */
-    public java.math.BigDecimal getTotalGrossPrice() {
-      return totalGrossPrice;
-    }
-
-
-    /**
-      * Sets the value of the 'totalGrossPrice' field.
-      * @param value The value of 'totalGrossPrice'.
-      * @return This builder.
-      */
-    public org.example.kafka.stock.take.avro.model.StockItem.Builder setTotalGrossPrice(java.math.BigDecimal value) {
-      validate(fields()[6], value);
-      this.totalGrossPrice = value;
-      fieldSetFlags()[6] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'totalGrossPrice' field has been set.
-      * @return True if the 'totalGrossPrice' field has been set, false otherwise.
-      */
-    public boolean hasTotalGrossPrice() {
-      return fieldSetFlags()[6];
-    }
-
-
-    /**
-      * Clears the value of the 'totalGrossPrice' field.
-      * @return This builder.
-      */
-    public org.example.kafka.stock.take.avro.model.StockItem.Builder clearTotalGrossPrice() {
-      totalGrossPrice = null;
-      fieldSetFlags()[6] = false;
-      return this;
-    }
-
-    /**
-      * Gets the value of the 'invoiceId' field.
-      * @return The value.
-      */
-    public java.lang.String getInvoiceId() {
-      return invoiceId;
-    }
-
-
-    /**
-      * Sets the value of the 'invoiceId' field.
-      * @param value The value of 'invoiceId'.
-      * @return This builder.
-      */
-    public org.example.kafka.stock.take.avro.model.StockItem.Builder setInvoiceId(java.lang.String value) {
-      validate(fields()[7], value);
-      this.invoiceId = value;
-      fieldSetFlags()[7] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'invoiceId' field has been set.
-      * @return True if the 'invoiceId' field has been set, false otherwise.
-      */
-    public boolean hasInvoiceId() {
-      return fieldSetFlags()[7];
-    }
-
-
-    /**
-      * Clears the value of the 'invoiceId' field.
-      * @return This builder.
-      */
-    public org.example.kafka.stock.take.avro.model.StockItem.Builder clearInvoiceId() {
-      invoiceId = null;
-      fieldSetFlags()[7] = false;
-      return this;
-    }
-
     @Override
     @SuppressWarnings("unchecked")
     public StockItem build() {
@@ -765,9 +549,6 @@ public class StockItem extends org.apache.avro.specific.SpecificRecordBase imple
         record.productId = fieldSetFlags()[2] ? this.productId : (java.lang.String) defaultValue(fields()[2]);
         record.name = fieldSetFlags()[3] ? this.name : (java.lang.String) defaultValue(fields()[3]);
         record.quantity = fieldSetFlags()[4] ? this.quantity : (java.math.BigDecimal) defaultValue(fields()[4]);
-        record.grossPrice = fieldSetFlags()[5] ? this.grossPrice : (java.math.BigDecimal) defaultValue(fields()[5]);
-        record.totalGrossPrice = fieldSetFlags()[6] ? this.totalGrossPrice : (java.math.BigDecimal) defaultValue(fields()[6]);
-        record.invoiceId = fieldSetFlags()[7] ? this.invoiceId : (java.lang.String) defaultValue(fields()[7]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
