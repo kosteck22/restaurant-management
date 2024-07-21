@@ -35,91 +35,30 @@ public class Stock extends AggregateRoot<StockId> {
     }
 
     public Money getCostOfGoodsSold() {
-        if (!StockStatus.CLOSED.equals(status)) {
-            throw new StockDomainException("Cost of goods sold can be obtained only by closed stock");
-        }
+        validateStockIsClosed();
         Money totalCostOfAddTransactions = getAddTransactionsCost();
         Money totalCostOfProductsLeft = getStockItemsBeforeClosingCost();
         return totalCostOfAddTransactions.subtract(totalCostOfProductsLeft);
     }
 
     public Map<ProductId, Quantity> getVariance() {
-        if (!StockStatus.CLOSED.equals(status)) {
-            throw new StockDomainException("Variance can be obtained only by closed stock");
-        }
+        validateStockIsClosed();
         Map<ProductId, Quantity> theoreticalUsage = productIdToQuantityForSubtractTransactions();
         Map<ProductId, Quantity> actualUsage = productIdToQuantityForActualUsage();
 
-        return Stream.concat(theoreticalUsage.keySet().stream(), actualUsage.keySet().stream())
-                .distinct()
-                .collect(Collectors.toMap(
-                        productId -> productId,
-                        productId -> {
-                            Quantity theoreticalQuantity = theoreticalUsage.getOrDefault(productId, Quantity.ZERO);
-                            Quantity acturalQuantity = actualUsage.getOrDefault(productId, Quantity.ZERO);
-                            return theoreticalQuantity.subtract(acturalQuantity);
-                        }
-                ));
+        return calculateVariance(theoreticalUsage, actualUsage);
     }
 
     public Money getSittingInventoryAsMoney() {
-        if (StockStatus.CLOSED.equals(status)) {
-            throw new StockDomainException("Sitting inventory can be obtained only by open stock");
-        }
+        validateStockIsOpen();
         Map<ProductId, List<StockAddTransaction>> productIdToStockAddTransactionMap = getProductIdToStockAddTransactionMap();
         Map<ProductId, Quantity> productIdToQuantityMap = productIdToQuantityForSubtractTransactions();
-
-        Money totalMoney = Money.ZERO;
-
-        for (Map.Entry<ProductId, Quantity> entry : productIdToQuantityMap.entrySet()) {
-            Quantity leftQuantity = entry.getValue();
-            List<StockAddTransaction> stockAddTransactions = productIdToStockAddTransactionMap.get(entry.getKey());
-            for (StockAddTransaction stockAddTransaction : stockAddTransactions) {
-                Quantity transactionQuantity = stockAddTransaction.getQuantity();
-                if (transactionQuantity.isGreaterThan(leftQuantity)) {
-                    totalMoney = totalMoney.add(stockAddTransaction.getGrossPrice()
-                            .multiply(transactionQuantity.subtract(leftQuantity).getValue()));
-                    leftQuantity = Quantity.ZERO;
-                } else {
-                    leftQuantity = leftQuantity.subtract(transactionQuantity);
-                }
-            }
-        }
-
-        return totalMoney;
-    }
-
-    public void close(StockTake stockTake) {
-        toStockTake = stockTake.getId();
-        status = StockStatus.CLOSED;
+        return calculateSittingInventoryAsMoney(productIdToStockAddTransactionMap, productIdToQuantityMap);
     }
 
     public void initializeStockItemsBeforeClosing(StockTake stockTake) {
-        stockItemsBeforeClosing = new ArrayList<>();
-        //(FIFO stock) first product's that were put to stock are used first
         Map<ProductId, List<StockAddTransaction>> productIdToListStockAddTransactionMap = getProductIdToStockAddTransactionMap();
-
-        stockTake.getItems().forEach(stockTakeItem -> {
-            long id = stockItemsBeforeClosing.size() + 1;
-            Quantity realQuantity = stockTakeItem.getQuantity();
-            List<StockAddTransaction> stockAddTransactions = productIdToListStockAddTransactionMap.get(stockTakeItem.getProductId());
-            for (StockAddTransaction addTransaction : stockAddTransactions) {
-                stockItemsBeforeClosing.add(StockItemBeforeClosing.builder()
-                        .id(new StockItemBeforeClosingId(id))
-                        .stockId(getId())
-                        .additionDate(addTransaction.getAdditionDate())
-                        .productId(addTransaction.getProductId())
-                        .grossPrice(addTransaction.getGrossPrice())
-                        .quantity(addTransaction.getQuantity().isGreaterThan(realQuantity) ? realQuantity : addTransaction.getQuantity())
-                        .invoiceId(addTransaction.getInvoiceId())
-                        .build());
-                realQuantity = realQuantity.subtract(addTransaction.getQuantity());
-
-                if (realQuantity.isNegative() || realQuantity.isZero()) {
-                    break;
-                }
-            }
-        });
+        stockTake.getItems().forEach(stockTakeItem -> addStockItemsBeforeClosing(stockTakeItem, productIdToListStockAddTransactionMap));
     }
 
     public void addStockAddTransactions(List<StockAddTransaction> transactions) {
@@ -136,14 +75,120 @@ public class Stock extends AggregateRoot<StockId> {
     }
 
     public void addStockSubtractTransactions(Sale sale, List<Recipe> recipes, List<String> failureMessages) {
-        if (isClosed()) {
-            throw new StockDomainException("You cannot add new subtract transactions. Stock is closed!");
-        }
+        validateStockIsOpen();
         subtractTransactions = subtractTransactions == null ? new ArrayList<>() : subtractTransactions;
-        Map<MenuItemId, Recipe> menuItemIdRecipeMap = recipes.stream()
-                .collect(Collectors.toMap(Recipe::getMenuItemId, recipe -> recipe));
+        Map<MenuItemId, Recipe> menuItemIdRecipeMap = recipes.stream().collect(Collectors.toMap(Recipe::getMenuItemId, recipe -> recipe));
+        Map<ProductId, Quantity> productQuantitiesForSale = productIdToQuantityForSale(sale, menuItemIdRecipeMap);
+        Map<ProductId, Quantity> productQuantitiesForAddTransactions = productIdToQuantityForAddTransactions();
+        Map<ProductId, Quantity> productQuantitiesForSubtractTransactions = productIdToQuantityForSubtractTransactions();
+        productQuantitiesForSale.forEach(((productId, quantity) -> processStockSubtractTransaction(productId, quantity, sale, failureMessages, productQuantitiesForAddTransactions, productQuantitiesForSubtractTransactions)));
+    }
 
-        Map<ProductId, Quantity> productIdQuantityMap = sale.getItems().stream()
+    public void initializeStock() {
+        setId(new StockId(UUID.randomUUID()));
+        addTransactions = new ArrayList<>();
+        subtractTransactions = new ArrayList<>();
+        stockItemsBeforeClosing = new ArrayList<>();
+    }
+
+    public void close(StockTake stockTake) {
+        toStockTake = stockTake.getId();
+        status = StockStatus.CLOSED;
+    }
+
+    protected boolean isClosed() {
+        return status.equals(StockStatus.CLOSED);
+    }
+
+    private static Map<ProductId, Quantity> calculateVariance(Map<ProductId, Quantity> theoreticalUsage, Map<ProductId, Quantity> actualUsage) {
+        return Stream.concat(theoreticalUsage.keySet().stream(), actualUsage.keySet().stream())
+                .distinct()
+                .collect(Collectors.toMap(
+                        productId -> productId,
+                        productId -> {
+                            Quantity theoreticalQuantity = theoreticalUsage.getOrDefault(productId, Quantity.ZERO);
+                            Quantity acturalQuantity = actualUsage.getOrDefault(productId, Quantity.ZERO);
+                            return theoreticalQuantity.subtract(acturalQuantity);
+                        }
+                ));
+    }
+
+    private Money calculateSittingInventoryAsMoney(Map<ProductId, List<StockAddTransaction>> productIdToStockAddTransactionMap, Map<ProductId, Quantity> productIdToQuantityMap) {
+        Money totalMoney = Money.ZERO;
+
+        for (Map.Entry<ProductId, Quantity> entry : productIdToQuantityMap.entrySet()) {
+            Quantity leftQuantity = entry.getValue();
+            List<StockAddTransaction> stockAddTransactions = productIdToStockAddTransactionMap.get(entry.getKey());
+            for (StockAddTransaction stockAddTransaction : stockAddTransactions) {
+                Quantity transactionQuantity = stockAddTransaction.getQuantity();
+                if (transactionQuantity.isGreaterThan(leftQuantity)) {
+                    totalMoney = totalMoney.add(stockAddTransaction.getGrossPrice()
+                            .multiply(transactionQuantity.subtract(leftQuantity).getValue()));
+                    leftQuantity = Quantity.ZERO;
+                } else {
+                    leftQuantity = leftQuantity.subtract(transactionQuantity);
+                }
+            }
+        }
+        return totalMoney;
+    }
+
+    private void validateStockIsOpen() {
+        if (isClosed()) {
+            throw new StockDomainException("Operation can be performed only on open stock");
+        }
+    }
+
+    private void validateStockIsClosed() {
+        if (!isClosed()) {
+            throw new StockDomainException("Operation can be performed only on closed stock");
+        }
+    }
+
+    private void addStockItemsBeforeClosing(StockTakeItem stockTakeItem, Map<ProductId, List<StockAddTransaction>> productIdToListStockAddTransactionMap) {
+        long id = stockItemsBeforeClosing.size() + 1;
+        Quantity realQuantity = stockTakeItem.getQuantity();
+        List<StockAddTransaction> stockAddTransactions = productIdToListStockAddTransactionMap.get(stockTakeItem.getProductId());
+        for (StockAddTransaction addTransaction : stockAddTransactions) {
+            stockItemsBeforeClosing.add(StockItemBeforeClosing.builder()
+                    .id(new StockItemBeforeClosingId(id))
+                    .stockId(getId())
+                    .additionDate(addTransaction.getAdditionDate())
+                    .productId(addTransaction.getProductId())
+                    .grossPrice(addTransaction.getGrossPrice())
+                    .quantity(addTransaction.getQuantity().isGreaterThan(realQuantity) ? realQuantity : addTransaction.getQuantity())
+                    .invoiceId(addTransaction.getInvoiceId())
+                    .build());
+            realQuantity = realQuantity.subtract(addTransaction.getQuantity());
+
+            if (realQuantity.isNegative() || realQuantity.isZero()) {
+                break;
+            }
+        }
+    }
+
+    private void processStockSubtractTransaction(ProductId productId, Quantity quantity, Sale sale, List<String> failureMessages, Map<ProductId, Quantity> addTransactionMap, Map<ProductId, Quantity> previousSubtractTransactionMap) {
+        Quantity quantityInStock = addTransactionMap.get(productId)
+                .subtract(previousSubtractTransactionMap.getOrDefault(
+                        productId, new Quantity(BigDecimal.ZERO)));
+        if (quantity.isGreaterThan(quantityInStock)) {
+            failureMessages.add("Insufficient quantity for product id: %s".formatted(productId));
+        } else {
+            StockSubtractTransaction stockSubtractTransaction = StockSubtractTransaction.builder()
+                    .stockId(getId())
+                    .stockSubtractTransactionId(new StockSubtractTransactionId(1L + subtractTransactions.size()))
+                    .subtractDate(sale.getDate())
+                    .productId(productId)
+                    .quantity(quantity)
+                    .stockSubtractTransactionType(StockSubtractTransactionType.SALE)
+                    .saleId(sale.getId())
+                    .build();
+            subtractTransactions.add(stockSubtractTransaction);
+        }
+    }
+
+    private static Map<ProductId, Quantity> productIdToQuantityForSale(Sale sale, Map<MenuItemId, Recipe> menuItemIdRecipeMap) {
+        return sale.getItems().stream()
                 .flatMap(saleItem -> menuItemIdRecipeMap.get(saleItem.getMenuItemId())
                         .getItems().stream()
                         .map(recipeItem -> new AbstractMap.SimpleEntry<>(
@@ -155,37 +200,6 @@ public class Stock extends AggregateRoot<StockId> {
                         Map.Entry::getValue,
                         Quantity::add
                 ));
-
-        Map<ProductId, Quantity> addTransactionMap = productIdToQuantityForAddTransactions();
-
-        Map<ProductId, Quantity> previousSubtractTransactionMap = productIdToQuantityForSubtractTransactions();
-
-        productIdQuantityMap.forEach(((productId, quantity) -> {
-            Quantity quantityInStock = addTransactionMap.get(productId)
-                    .subtract(previousSubtractTransactionMap.getOrDefault(
-                            productId, new Quantity(BigDecimal.ZERO)));
-            if (quantity.isGreaterThan(quantityInStock)) {
-                failureMessages.add("Insufficient quantity for product id: %s".formatted(productId));
-            } else {
-                StockSubtractTransaction stockSubtractTransaction = StockSubtractTransaction.builder()
-                        .stockId(getId())
-                        .stockSubtractTransactionId(new StockSubtractTransactionId(1L + subtractTransactions.size()))
-                        .subtractDate(sale.getDate())
-                        .productId(productId)
-                        .quantity(quantity)
-                        .stockSubtractTransactionType(StockSubtractTransactionType.SALE)
-                        .saleId(sale.getId())
-                        .build();
-                subtractTransactions.add(stockSubtractTransaction);
-            }
-        }));
-    }
-
-    public void initializeStock() {
-        setId(new StockId(UUID.randomUUID()));
-        addTransactions = new ArrayList<>();
-        subtractTransactions = new ArrayList<>();
-        stockItemsBeforeClosing = new ArrayList<>();
     }
 
     private Map<ProductId, Quantity> productIdToQuantityForAddTransactions() {
@@ -241,6 +255,7 @@ public class Stock extends AggregateRoot<StockId> {
     }
 
     private Map<ProductId, List<StockAddTransaction>> getProductIdToStockAddTransactionMap() {
+        //(FIFO stock) first product's that were put to stock are used first
         return addTransactions.stream()
                 .collect(Collectors.groupingBy(StockAddTransaction::getProductId))
                 .entrySet().stream()
@@ -249,14 +264,6 @@ public class Stock extends AggregateRoot<StockId> {
                         entry -> entry.getValue().stream()
                                 .sorted(Comparator.comparing(StockAddTransaction::getAdditionDate).reversed())
                                 .collect(Collectors.toList())));
-    }
-
-    protected boolean isActive() {
-        return status.equals(StockStatus.ACTIVE);
-    }
-
-    protected boolean isClosed() {
-        return status.equals(StockStatus.CLOSED);
     }
 
     public List<StockAddTransaction> getAddTransactions() {
