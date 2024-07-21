@@ -1,6 +1,7 @@
 package org.example.warehouse.stock.service.domain;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.DomainConstants;
 import org.example.warehouse.stock.service.domain.dto.message.deduce.StockSubtractRequest;
 import org.example.warehouse.stock.service.domain.entity.Recipe;
 import org.example.warehouse.stock.service.domain.entity.Sale;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.example.domain.DomainConstants.FAILURE_MESSAGE_DELIMITER;
 
 @Slf4j
 @Component
@@ -48,7 +51,7 @@ public class StockSubtractRequestHelper {
         if (!failureMessages.isEmpty()) {
             log.error("Stock subtract failed for sale id: {}, with message: {}",
                     sale.getId().getValue(),
-                    String.join(",", failureMessages));
+                    String.join(FAILURE_MESSAGE_DELIMITER, failureMessages));
             //implement failure path
             //e.g. save sale id with error message to db
             return;

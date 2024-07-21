@@ -8,6 +8,7 @@ import org.example.warehouse.stock.service.domain.valueobject.*;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class Stock extends AggregateRoot<StockId> {
@@ -33,6 +34,61 @@ public class Stock extends AggregateRoot<StockId> {
         status = builder.status;
     }
 
+    public Money getCostOfGoodsSold() {
+        if (!StockStatus.CLOSED.equals(status)) {
+            throw new StockDomainException("Cost of goods sold can be obtained only by closed stock");
+        }
+        Money totalCostOfAddTransactions = getAddTransactionsCost();
+        Money totalCostOfProductsLeft = getStockItemsBeforeClosingCost();
+        return totalCostOfAddTransactions.subtract(totalCostOfProductsLeft);
+    }
+
+    public Map<ProductId, Quantity> getVariance() {
+        if (!StockStatus.CLOSED.equals(status)) {
+            throw new StockDomainException("Variance can be obtained only by closed stock");
+        }
+        Map<ProductId, Quantity> theoreticalUsage = productIdToQuantityForSubtractTransactions();
+        Map<ProductId, Quantity> actualUsage = productIdToQuantityForActualUsage();
+
+        return Stream.concat(theoreticalUsage.keySet().stream(), actualUsage.keySet().stream())
+                .distinct()
+                .collect(Collectors.toMap(
+                        productId -> productId,
+                        productId -> {
+                            Quantity theoreticalQuantity = theoreticalUsage.getOrDefault(productId, Quantity.ZERO);
+                            Quantity acturalQuantity = actualUsage.getOrDefault(productId, Quantity.ZERO);
+                            return theoreticalQuantity.subtract(acturalQuantity);
+                        }
+                ));
+    }
+
+    public Money getSittingInventoryAsMoney() {
+        if (StockStatus.CLOSED.equals(status)) {
+            throw new StockDomainException("Sitting inventory can be obtained only by open stock");
+        }
+        Map<ProductId, List<StockAddTransaction>> productIdToStockAddTransactionMap = getProductIdToStockAddTransactionMap();
+        Map<ProductId, Quantity> productIdToQuantityMap = productIdToQuantityForSubtractTransactions();
+
+        Money totalMoney = Money.ZERO;
+
+        for (Map.Entry<ProductId, Quantity> entry : productIdToQuantityMap.entrySet()) {
+            Quantity leftQuantity = entry.getValue();
+            List<StockAddTransaction> stockAddTransactions = productIdToStockAddTransactionMap.get(entry.getKey());
+            for (StockAddTransaction stockAddTransaction : stockAddTransactions) {
+                Quantity transactionQuantity = stockAddTransaction.getQuantity();
+                if (transactionQuantity.isGreaterThan(leftQuantity)) {
+                    totalMoney = totalMoney.add(stockAddTransaction.getGrossPrice()
+                            .multiply(transactionQuantity.subtract(leftQuantity).getValue()));
+                    leftQuantity = Quantity.ZERO;
+                } else {
+                    leftQuantity = leftQuantity.subtract(transactionQuantity);
+                }
+            }
+        }
+
+        return totalMoney;
+    }
+
     public void close(StockTake stockTake) {
         toStockTake = stockTake.getId();
         status = StockStatus.CLOSED;
@@ -41,14 +97,7 @@ public class Stock extends AggregateRoot<StockId> {
     public void initializeStockItemsBeforeClosing(StockTake stockTake) {
         stockItemsBeforeClosing = new ArrayList<>();
         //(FIFO stock) first product's that were put to stock are used first
-        Map<ProductId, List<StockAddTransaction>> productIdToListStockAddTransactionMap = addTransactions.stream()
-                .collect(Collectors.groupingBy(StockAddTransaction::getProductId))
-                .entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream()
-                                .sorted(Comparator.comparing(StockAddTransaction::getAdditionDate).reversed())
-                                .collect(Collectors.toList())));
+        Map<ProductId, List<StockAddTransaction>> productIdToListStockAddTransactionMap = getProductIdToStockAddTransactionMap();
 
         stockTake.getItems().forEach(stockTakeItem -> {
             long id = stockItemsBeforeClosing.size() + 1;
@@ -86,7 +135,6 @@ public class Stock extends AggregateRoot<StockId> {
         }
     }
 
-
     public void addStockSubtractTransactions(Sale sale, List<Recipe> recipes, List<String> failureMessages) {
         if (isClosed()) {
             throw new StockDomainException("You cannot add new subtract transactions. Stock is closed!");
@@ -108,19 +156,9 @@ public class Stock extends AggregateRoot<StockId> {
                         Quantity::add
                 ));
 
-        Map<ProductId, Quantity> addTransactionMap = addTransactions.stream()
-                .collect(Collectors.toMap(
-                        StockAddTransaction::getProductId,
-                        StockAddTransaction::getQuantity,
-                        Quantity::add
-                ));
+        Map<ProductId, Quantity> addTransactionMap = productIdToQuantityForAddTransactions();
 
-        Map<ProductId, Quantity> previousSubtractTransactionMap = subtractTransactions.stream()
-                .collect(Collectors.toMap(
-                        StockSubtractTransaction::getProductId,
-                        StockSubtractTransaction::getQuantity,
-                        Quantity::add
-                ));
+        Map<ProductId, Quantity> previousSubtractTransactionMap = productIdToQuantityForSubtractTransactions();
 
         productIdQuantityMap.forEach(((productId, quantity) -> {
             Quantity quantityInStock = addTransactionMap.get(productId)
@@ -150,6 +188,69 @@ public class Stock extends AggregateRoot<StockId> {
         stockItemsBeforeClosing = new ArrayList<>();
     }
 
+    private Map<ProductId, Quantity> productIdToQuantityForAddTransactions() {
+        return addTransactions.stream()
+                .collect(Collectors.toMap(
+                        StockAddTransaction::getProductId,
+                        StockAddTransaction::getQuantity,
+                        Quantity::add
+                ));
+    }
+
+    private Map<ProductId, Quantity> productIdToQuantityForActualUsage() {
+        Map<ProductId, Quantity> quantityForAddTransactions = productIdToQuantityForAddTransactions();
+        Map<ProductId, Quantity> quantityForStockTake = productIdToQuantityForStockItemsBeforeClosing();
+
+        return Stream.concat(quantityForAddTransactions.keySet().stream(), quantityForStockTake.keySet().stream())
+                .distinct()
+                .collect(Collectors.toMap(
+                        productId -> productId,
+                        productId -> {
+                            Quantity addQuantity = quantityForAddTransactions.getOrDefault(productId, Quantity.ZERO);
+                            Quantity stockQuantity = quantityForStockTake.getOrDefault(productId, Quantity.ZERO);
+                            return addQuantity.subtract(stockQuantity);
+                        }
+                ));
+    }
+
+    private Map<ProductId, Quantity> productIdToQuantityForStockItemsBeforeClosing() {
+        return stockItemsBeforeClosing.stream()
+                .collect(Collectors.toMap(StockItemBeforeClosing::getProductId, StockItemBeforeClosing::getQuantity, Quantity::add));
+    }
+
+    private Map<ProductId, Quantity> productIdToQuantityForSubtractTransactions() {
+        return subtractTransactions.stream()
+                .collect(Collectors.toMap(
+                        StockSubtractTransaction::getProductId,
+                        StockSubtractTransaction::getQuantity,
+                        Quantity::add
+                ));
+    }
+
+    private Money getAddTransactionsCost() {
+        return addTransactions.stream()
+                .map(StockAddTransaction::getTotalGrossPrice)
+                .reduce(Money.ZERO, Money::add);
+    }
+
+    private Money getStockItemsBeforeClosingCost() {
+        return stockItemsBeforeClosing.stream()
+                .map(stockItemBeforeClosing -> stockItemBeforeClosing.getGrossPrice()
+                        .multiply(stockItemBeforeClosing.getQuantity().getValue()))
+                .reduce(Money.ZERO, Money::add);
+    }
+
+    private Map<ProductId, List<StockAddTransaction>> getProductIdToStockAddTransactionMap() {
+        return addTransactions.stream()
+                .collect(Collectors.groupingBy(StockAddTransaction::getProductId))
+                .entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .sorted(Comparator.comparing(StockAddTransaction::getAdditionDate).reversed())
+                                .collect(Collectors.toList())));
+    }
+
     protected boolean isActive() {
         return status.equals(StockStatus.ACTIVE);
     }
@@ -157,7 +258,6 @@ public class Stock extends AggregateRoot<StockId> {
     protected boolean isClosed() {
         return status.equals(StockStatus.CLOSED);
     }
-
 
     public List<StockAddTransaction> getAddTransactions() {
         return addTransactions;
