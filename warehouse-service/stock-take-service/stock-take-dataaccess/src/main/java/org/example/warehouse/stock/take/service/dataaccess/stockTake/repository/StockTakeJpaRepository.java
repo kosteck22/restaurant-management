@@ -5,11 +5,11 @@ import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeStat
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface StockTakeJpaRepository extends JpaRepository<StockTakeEntity, UUID> {
-    List<StockTakeEntity> findByStatusAndPreparedDateAfter(StockTakeStatus status, LocalDateTime preparedDate);
+    List<StockTakeEntity> findByStatusAndPreparedDateAfter(StockTakeStatus status, LocalDate preparedDate);
 }

@@ -26,7 +26,7 @@ public class StockTakeMessagingDataMapper {
                 .setSagaId("")
                 .setStockTakeId(stockTake.getId().getValue().toString())
                 .setCreatedAt(domainEvent.getCreatedAt().toInstant())
-                .setPreparedDate(stockTake.getPreparedDate().toInstant(ZoneOffset.UTC))
+                .setPreparedDate(stockTake.getPreparedDate().atStartOfDay().toInstant(ZoneOffset.UTC))
                 .setStatus(StockTakeStatus.valueOf(stockTake.getStatus().toString()))
                 .setItems(stockItemsToStockItemsAvroModel(stockTake.getItems(), stockTake.getId()))
                 .build();

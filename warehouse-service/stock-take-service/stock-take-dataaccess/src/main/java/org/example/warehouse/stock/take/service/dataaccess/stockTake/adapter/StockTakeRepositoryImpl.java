@@ -5,12 +5,11 @@ import org.example.warehouse.stock.take.service.dataaccess.stockTake.entity.Stoc
 import org.example.warehouse.stock.take.service.dataaccess.stockTake.mapper.StockTakeDataAccessMapper;
 import org.example.warehouse.stock.take.service.dataaccess.stockTake.repository.StockTakeJpaRepository;
 import org.example.warehouse.stock.take.service.domain.entity.StockTake;
-import org.example.warehouse.stock.take.service.domain.mapper.StockTakeDataMapper;
 import org.example.warehouse.stock.take.service.domain.ports.output.repository.StockTakeRepository;
 import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeStatus;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +34,7 @@ public class StockTakeRepositoryImpl implements StockTakeRepository {
     }
 
     @Override
-    public List<StockTake> findByStatusAndPreparedDateAfter(StockTakeStatus status, LocalDateTime preparedDate) {
+    public List<StockTake> findByStatusAndPreparedDateAfter(StockTakeStatus status, LocalDate preparedDate) {
         List<StockTakeEntity> stockTakeEntities = stockTakeJpaRepository.findByStatusAndPreparedDateAfter(status, preparedDate);
         return stockTakeEntities.stream()
                 .map(stockTakeDataAccessMapper::stockTakeEntityToStockTake)

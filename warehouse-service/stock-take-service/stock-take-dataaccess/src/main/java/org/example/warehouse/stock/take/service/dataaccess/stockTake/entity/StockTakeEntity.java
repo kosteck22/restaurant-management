@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeStatus;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class StockTakeEntity {
     @Id
     private UUID id;
-    private LocalDateTime preparedDate;
+    private LocalDate preparedDate;
     private BigDecimal totalPrice;
 
     @Enumerated(value = EnumType.STRING)

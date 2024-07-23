@@ -9,12 +9,13 @@ import org.example.domain.valueobject.StockTakeId;
 import org.example.warehouse.stock.take.service.domain.valueobject.StockTakeStatus;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 public class StockTake extends AggregateRoot<StockTakeId> {
-    private final LocalDateTime preparedDate;
+    private final LocalDate preparedDate;
     private final Money totalPrice;
     private final List<StockTakeItem> items;
 
@@ -71,7 +72,7 @@ public class StockTake extends AggregateRoot<StockTakeId> {
         return status;
     }
 
-    public LocalDateTime getPreparedDate() {
+    public LocalDate getPreparedDate() {
         return preparedDate;
     }
 
@@ -118,7 +119,7 @@ public class StockTake extends AggregateRoot<StockTakeId> {
 
     public static final class Builder {
         private StockTakeId stockTakeId;
-        private LocalDateTime preparedDate;
+        private LocalDate preparedDate;
         private Money totalPrice;
         private StockTakeStatus status;
         private List<StockTakeItem> items;
@@ -148,7 +149,7 @@ public class StockTake extends AggregateRoot<StockTakeId> {
             return this;
         }
 
-        public Builder preparedDate(LocalDateTime val) {
+        public Builder preparedDate(LocalDate val) {
             preparedDate = val;
             return this;
         }
