@@ -115,4 +115,23 @@ public class InvoiceDataMapper {
                 message
         );
     }
+
+    public Invoice invoiceFromExtractorToInvoice(Invoice invoice) {
+        return Invoice.builder()
+                .invoiceNumber(invoice.getInvoiceNumber())
+                .createdAt(invoice.getCreatedAt())
+                .seller(invoice.getSeller())
+                .buyer(invoice.getBuyer())
+                .order(orderToOrderEntity(new org.example.invoice.service.domain.dto.create.Order(
+                        invoice.getOrder().getItems().stream()
+                                .map(i -> org.example.invoice.service.domain.dto.create.OrderItem.builder()
+                                        .productName(i.getProduct().getName())
+                                        .netPrice(i.getNetTotal().divide(i.getQuantity().getValue()).getAmount())
+                                        .vatRate(i.getVat().multiply(100).divide(i.getNetTotal().getAmount()).getAmount().setScale(0, RoundingMode.HALF_UP).intValue())
+                                        .quantity(i.getQuantity().getValue())
+                                        .unitOfMeasure(i.getProduct().getUnitOfMeasure().getName())
+                                        .discount(i.getDiscount())
+                                        .build()).collect(Collectors.toList()))))
+                .build();
+    }
 }

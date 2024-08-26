@@ -28,6 +28,7 @@ public class InvoiceExtractFromImageCommandHandler {
         InvoiceDataExtractor extractor = company.getExtractor();
 
         Invoice invoice = extractor.extractInvoiceData(file);
+        invoice = invoiceDataMapper.invoiceFromExtractorToInvoice(invoice);
         invoiceDomainService.validateAndInitiateInvoice(invoice);
         saveInvoice(invoice);
         return invoice.getId().toString();

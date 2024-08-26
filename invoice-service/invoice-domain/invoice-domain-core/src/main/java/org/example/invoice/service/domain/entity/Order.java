@@ -45,7 +45,9 @@ public class Order extends BaseEntity<OrderId> {
                 !vat.isGreaterThanOrEqualZero()) {
             throw new InvoiceDomainException("Total prices must be greater than zero!");
         }
-        if (!netPrice.add(vat).equals(grossPrice)) {
+        Money add = netPrice.add(vat);
+        boolean equals = add.equals(grossPrice);
+        if (!equals) {
             throw new InvoiceDomainException("Net price plus vat must be equal to grossPrice!");
         }
     }

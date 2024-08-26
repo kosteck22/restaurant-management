@@ -2,11 +2,13 @@ package org.example.invoice.service.domain.dto.create;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.example.application.validation.MonetaryValue;
 import org.hibernate.validator.constraints.Range;
 
 import java.math.BigDecimal;
 
+@Builder
 public record OrderItem(
         @NotNull String productName,
         @NotNull @MonetaryValue BigDecimal netPrice,

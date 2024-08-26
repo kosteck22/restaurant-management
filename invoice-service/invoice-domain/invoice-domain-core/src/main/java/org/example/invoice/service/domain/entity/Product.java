@@ -7,6 +7,8 @@ import org.example.invoice.service.domain.valueobject.ProductId;
 import org.example.domain.valueobject.UnitOfMeasure;
 import org.example.domain.valueobject.VatRate;
 
+import java.math.BigDecimal;
+
 public class Product extends BaseEntity<ProductId> {
     private final String name;
     private final Money netPrice;
@@ -36,7 +38,7 @@ public class Product extends BaseEntity<ProductId> {
     }
 
     private Money calculateVatAmount() {
-        return netPrice.multiply(vatRate.getRate() / 100);
+        return netPrice.multiply(vatRate.getRate()).divide(BigDecimal.valueOf(100));
     }
 
     public String getName() {

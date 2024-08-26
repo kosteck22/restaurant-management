@@ -21,3 +21,6 @@ spring:
     password: admin
     driver-class-name: org.postgresql.Driver
     platform: postgres
+  servlet:
+    multipart:
+      max-file-size: 10MB
