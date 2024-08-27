@@ -1,16 +1,16 @@
 package org.example.warehouse.stock.service.application.rest;
 
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.example.warehouse.stock.service.domain.dto.service.add.AddProductsFromInvoiceCommand;
 import org.example.warehouse.stock.service.domain.dto.service.add.AddProductsFromInvoiceResponse;
 import org.example.warehouse.stock.service.domain.ports.input.service.StockApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @Slf4j
 @RestController
@@ -28,5 +28,12 @@ public class StockController {
         AddProductsFromInvoiceResponse addProductsFromInvoiceResponse = stockApplicationService.addProductsFromInvoice(addProductsFromInvoiceCommand);
         log.info("Products added to stock for invoice id: {}", addProductsFromInvoiceCommand.invoiceId());
         return ResponseEntity.status(HttpStatus.OK).body(addProductsFromInvoiceResponse);
+    }
+
+    @GetMapping("/cogs")
+    public ResponseEntity<BigDecimal> getCostOfGoodsSold() {
+        log.info("Getting cost of goods sold");
+        BigDecimal cogs = stockApplicationService.getCostOfGoodsSold();
+        return ResponseEntity.ok(cogs);
     }
 }

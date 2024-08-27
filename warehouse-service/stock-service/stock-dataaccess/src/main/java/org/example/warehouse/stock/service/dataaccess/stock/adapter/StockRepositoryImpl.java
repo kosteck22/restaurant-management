@@ -8,6 +8,7 @@ import org.example.warehouse.stock.service.domain.valueobject.StockStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,5 +32,10 @@ public class StockRepositoryImpl implements StockRepository {
     @Override
     public Stock save(Stock stock) {
         return stockDataAccessMapper.stockEntityToStock(stockJpaRepository.save(stockDataAccessMapper.stockToStockEntity(stock)));
+    }
+
+    @Override
+    public Optional<Stock> findLatestStockByStatus(StockStatus stockStatus) {
+        return Optional.of(stockDataAccessMapper.stockEntityToStock(stockJpaRepository.findLatestStockByStatus(stockStatus)));
     }
 }
