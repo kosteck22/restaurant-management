@@ -27,7 +27,7 @@ public class StockClosedFailedKafkaMessagePublisher implements StockClosedFailed
 
     @Override
     public void publish(StockClosedFailedEvent domainEvent) {
-        String stockTakeId = domainEvent.getStockTakeId().toString();
+        String stockTakeId = domainEvent.getStockTakeId().getValue().toString();
 
         log.info("Received StockClosedFailedEvent for stock take id: {}", stockTakeId);
 
