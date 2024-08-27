@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
+import java.util.Map;
+import java.util.UUID;
 
 
 @Slf4j
@@ -15,11 +17,11 @@ import java.math.BigDecimal;
 @Service
 public class StockApplicationServiceImpl implements StockApplicationService {
     private final AddProductsFromInvoiceCommandHandler addProductsFromInvoiceCommandHandler;
-    private final CostOfGoodsSoldCommandHandler costOfGoodsSoldCommandHandler;
+    private final FetchMethodsCommandHandler fetchMethodsCommandHandler;
 
-    public StockApplicationServiceImpl(AddProductsFromInvoiceCommandHandler addProductsFromInvoiceCommandHandler, CostOfGoodsSoldCommandHandler costOfGoodsSoldCommandHandler) {
+    public StockApplicationServiceImpl(AddProductsFromInvoiceCommandHandler addProductsFromInvoiceCommandHandler, FetchMethodsCommandHandler costOfGoodsSoldCommandHandler) {
         this.addProductsFromInvoiceCommandHandler = addProductsFromInvoiceCommandHandler;
-        this.costOfGoodsSoldCommandHandler = costOfGoodsSoldCommandHandler;
+        this.fetchMethodsCommandHandler = costOfGoodsSoldCommandHandler;
     }
 
     @Override
@@ -29,6 +31,11 @@ public class StockApplicationServiceImpl implements StockApplicationService {
 
     @Override
     public BigDecimal getCostOfGoodsSold() {
-        return costOfGoodsSoldCommandHandler.getCostOfGoodsSold();
+        return fetchMethodsCommandHandler.getCostOfGoodsSold();
+    }
+
+    @Override
+    public Map<UUID, BigDecimal> getVariance() {
+        return fetchMethodsCommandHandler.getVariance();
     }
 }

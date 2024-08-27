@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -35,5 +37,12 @@ public class StockController {
         log.info("Getting cost of goods sold");
         BigDecimal cogs = stockApplicationService.getCostOfGoodsSold();
         return ResponseEntity.ok(cogs);
+    }
+
+    @GetMapping("/variance")
+    public ResponseEntity<Map<UUID, BigDecimal>> getVariance() {
+        log.info("Getting variance");
+        Map<UUID, BigDecimal> result = stockApplicationService.getVariance();
+        return ResponseEntity.ok(result);
     }
 }
